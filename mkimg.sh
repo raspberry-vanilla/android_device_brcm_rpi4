@@ -63,7 +63,6 @@ echo "Copying vendor..."
 sudo dd if=${OUTDIR}/vendor.img of=/dev/mapper/${LOOPDEV}p3 bs=1M
 echo "Creating userdata..."
 sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p4 -I 512 -L userdata
-sudo resize2fs /dev/mapper/${LOOPDEV}p4 1212156
 sync
 
 sudo kpartx -d "/dev/${LOOPDEV}"

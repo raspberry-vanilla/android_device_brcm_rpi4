@@ -5,6 +5,6 @@
 #<src>                                   <mnt_point>  <type>  <mnt_flags and options>                             <fs_mgr_flags>
 /dev/block/mmcblk0p2                     /system      ext4    ro,barrier=1                                        wait,first_stage_mount
 /dev/block/mmcblk0p3                     /vendor      ext4    ro,barrier=1                                        wait,first_stage_mount
-/dev/block/mmcblk0p4                     /data        ext4    noatime,nosuid,nodev,nomblk_io_submit,errors=panic  wait,check,formattable,encryptable=footer,quota
+/dev/block/mmcblk0p4                     /data        ext4    noatime,nosuid,nodev,nomblk_io_submit,errors=panic  wait,check,formattable,quota
 /devices/platform/scb/*.pcie/*/*/*/usb*  auto         auto    defaults                                            voldmanaged=usb:auto
 /devices/platform/soc/*.usb/usb*         auto         auto    defaults                                            voldmanaged=usb:auto
