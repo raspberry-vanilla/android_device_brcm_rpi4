@@ -7,8 +7,8 @@
 /sys/class/rfkill/rfkill[0-9]/state                                          u:object_r:sysfs_bluetooth_writable:s0
 
 # DRM
-/vendor/bin/hw/android\.hardware\.drm@1\.4-service\.clearkey                 u:object_r:hal_drm_clearkey_exec:s0
-/vendor/bin/hw/android\.hardware\.drm@1\.4-service\.widevine                 u:object_r:hal_drm_widevine_exec:s0
+/vendor/bin/hw/android\.hardware\.drm(@[0-9]+\.[0-9]+)?-service\.clearkey    u:object_r:hal_drm_clearkey_exec:s0
+/vendor/bin/hw/android\.hardware\.drm(@[0-9]+\.[0-9]+)?-service\.widevine    u:object_r:hal_drm_widevine_exec:s0
 
 # Gatekeeper
 /vendor/bin/hw/android\.hardware\.gatekeeper@1\.0-service.software           u:object_r:hal_gatekeeper_default_exec:s0
