@@ -32,6 +32,7 @@
             <id>21</id>
             <id>22</id>
             <id>23</id>
+            <id>31</id>
         </ignore>
     </Provider>
     <!-- See ExternalCameraUtils.cpp for default values of Device configurations below -->
