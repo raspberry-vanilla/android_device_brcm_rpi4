@@ -244,6 +244,9 @@ PRODUCT_PACKAGES += \
     android.hardware.media.c2@1.0-service-v4l2 \
     libc2plugin_store
 
+# Virtualization
+$(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
+
 # Wifi
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
