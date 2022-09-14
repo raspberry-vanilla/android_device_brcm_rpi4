@@ -1,1 +1,1 @@
-Raspberry Vanilla AOSP 12 device configuration for Raspberry Pi 4.
+Raspberry Vanilla AOSP 13 device configuration for Raspberry Pi 4.
