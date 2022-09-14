@@ -1,0 +1,9 @@
+# device specific syscalls
+_llseek: 1
+eventfd2: 1
+getcwd: 1
+pselect6: 1
+recvfrom: 1
+sched_getaffinity: 1
+sendto: 1
+sysinfo: 1

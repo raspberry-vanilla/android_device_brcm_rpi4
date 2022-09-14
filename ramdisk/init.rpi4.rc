@@ -1,0 +1,39 @@
+import /vendor/etc/init/hw/init.rpi4.usb.rc
+
+on init
+    symlink /sdcard /storage/sdcard0
+
+on fs
+    mount_all /vendor/etc/fstab.rpi4
+
+on post-fs-data
+    # Create the directories used by the Wireless subsystem
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
+
+    # Set indication (checked by vold) that we have finished this action
+    setprop vold.post_fs_data_done 1
+
+on property:sys.boot_completed=1
+    # Reinit lmkd to reconfigure lmkd properties
+    setprop lmkd.reinit 1
+
+on property:sys.boot_completed=1 && property:persist.audio.hdmi.device=*
+    stop alsa_loop
+    start alsa_loop
+
+on property:persist.audio.hdmi.device=
+    stop alsa_loop
+
+service alsa_loop /vendor/bin/alsa_loop --cdevice=hw:${persist.audio.pcm.card},1 --pdevice=default:CARD=${persist.audio.hdmi.device}
+    user root
+    group system
+    priority 10
+    ioprio rt 4
+    disabled
+
+service suspend_blocker_rpi /vendor/bin/suspend_blocker_rpi
+    class early_hal # Start together with system_suspend HAL
+    group system
+    user root

@@ -1,0 +1,24 @@
+// Copyright (C) 2018 The LineageOS Project
+// Copyright (C) 2021-2022 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "android.hardware.light@2.0-service.rpi",
+    init_rc: ["android.hardware.light@2.0-service.rpi.rc"],
+    vintf_fragments: ["android.hardware.light@2.0-service.rpi.xml"],
+    proprietary: true,
+    relative_install_path: "hw",
+    srcs: [
+         "Light.cpp",
+         "service.cpp",
+    ],
+    shared_libs: [
+        "libbase",
+        "libcutils",
+        "libhardware",
+        "libhidlbase",
+        "libutils",
+        "android.hardware.light@2.0",
+    ],
+}

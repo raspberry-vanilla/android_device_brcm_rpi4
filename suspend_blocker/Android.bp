@@ -1,0 +1,11 @@
+// Copyright (C) 2019 The Android Open Source Project
+// Copyright (C) 2021-2022 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "suspend_blocker_rpi",
+    srcs: ["suspend_blocker_rpi.cpp"],
+    proprietary: true,
+    shared_libs: ["libpower"],
+}

@@ -1,0 +1,42 @@
+
+# Audio
+persist.audio.pcm.card=0
+persist.audio.pcm.device=0
+ro.config.media_vol_default=20
+ro.config.media_vol_steps=25
+
+# Bluetooth
+ro.rfkilldisabled=1
+
+# Camera
+media.settings.xml=/vendor/etc/media_profiles_V1_0.xml
+ro.hardware.camera=libcamera
+
+# Display
+debug.drm.mode.force=1920x1080
+
+# Graphics
+ro.hardware.hwcomposer=drm
+ro.hardware.vulkan=broadcom
+ro.opengles.version=196609
+
+# LMKD
+ro.lmk.critical=0
+ro.lmk.critical_upgrade=false
+ro.lmk.downgrade_pressure=100
+ro.lmk.kill_heaviest_task=true
+ro.lmk.kill_timeout_ms=100
+ro.lmk.log_stats=true
+ro.lmk.low=1001
+ro.lmk.medium=800
+ro.lmk.upgrade_pressure=100
+ro.lmk.use_minfree_levels=true
+
+# V4L2
+debug.stagefright.c2-poolmask=0xf50000
+ro.vendor.v4l2_codec2.decode_concurrent_instances=8
+ro.vendor.v4l2_codec2.encode_concurrent_instances=8
+
+# Wifi
+wifi.interface=wlan0
+

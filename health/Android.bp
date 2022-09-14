@@ -1,0 +1,33 @@
+// Copyright (C) 2021-2022 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "android.hardware.health@2.0-service.rpi",
+    init_rc: ["android.hardware.health@2.0-service.rpi.rc"],
+    vintf_fragments: ["android.hardware.health@2.0-service.rpi.xml"],
+    proprietary: true,
+    relative_install_path: "hw",
+    srcs: [
+        "HealthService.cpp",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+    ],
+    static_libs: [
+        "android.hardware.health@2.0-impl",
+        "android.hardware.health@1.0-convert",
+        "libhealthservice",
+        "libbatterymonitor",
+        "libhealthstoragedefault",
+    ],
+    shared_libs: [
+        "libbase",
+        "libcutils",
+        "libhidlbase",
+        "libutils",
+        "android.hardware.health@2.0",
+    ],
+    header_libs: ["libhealthd_headers"],
+}

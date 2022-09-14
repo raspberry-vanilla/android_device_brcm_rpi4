@@ -1,0 +1,49 @@
+# Audio
+/vendor/bin/alsa_loop                                                        u:object_r:alsa_loop_exec:s0
+
+# Bluetooth
+/dev/ttyAMA0                                                                 u:object_r:hci_attach_dev:s0
+/dev/vcio                                                                    u:object_r:vcio_device:s0
+/sys/class/rfkill/rfkill[0-9]/state                                          u:object_r:sysfs_bluetooth_writable:s0
+
+# DRM
+/vendor/bin/hw/android\.hardware\.drm@1\.4-service\.clearkey                 u:object_r:hal_drm_clearkey_exec:s0
+/vendor/bin/hw/android\.hardware\.drm@1\.4-service\.widevine                 u:object_r:hal_drm_widevine_exec:s0
+
+# Gatekeeper
+/vendor/bin/hw/android\.hardware\.gatekeeper@1\.0-service.software           u:object_r:hal_gatekeeper_default_exec:s0
+
+# Graphics
+/dev/dri                                                                                u:object_r:gpu_device:s0
+/dev/dri/card0                                                                          u:object_r:gpu_device:s0
+/dev/dri/card1                                                                          u:object_r:gpu_device:s0
+/dev/dri/renderD128                                                                     u:object_r:gpu_device:s0
+/vendor/bin/hw/android\.hardware\.graphics\.allocator@4\.0-service\.minigbm_gbm_mesa    u:object_r:hal_graphics_allocator_default_exec:s0
+/vendor/lib(64)?/dri/libgallium_dri\.so                                                 u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/hw/android\.hardware\.graphics.mapper@4\.0-impl\.minigbm_gbm_mesa\.so  u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/hw/vulkan\.broadcom\.so                                                u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libdrm\.so                                                             u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libgbm_mesa\.so                                                        u:object_r:same_process_hal_file:s0
+/vendor/lib{64}?/libgbm_mesa_wrapper\.so                                                u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libglapi\.so                                                           u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libminigbm_gralloc_gbm_mesa\.so                                        u:object_r:same_process_hal_file:s0
+
+# Health
+/vendor/bin/hw/android\.hardware\.health@2\.0-service.rpi                    u:object_r:hal_health_default_exec:s0
+
+# Lights
+/sys/class/backlight/rpi_backlight/brightness                                u:object_r:sysfs_leds:s0
+/sys/devices/platform/rpi_backlight/backlight/rpi_backlight/brightness       u:object_r:sysfs_leds:s0
+/vendor/bin/hw/android\.hardware\.light@2\.0-service.rpi                     u:object_r:hal_light_default_exec:s0
+
+# Partitions
+/dev/block/mmcblk0p1                                                         u:object_r:boot_block_device:s0
+/dev/block/mmcblk0p2                                                         u:object_r:system_block_device:s0
+/dev/block/mmcblk0p3                                                         u:object_r:system_block_device:s0
+/dev/block/mmcblk0p4                                                         u:object_r:userdata_block_device:s0
+
+# Suspend
+/vendor/bin/suspend_blocker_rpi                                              u:object_r:suspend_blocker_exec:s0
+
+# V4L2
+/vendor/bin/hw/android\.hardware\.media\.c2@1\.0-service-v4l2(.*)?           u:object_r:mediacodec_exec:s0
