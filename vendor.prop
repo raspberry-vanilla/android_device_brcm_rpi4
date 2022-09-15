@@ -54,6 +54,9 @@ ro.lmk.medium=800
 ro.lmk.upgrade_pressure=100
 ro.lmk.use_minfree_levels=true
 
+# MGLRU
+persist.device_config.mglru_native.lru_gen_config=core
+
 # V4L2
 debug.stagefright.c2-poolmask=0xf50000
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
