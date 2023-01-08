@@ -186,7 +186,6 @@ PRODUCT_PACKAGES += \
 # Media
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
-    $(DEVICE_PATH)/media/media_codecs_v4l2_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_v4l2_c2_video.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_tv.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_tv.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
@@ -247,6 +246,9 @@ PRODUCT_SOONG_NAMESPACES += external/v4l2_codec2
 PRODUCT_PACKAGES += \
     android.hardware.media.c2@1.0-service-v4l2 \
     libc2plugin_store
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/media/media_codecs_v4l2_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_v4l2_c2_video.xml
 
 # Wifi
 PRODUCT_PACKAGES += \
