@@ -34,6 +34,8 @@ ro.lmk.use_minfree_levels=true
 
 # V4L2
 debug.stagefright.c2-poolmask=0xf50000
+persist.v4l2_codec2.rank.decoder=128
+persist.v4l2_codec2.rank.encoder=128
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
 ro.vendor.v4l2_codec2.encode_concurrent_instances=8
 
