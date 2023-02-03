@@ -10,6 +10,9 @@
 /vendor/bin/hw/android\.hardware\.drm(@[0-9]+\.[0-9]+)?-service\.clearkey    u:object_r:hal_drm_clearkey_exec:s0
 /vendor/bin/hw/android\.hardware\.drm(@[0-9]+\.[0-9]+)?-service\.widevine    u:object_r:hal_drm_widevine_exec:s0
 
+# FFmpeg
+/vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-ffmpeg(.*)?         u:object_r:mediacodec_exec:s0
+
 # Gatekeeper
 /vendor/bin/hw/android\.hardware\.gatekeeper@1\.0-service.software           u:object_r:hal_gatekeeper_default_exec:s0
 
