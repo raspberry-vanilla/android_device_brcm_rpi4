@@ -16,10 +16,10 @@ ro.hardware.camera=libcamera
 debug.drm.mode.force=1920x1080
 
 # FFmpeg
-persist.ffmpeg_codec2.v4l2.h264=false
-persist.ffmpeg_codec2.v4l2.h265=true
 persist.ffmpeg_codec2.rank.audio=16
 persist.ffmpeg_codec2.rank.video=256
+persist.ffmpeg_codec2.v4l2.h264=false
+persist.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
 ro.hardware.hwcomposer=drm
