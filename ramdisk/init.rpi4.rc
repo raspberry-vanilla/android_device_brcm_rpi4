@@ -19,20 +19,6 @@ on property:sys.boot_completed=1
     # Reinit lmkd to reconfigure lmkd properties
     setprop lmkd.reinit 1
 
-on property:sys.boot_completed=1 && property:persist.audio.hdmi.device=*
-    stop alsa_loop
-    start alsa_loop
-
-on property:persist.audio.hdmi.device=
-    stop alsa_loop
-
-service alsa_loop /vendor/bin/alsa_loop --cdevice=hw:${persist.audio.pcm.card},1 --pdevice=default:CARD=${persist.audio.hdmi.device}
-    user root
-    group system
-    priority 10
-    ioprio rt 4
-    disabled
-
 service suspend_blocker_rpi /vendor/bin/suspend_blocker_rpi
     class early_hal # Start together with system_suspend HAL
     group system
