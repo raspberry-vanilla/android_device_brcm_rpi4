@@ -111,6 +111,8 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml \
     external/libcamera/src/ipa/raspberrypi/data/imx219.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx219.json \
     external/libcamera/src/ipa/raspberrypi/data/imx219_noir.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx219_noir.json \
+    external/libcamera/src/ipa/raspberrypi/data/imx296.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx296.json \
+    external/libcamera/src/ipa/raspberrypi/data/imx296_mono.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx296_mono.json \
     external/libcamera/src/ipa/raspberrypi/data/imx477.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx477.json \
     external/libcamera/src/ipa/raspberrypi/data/imx477_noir.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx477_noir.json \
     external/libcamera/src/ipa/raspberrypi/data/imx477_scientific.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/raspberrypi/imx477_scientific.json \

@@ -2,6 +2,9 @@ cameras:
   "/base/soc/i2c0mux/i2c@1/imx219@10":
     location: back
     rotation: 0
+  "/base/soc/i2c0mux/i2c@1/imx296@1a":
+    location: back
+    rotation: 0
   "/base/soc/i2c0mux/i2c@1/imx477@1a":
     location: back
     rotation: 0
