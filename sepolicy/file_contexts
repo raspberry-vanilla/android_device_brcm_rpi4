@@ -1,6 +1,3 @@
-# Audio
-/vendor/bin/alsa_loop                                                        u:object_r:alsa_loop_exec:s0
-
 # Bluetooth
 /dev/ttyAMA0                                                                 u:object_r:hci_attach_dev:s0
 /dev/vcio                                                                    u:object_r:vcio_device:s0
