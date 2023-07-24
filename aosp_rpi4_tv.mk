@@ -1,0 +1,38 @@
+#
+# Copyright (C) 2021-2023 KonstaKANG
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Inherit device configuration
+$(call inherit-product, device/brcm/rpi4/device.mk)
+
+PRODUCT_AAPT_PREF_CONFIG := tvdpi
+PRODUCT_CHARACTERISTICS := tv
+$(call inherit-product, device/google/atv/products/atv_base.mk)
+
+# Android TV
+PRODUCT_PACKAGES += \
+    DocumentsUI \
+    LeanbackIME \
+    TvProvision \
+    TvSampleLeanbackLauncher \
+    TvSettingsTwoPanel
+
+# Bluetooth
+PRODUCT_VENDOR_PROPERTIES += \
+    bluetooth.device.class_of_device=34,4,36
+
+# Overlays
+PRODUCT_PACKAGES += \
+    AndroidTvRpiOverlay \
+    SettingsProviderTvRpiOverlay \
+    WifiRpiOverlay
+
+# Device identifier. This must come after all inclusions.
+PRODUCT_DEVICE := rpi4
+PRODUCT_NAME := aosp_rpi4_tv
+PRODUCT_BRAND := Raspberry
+PRODUCT_MODEL := Raspberry Pi 4
+PRODUCT_MANUFACTURER := Raspberry
+PRODUCT_RELEASE_NAME := Raspberry Pi 4

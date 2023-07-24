@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2021-2022 KonstaKANG
+# Copyright (C) 2021-2023 KonstaKANG
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,13 +8,8 @@ DEVICE_PATH := device/brcm/rpi4
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, frameworks/native/build/tablet-7in-xhdpi-2048-dalvik-heap.mk)
 $(call inherit-product, vendor/brcm/rpi4/rpi4-vendor.mk)
-
-PRODUCT_AAPT_CONFIG := normal mdpi hdpi
-PRODUCT_AAPT_PREF_CONFIG := hdpi
-PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
 # API level
 PRODUCT_SHIPPING_API_LEVEL := 33
@@ -217,18 +212,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_tv.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_tv.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
-
-# Overlays
-PRODUCT_PACKAGES += \
-    AndroidRpiOverlay \
-    SettingsRpiOverlay \
-    SettingsProviderRpiOverlay \
-    SystemUIRpiOverlay \
-    WifiRpiOverlay
-
-# Permissions
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/tablet_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/tablet_core_hardware.xml
 
 # Power
 PRODUCT_PACKAGES += \
