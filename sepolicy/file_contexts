@@ -3,6 +3,10 @@
 /dev/vcio                                                                    u:object_r:vcio_device:s0
 /sys/class/rfkill/rfkill[0-9]/state                                          u:object_r:sysfs_bluetooth_writable:s0
 
+# CEC
+/dev/cec0                                                                    u:object_r:cec_device:s0
+/dev/cec1                                                                    u:object_r:cec_device:s0
+
 # DRM
 /vendor/bin/hw/android\.hardware\.drm@1\.4-service\.clearkey                 u:object_r:hal_drm_clearkey_exec:s0
 /vendor/bin/hw/android\.hardware\.drm@1\.4-service\.widevine                 u:object_r:hal_drm_widevine_exec:s0

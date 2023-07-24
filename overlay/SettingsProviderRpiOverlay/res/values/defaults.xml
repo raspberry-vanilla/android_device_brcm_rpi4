@@ -33,6 +33,9 @@
     <!-- Keep screen on at all times by default -->
     <bool name="def_stay_on_while_plugged_in">true</bool>
 
+    <!-- Disable HDMI-CEC power off -->
+    <bool name="def_hdmiControlAutoDeviceOff">false</bool>
+
     <!-- No setup wizard -->
     <bool name="def_device_provisioned">true</bool>
     <bool name="def_user_setup_complete">true</bool>
