@@ -37,6 +37,10 @@ ro.rfkilldisabled=1
 media.settings.xml=/vendor/etc/media_profiles_V1_0.xml
 ro.hardware.camera=libcamera
 
+# CEC
+ro.hdmi.cec_device=cec0
+ro.hdmi.device_type=4
+
 # Display
 debug.drm.mode.force=1920x1080
 
