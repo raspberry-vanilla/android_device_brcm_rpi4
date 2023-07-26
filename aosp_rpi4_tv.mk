@@ -23,6 +23,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.device.class_of_device=34,4,36
 
+# Boot animation
+PRODUCT_COPY_FILES += \
+    device/google/atv/products/bootanimations/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
+
 # Overlays
 PRODUCT_PACKAGES += \
     AndroidTvRpiOverlay \
