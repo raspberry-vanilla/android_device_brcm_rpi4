@@ -1,6 +1,4 @@
 # Bluetooth
-/dev/ttyAMA0                                                                 u:object_r:hci_attach_dev:s0
-/dev/vcio                                                                    u:object_r:vcio_device:s0
 /sys/class/rfkill/rfkill[0-9]/state                                          u:object_r:sysfs_bluetooth_writable:s0
 
 # CEC

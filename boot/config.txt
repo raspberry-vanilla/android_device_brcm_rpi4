@@ -8,6 +8,9 @@ initramfs ramdisk.img followkernel
 # Audio
 dtparam=audio=on
 
+# Bluetooth
+dtparam=krnbt=on
+
 # Camera
 camera_auto_detect=1
 start_x=1

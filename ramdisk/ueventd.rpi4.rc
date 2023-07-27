@@ -1,7 +1,5 @@
 # Bluetooth
-/dev/ttyAMA0                                                                 0660   bluetooth  bluetooth
 /dev/rfkill                                                                  0660   bluetooth  bluetooth
-/dev/vcio                                                                    0660   system     bluetooth
 
 # Camera
 /dev/media*                                                                  0660   system     camera
