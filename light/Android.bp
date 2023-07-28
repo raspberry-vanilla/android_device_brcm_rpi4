@@ -1,24 +1,21 @@
-// Copyright (C) 2018 The LineageOS Project
-// Copyright (C) 2021-2022 KonstaKANG
+// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2023 KonstaKANG
 //
 // SPDX-License-Identifier: Apache-2.0
 
 cc_binary {
-    name: "android.hardware.light@2.0-service.rpi",
-    init_rc: ["android.hardware.light@2.0-service.rpi.rc"],
-    vintf_fragments: ["android.hardware.light@2.0-service.rpi.xml"],
-    proprietary: true,
+    name: "android.hardware.light-service.rpi",
     relative_install_path: "hw",
+    vendor: true,
+    init_rc: ["android.hardware.light-service.rpi.rc"],
+    vintf_fragments: ["android.hardware.light-service.rpi.xml"],
     srcs: [
-         "Light.cpp",
-         "service.cpp",
+        "Lights.cpp",
+        "main.cpp",
     ],
     shared_libs: [
         "libbase",
-        "libcutils",
-        "libhardware",
-        "libhidlbase",
-        "libutils",
-        "android.hardware.light@2.0",
+        "libbinder_ndk",
+        "android.hardware.light-V2-ndk",
     ],
 }

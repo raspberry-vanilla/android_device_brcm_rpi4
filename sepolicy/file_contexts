@@ -36,7 +36,7 @@
 # Lights
 /sys/class/backlight/rpi_backlight/brightness                                u:object_r:sysfs_leds:s0
 /sys/devices/platform/rpi_backlight/backlight/rpi_backlight/brightness       u:object_r:sysfs_leds:s0
-/vendor/bin/hw/android\.hardware\.light@2\.0-service.rpi                     u:object_r:hal_light_default_exec:s0
+/vendor/bin/hw/android\.hardware\.light-service\.rpi                         u:object_r:hal_light_default_exec:s0
 
 # Partitions
 /dev/block/mmcblk0p1                                                         u:object_r:boot_block_device:s0

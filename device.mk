@@ -202,7 +202,7 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.rpi
+    android.hardware.light-service.rpi
 
 # Media
 PRODUCT_COPY_FILES += \
