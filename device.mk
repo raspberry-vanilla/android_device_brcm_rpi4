@@ -186,7 +186,7 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health@2.0-service.rpi
+    android.hardware.health-service.rpi
 
 # Kernel
 PRODUCT_COPY_FILES += \
