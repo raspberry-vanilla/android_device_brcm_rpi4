@@ -39,6 +39,18 @@ PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.profile.sap.server.enabled=false \
     bluetooth.profile.vcp.controller.enabled=false
 
+# Camera
+ENABLE_CAMERA_SERVICE := true
+
+# EVS
+ENABLE_CAREVSSERVICE_SAMPLE := true
+ENABLE_EVS_SAMPLE := true
+ENABLE_EVS_SERVICE := true
+ENABLE_REAR_VIEW_CAMERA_SAMPLE := true
+
+PRODUCT_COPY_FILES += \
+    device/brcm/rpi4/camera/evs_config_override.json:${TARGET_COPY_OUT_SYSTEM}/etc/automotive/evs/config_override.json
+
 # Overlays
 PRODUCT_PACKAGES += \
     AndroidRpiOverlay \

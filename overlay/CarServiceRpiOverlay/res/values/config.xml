@@ -26,4 +26,13 @@
          Setting this string to empty will disable the feature. -->
     <string name="config_userNoticeUiService" translatable="false"></string>
 
+    <!-- A name of a camera device that provides the rearview through EVS service -->
+    <string name="config_evsRearviewCameraId" translatable="false">/dev/video0</string>
+
+    <!-- The camera Activity name for EVS, if defined, the Activity will be launched by
+         CarEvsService. -->
+    <string name="config_evsCameraActivity" translatable="false">
+        com.google.android.car.evs/com.google.android.car.evs.CarEvsCameraPreviewActivity
+    </string>
+
 </resources>
