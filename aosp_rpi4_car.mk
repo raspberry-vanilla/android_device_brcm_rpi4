@@ -42,6 +42,7 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Overlays
 PRODUCT_PACKAGES += \
     AndroidRpiOverlay \
+    CarServiceRpiOverlay \
     SettingsProviderRpiOverlay \
     WifiRpiOverlay
 

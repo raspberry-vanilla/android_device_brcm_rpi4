@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2015 The Android Open Source Project
+     Copyright (C) 2021-2023 KonstaKANG
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Specifies notice UI that will be launched when user starts a car or do user
+         switching. It is recommended to use dialog with at least TYPE_APPLICATION_OVERLAY window
+         type to show the UI regardless of activity launches. Target package will be auto-granted
+         necessary permission for TYPE_APPLICATION_OVERLAY window type. The UI package should
+         resolve permission by itself to use any higher priority window type.
+         Setting this string to empty will disable the feature. -->
+    <string name="config_userNoticeUiService" translatable="false"></string>
+
+</resources>
