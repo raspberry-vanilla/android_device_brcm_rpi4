@@ -16,6 +16,9 @@
 # ION
 /dev/ion                                                                     0664   system     system
 
+# USB
+/sys/class/udc/fe980000.usb  current_speed                                   0664   system     system
+
 # V4L2
 /dev/media0                                                                  0660   media      media
 /dev/media1                                                                  0660   media      media
