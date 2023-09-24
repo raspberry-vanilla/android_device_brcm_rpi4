@@ -47,5 +47,8 @@
 # Suspend
 /vendor/bin/suspend_blocker_rpi                                              u:object_r:suspend_blocker_exec:s0
 
+# Thermal
+/vendor/bin/hw/android\.hardware\.thermal@2\.0-service\.mock                 u:object_r:hal_thermal_default_exec:s0
+
 # V4L2
 /vendor/bin/hw/android\.hardware\.media\.c2@1\.0-service-v4l2(.*)?           u:object_r:mediacodec_exec:s0
