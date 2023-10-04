@@ -8,9 +8,6 @@ initramfs ramdisk.img followkernel
 # Audio
 dtparam=audio=on
 
-# Bluetooth
-dtparam=krnbt=on
-
 # Camera
 camera_auto_detect=1
 start_x=1
@@ -24,7 +21,6 @@ disable_overscan=1
 
 # Graphics acceleration
 dtoverlay=vc4-kms-v3d
-dtoverlay=cma,cma-512
 
 # I2C
 #dtparam=i2c_arm=on
