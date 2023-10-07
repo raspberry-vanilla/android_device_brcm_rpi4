@@ -12,7 +12,7 @@ $(call inherit-product, frameworks/native/build/tablet-7in-xhdpi-2048-dalvik-hea
 $(call inherit-product, vendor/brcm/rpi4/rpi4-vendor.mk)
 
 # API level
-PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_SHIPPING_API_LEVEL := 34
 
 # Audio
 PRODUCT_PACKAGES += \
