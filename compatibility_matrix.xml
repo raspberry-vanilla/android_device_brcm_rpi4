@@ -31,12 +31,4 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl" optional="false">
-        <name>android.system.net.netd</name>
-        <version>1.1</version>
-        <interface>
-            <name>INetd</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
 </compatibility-matrix>
