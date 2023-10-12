@@ -49,7 +49,7 @@ ENABLE_EVS_SERVICE := true
 ENABLE_REAR_VIEW_CAMERA_SAMPLE := true
 
 PRODUCT_COPY_FILES += \
-    device/brcm/rpi4/camera/evs_config_override.json:${TARGET_COPY_OUT_SYSTEM}/etc/automotive/evs/config_override.json
+    device/brcm/rpi4/camera/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
 
 # Overlays
 PRODUCT_PACKAGES += \
