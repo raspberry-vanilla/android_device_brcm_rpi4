@@ -17,6 +17,13 @@ $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 PRODUCT_PACKAGES += \
     android.hardware.automotive.vehicle@2.0-default-service
 
+# Broadcast radio
+PRODUCT_PACKAGES += \
+    android.hardware.broadcastradio-service.default
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.broadcastradio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.broadcastradio.xml
+
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.device.class_of_device=38,4,8 \
