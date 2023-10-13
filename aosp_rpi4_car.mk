@@ -13,17 +13,6 @@ PRODUCT_CHARACTERISTICS := automotive,nosdcard
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
-# Android Automotive
-PRODUCT_PACKAGES += \
-    android.hardware.automotive.vehicle@2.0-default-service
-
-# Broadcast radio
-PRODUCT_PACKAGES += \
-    android.hardware.broadcastradio-service.default
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.broadcastradio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.broadcastradio.xml
-
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.device.class_of_device=38,4,8 \
@@ -45,6 +34,13 @@ PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.profile.pbap.server.enabled=false \
     bluetooth.profile.sap.server.enabled=false \
     bluetooth.profile.vcp.controller.enabled=false
+
+# Broadcast radio
+PRODUCT_PACKAGES += \
+    android.hardware.broadcastradio-service.default
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.broadcastradio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.broadcastradio.xml
 
 # Camera
 ENABLE_CAMERA_SERVICE := true
@@ -69,6 +65,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.activities_on_secondary_displays.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.activities_on_secondary_displays.xml \
     frameworks/native/data/etc/car_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/car_core_hardware.xml
+
+# Vehicle
+PRODUCT_PACKAGES += \
+    android.hardware.automotive.vehicle@2.0-default-service
 
 # Device identifier. This must come after all inclusions.
 PRODUCT_DEVICE := rpi4
