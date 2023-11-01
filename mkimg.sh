@@ -84,6 +84,7 @@ sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p4 -I 512 -L userdata
 sync
 
 sudo kpartx -d "/dev/${LOOPDEV}"
+sudo chown ${USER}:${USER} ${ANDROID_PRODUCT_OUT}/${IMGNAME}
 
 echo "Done, created ${ANDROID_PRODUCT_OUT}/${IMGNAME}!"
 exit 0
