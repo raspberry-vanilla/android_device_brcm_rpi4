@@ -53,6 +53,7 @@ persist.ffmpeg_codec2.v4l2.h265=true
 ro.hardware.hwcomposer=drm
 ro.hardware.vulkan=broadcom
 ro.opengles.version=196609
+vendor.hwc.drm.ctm=DRM_OR_IGNORE
 
 # LMKD
 ro.lmk.critical=0
