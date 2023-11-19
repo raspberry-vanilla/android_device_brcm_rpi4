@@ -23,6 +23,7 @@ disable_overscan=1
 #dtoverlay=rpi-backlight
 
 # Graphics acceleration
+disable_fw_kms_setup=1
 dtoverlay=vc4-kms-v3d
 dtoverlay=cma,cma-512
 
