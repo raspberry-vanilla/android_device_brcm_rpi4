@@ -84,9 +84,44 @@ struct alsa_stream_out {
     unsigned int written;
 };
 
+static int probe_pcm_out_card() {
+    FILE *fp;
+    char card_node[] = "/proc/asound/card0/id";
+    char card_id[64];
+
+    char card_prop[PROPERTY_VALUE_MAX];
+    property_get("persist.audio.device", card_prop, "");
+
+    for (int i = 0; i < 5; i++) {
+        card_node[17] = i + '0';
+        if ((fp = fopen(card_node, "r")) != NULL) {
+            fgets(card_id, sizeof(card_id), fp);
+            ALOGV("%s: %s", card_node, card_id);
+            if (!strcmp(card_prop, "jack") && !strncmp(card_id, "Headphones", 10)) {
+                fclose(fp);
+                ALOGI("Using PCM card %d for 3.5mm audio jack", i);
+                return i;
+            } else if (!strcmp(card_prop, "dac") && strncmp(card_id, "Headphones", 10)
+                    && strncmp(card_id, "vc4hdmi", 7)) {
+                fclose(fp);
+                ALOGI("Using PCM card %d for audio DAC %s", i, card_id);
+                return i;
+            }
+            fclose(fp);
+        }
+    }
+
+    ALOGE("Could not probe PCM card for %s, using PCM card 0", card_prop);
+    return 0;
+}
+
 static int get_pcm_card()
 {
     char card[PROPERTY_VALUE_MAX];
+    property_get("persist.audio.pcm.card.auto", card, "false");
+    if (!strcmp(card, "true"))
+        return probe_pcm_out_card();
+
     property_get("persist.audio.pcm.card", card, "0");
     return atoi(card);
 }
