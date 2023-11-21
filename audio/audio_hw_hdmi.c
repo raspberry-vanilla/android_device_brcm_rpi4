@@ -86,11 +86,11 @@ struct alsa_stream_out {
 };
 
 static void get_alsa_device_name(char *name) {
-    char hdmiDevice[PROPERTY_VALUE_MAX];
-    property_get("persist.audio.hdmi.device", hdmiDevice, "vc4hdmi0");
+    char hdmi_device[PROPERTY_VALUE_MAX];
+    property_get("persist.audio.hdmi.device", hdmi_device, "vc4hdmi0");
 
     // use card configured in vc4-hdmi.conf to get IEC958 subframe conversion
-    sprintf(name, "default:CARD=%s", hdmiDevice);
+    sprintf(name, "default:CARD=%s", hdmi_device);
 }
 
 /* must be called with hw device and output stream mutexes locked */
