@@ -15,6 +15,9 @@ dtparam=krnbt=on
 camera_auto_detect=1
 start_x=1
 
+# CPU
+arm_boost=1
+
 # Display
 disable_overscan=1
 
