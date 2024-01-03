@@ -112,7 +112,6 @@ PRODUCT_COPY_FILES += \
     external/libcamera/src/ipa/rpi/vc4/data/imx477.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx477.json \
     external/libcamera/src/ipa/rpi/vc4/data/imx477_noir.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx477_noir.json \
     external/libcamera/src/ipa/rpi/vc4/data/imx477_scientific.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx477_scientific.json \
-    external/libcamera/src/ipa/rpi/vc4/data/imx477_v1.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx477_v1.json \
     external/libcamera/src/ipa/rpi/vc4/data/imx708.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx708.json \
     external/libcamera/src/ipa/rpi/vc4/data/imx708_noir.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx708_noir.json \
     external/libcamera/src/ipa/rpi/vc4/data/imx708_wide.json:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/ipa/rpi/vc4/imx708_wide.json \
