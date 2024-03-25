@@ -28,6 +28,7 @@ PRODUCT_VENDOR_PROPERTIES += \
     bluetooth.profile.hfp.ag.enabled=false \
     bluetooth.profile.hid.device.enabled=false \
     bluetooth.profile.hid.host.enabled=false \
+    bluetooth.profile.map.client.enabled=false \
     bluetooth.profile.map.server.enabled=false \
     bluetooth.profile.mcp.server.enabled=false \
     bluetooth.profile.opp.enabled=false \
