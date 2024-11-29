@@ -176,12 +176,15 @@ PRODUCT_PACKAGES += \
     hwcomposer.drm
 
 PRODUCT_PACKAGES += \
-    dri_gbm \
     libEGL_mesa \
     libGLESv1_CM_mesa \
     libGLESv2_mesa \
     libgallium_dri \
     libglapi
+
+PRODUCT_PACKAGES += \
+    dri_gbm \
+    libgbm_mesa
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.opengles.deqp.level-2023-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
