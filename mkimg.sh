@@ -11,17 +11,19 @@ exit_with_error() {
   exit 1
 }
 
-if [ -z "${TARGET_PRODUCT}" ]; then
+if [ -z ${TARGET_PRODUCT} ]; then
   exit_with_error "TARGET_PRODUCT environment variable is not set. Run lunch first."
 fi
 
-if [ -z "${ANDROID_PRODUCT_OUT}" ]; then
+if [ -z ${ANDROID_PRODUCT_OUT} ]; then
   exit_with_error "ANDROID_PRODUCT_OUT environment variable is not set. Run lunch first."
 fi
 
-if [ ! -f ${ANDROID_PRODUCT_OUT}/boot.img ] || [ ! -f ${ANDROID_PRODUCT_OUT}/system.img ] || [ ! -f ${ANDROID_PRODUCT_OUT}/vendor.img ]; then
-  exit_with_error "Partition image not found. Run make first."
-fi
+for PARTITION in "boot" "system" "vendor"; do
+  if [ ! -f ${ANDROID_PRODUCT_OUT}/${PARTITION}.img ]; then
+    exit_with_error "Partition image not found. Run make first."
+  fi
+done
 
 VERSION=RaspberryVanillaAOSP15
 DATE=$(date +%Y%m%d)
