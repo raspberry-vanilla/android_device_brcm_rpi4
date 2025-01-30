@@ -1,6 +1,8 @@
 on early-boot
-    chown system system /sys/class/backlight/rpi_backlight/brightness
-    chmod 660 /sys/class/backlight/rpi_backlight/brightness
+    chown system system /sys/class/backlight/11-0045/brightness
+    chown system system /sys/class/backlight/11-0045/max_brightness
+    chmod 660 /sys/class/backlight/11-0045/brightness
+    chmod 440 /sys/class/backlight/11-0045/max_brightness
 
 service vendor.light-default /vendor/bin/hw/android.hardware.light-service.rpi
     class hal

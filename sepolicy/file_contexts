@@ -38,8 +38,8 @@
 /vendor/bin/hw/android\.hardware\.health-service\.rpi                        u:object_r:hal_health_default_exec:s0
 
 # Lights
-/sys/class/backlight/rpi_backlight/brightness                                u:object_r:sysfs_leds:s0
-/sys/devices/platform/rpi_backlight/backlight/rpi_backlight/brightness       u:object_r:sysfs_leds:s0
+/sys/class/backlight/11-0045/brightness                                      u:object_r:sysfs_leds:s0
+/sys/class/backlight/11-0045/max_brightness                                  u:object_r:sysfs_leds:s0
 /vendor/bin/hw/android\.hardware\.light-service\.rpi                         u:object_r:hal_light_default_exec:s0
 
 # Partitions

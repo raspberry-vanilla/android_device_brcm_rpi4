@@ -19,28 +19,39 @@
 
 #include <android-base/file.h>
 
+using ::android::base::ReadFileToString;
 using ::android::base::WriteStringToFile;
 
 namespace aidl::android::hardware::light {
 
-static const std::string backlightFiles[] = {
-    "/sys/class/backlight/rpi_backlight/brightness"
-};
+static const uint32_t defaultMaxBrightness = 255;
 
-const static std::vector<HwLight> availableLights = {
+static const std::string backlightBrightnessPath = "/sys/class/backlight/11-0045/brightness";
+static const std::string backlightMaxBrightnessPath = "/sys/class/backlight/11-0045/max_brightness";
+
+static const std::vector<HwLight> availableLights = {
     {.id = (int)LightType::BACKLIGHT, .type = LightType::BACKLIGHT, .ordinal = 0}
 };
 
+Lights::Lights() {
+    maxBrightness = defaultMaxBrightness;
+
+    if (!access(backlightMaxBrightnessPath.c_str(), R_OK)) {
+        std::string maxBrightnessValue;
+        if (ReadFileToString(backlightMaxBrightnessPath, &maxBrightnessValue)) {
+            maxBrightness = std::stoi(maxBrightnessValue);
+        }
+    }
+}
+
 ndk::ScopedAStatus Lights::setLightState(int id, const HwLightState& state) {
     HwLight const& light = availableLights[id];
-    std::string const brightness = std::to_string(rgbToBrightness(state));
+    std::string const brightness = std::to_string(rgbToScaledBrightness(state, maxBrightness));
 
     switch (light.type) {
         case LightType::BACKLIGHT:
-            for (auto &file : backlightFiles) {
-                if (!access(file.c_str(), W_OK)) {
-                    WriteStringToFile(brightness, file);
-                }
+            if (!access(backlightBrightnessPath.c_str(), W_OK)) {
+                WriteStringToFile(brightness, backlightBrightnessPath);
             }
             break;
         default:
@@ -58,10 +69,11 @@ ndk::ScopedAStatus Lights::getLights(std::vector<HwLight>* lights) {
     return ndk::ScopedAStatus::ok();
 }
 
-uint32_t Lights::rgbToBrightness(const HwLightState& state) {
+uint32_t Lights::rgbToScaledBrightness(const HwLightState& state, uint32_t maxBrightness) {
     uint32_t color = state.color & 0x00ffffff;
-    return ((77 * ((color >> 16) & 0xff)) + (150 * ((color >> 8) & 0xff)) +
+    uint32_t brightness = ((77 * ((color >> 16) & 0xff)) + (150 * ((color >> 8) & 0xff)) +
             (29 * (color & 0xff))) >> 8;
+    return brightness * maxBrightness / 0xff;
 }
 
 }  // aidl::android::hardware::light

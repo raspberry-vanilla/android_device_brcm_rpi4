@@ -23,11 +23,14 @@ namespace aidl::android::hardware::light {
 
 class Lights : public BnLights {
 public:
+    Lights();
+
     ndk::ScopedAStatus setLightState(int id, const HwLightState& state) override;
     ndk::ScopedAStatus getLights(std::vector<HwLight>* types) override;
 
 private:
-    uint32_t rgbToBrightness(const HwLightState& state);
+    uint32_t maxBrightness;
+    uint32_t rgbToScaledBrightness(const HwLightState& state, uint32_t maxBrightness);
 };
 
 }  // aidl::android::hardware::light

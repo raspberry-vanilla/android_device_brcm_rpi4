@@ -20,7 +20,7 @@ disable_overscan=1
 
 # Display panel
 #dtoverlay=vc4-kms-dsi-7inch
-#dtoverlay=rpi-backlight
+#dtoverlay=vc4-kms-dsi-ili9881-7inch
 
 # Graphics acceleration
 disable_fw_kms_setup=1
