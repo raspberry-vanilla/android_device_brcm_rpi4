@@ -21,7 +21,8 @@ fi
 
 VERSION=RaspberryVanillaAOSP14
 DATE=$(date +%Y%m%d)
-IMGNAME=${VERSION}-${DATE}-${TARGET_PRODUCT}.img
+TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
+IMGNAME=${VERSION}-${DATE}-${TARGET}.img
 IMGSIZE=7
 
 echo "Creating image file ${ANDROID_PRODUCT_OUT}/${IMGNAME}..."
