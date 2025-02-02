@@ -18,6 +18,9 @@
 
 <resources>
 
+    <!-- Disable screen dimming by default -->
+    <bool name="def_dim_screen">false</bool>
+
     <!-- Default screen brightness -->
     <integer name="def_screen_brightness">128</integer>
 
