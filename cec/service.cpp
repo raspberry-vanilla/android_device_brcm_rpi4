@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 The Android Open Source Project
+ * Copyright (C) 2019 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +15,35 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.tv.cec@1.0-service"
+#define LOG_TAG "android.hardware.tv.cec@1.0-service-rpi"
 
 #include <android/hardware/tv/cec/1.0/IHdmiCec.h>
 #include <hidl/LegacySupport.h>
+#include "HdmiCec.h"
 
+using android::hardware::configureRpcThreadpool;
+using android::hardware::joinRpcThreadpool;
 using android::hardware::tv::cec::V1_0::IHdmiCec;
-using android::hardware::defaultPassthroughServiceImplementation;
+using android::hardware::tv::cec::V1_0::implementation::HdmiCec;
+
+using android::OK;
+using android::status_t;
 
 int main() {
-    return defaultPassthroughServiceImplementation<IHdmiCec>();
+    configureRpcThreadpool(1, true /* callerWillJoin */);
+
+    android::sp<IHdmiCec> service = new HdmiCec();
+
+    status_t status = service->registerAsService();
+    if (status != OK) {
+        ALOGE("Cannot register HDMI-CEC HAL service.");
+        return 1;
+    }
+
+    ALOGI("HDMI-CEC HAL ready.");
+    joinRpcThreadpool();
+
+    // Under normal cases, execution will not reach this line.
+    ALOGE("HDMI-CEC HAL failed to join thread pool.");
+    return 1;
 }

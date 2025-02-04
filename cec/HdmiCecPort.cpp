@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2021 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define LOG_TAG "android.hardware.tv.cec@1.0-impl"
+
+#define LOG_TAG "android.hardware.tv.cec@1.0-service.rpi"
 
 #include <android-base/logging.h>
 #include <errno.h>
@@ -93,6 +95,7 @@ Return<void> HdmiCecPort::release() {
     }
     return Void();
 }
+
 }  // namespace implementation
 }  // namespace V1_0
 }  // namespace cec

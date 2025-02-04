@@ -430,6 +430,12 @@ key 657   MACRO_2
 key 658   MACRO_3
 key 659   MACRO_4
 
+# CEC
+key 352   ENTER
+key 618   HOME
+key 141   POWER
+key 174   BACK
+
 # Keys defined by HID usages
 key usage 0x0c0065 SCREENSHOT                FALLBACK_USAGE_MAPPING
 key usage 0x0c0067 WINDOW                    FALLBACK_USAGE_MAPPING

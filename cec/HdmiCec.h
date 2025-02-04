@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2021 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <hardware/hdmi_cec.h>
 #include <linux/cec.h>
 #include <thread>
@@ -30,10 +32,10 @@ using std::shared_ptr;
 using std::thread;
 using std::vector;
 
-class HdmiCecDefault : public IHdmiCec, public hidl_death_recipient {
+class HdmiCec : public IHdmiCec, public hidl_death_recipient {
   public:
-    HdmiCecDefault();
-    ~HdmiCecDefault();
+    HdmiCec();
+    ~HdmiCec();
     // Methods from ::android::hardware::tv::cec::V1_0::IHdmiCec follow.
     Return<Result> addLogicalAddress(CecLogicalAddress addr) override;
     Return<void> clearLogicalAddress() override;
@@ -81,8 +83,10 @@ class HdmiCecDefault : public IHdmiCec, public hidl_death_recipient {
      * True by default after initialization.
      */
     bool mCecControlEnabled;
+
     sp<IHdmiCecCallback> mCallback;
 };
+
 }  // namespace implementation
 }  // namespace V1_0
 }  // namespace cec
