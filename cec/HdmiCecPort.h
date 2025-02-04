@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-#include <android/hardware/tv/cec/1.0/IHdmiCec.h>
+#include <aidl/android/hardware/tv/hdmi/cec/BnHdmiCec.h>
 
 namespace android {
 namespace hardware {
 namespace tv {
+namespace hdmi {
 namespace cec {
-namespace V1_0 {
 namespace implementation {
+
+using ::aidl::android::hardware::tv::hdmi::cec::Result;
 
 class HdmiCecPort {
   public:
     HdmiCecPort(unsigned int portId);
     ~HdmiCecPort();
-    Return<Result> init(const char* path);
-    Return<void> release();
+    Result init(const char* path);
+    void release();
 
     unsigned int mPortId;
     int mCecFd;
@@ -37,8 +39,8 @@ class HdmiCecPort {
 };
 
 }  // namespace implementation
-}  // namespace V1_0
 }  // namespace cec
+}  // namespace hdmi
 }  // namespace tv
 }  // namespace hardware
 }  // namespace android

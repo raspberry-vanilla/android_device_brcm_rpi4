@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.tv.cec@1.0-service.rpi"
+#define LOG_TAG "android.hardware.tv.hdmi.cec-service.rpi"
 
 #include <android-base/logging.h>
 #include <errno.h>
@@ -29,8 +29,8 @@
 namespace android {
 namespace hardware {
 namespace tv {
+namespace hdmi {
 namespace cec {
-namespace V1_0 {
 namespace implementation {
 
 HdmiCecPort::HdmiCecPort(unsigned int portId) {
@@ -44,7 +44,7 @@ HdmiCecPort::~HdmiCecPort() {
 }
 
 // Initialise the cec file descriptor
-Return<Result> HdmiCecPort::init(const char* path) {
+Result HdmiCecPort::init(const char* path) {
     mCecFd = open(path, O_RDWR);
     if (mCecFd < 0) {
         LOG(ERROR) << "Failed to open " << path << ", Error = " << strerror(errno);
@@ -82,7 +82,7 @@ Return<Result> HdmiCecPort::init(const char* path) {
     return Result::SUCCESS;
 }
 
-Return<void> HdmiCecPort::release() {
+void HdmiCecPort::release() {
     if (mExitFd > 0) {
         uint64_t tmp = 1;
         write(mExitFd, &tmp, sizeof(tmp));
@@ -93,12 +93,11 @@ Return<void> HdmiCecPort::release() {
     if (mCecFd > 0) {
         close(mCecFd);
     }
-    return Void();
 }
 
 }  // namespace implementation
-}  // namespace V1_0
 }  // namespace cec
+}  // namespace hdmi
 }  // namespace tv
 }  // namespace hardware
 }  // namespace android

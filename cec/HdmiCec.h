@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#include <aidl/android/hardware/tv/hdmi/cec/BnHdmiCec.h>
 #include <hardware/hdmi_cec.h>
 #include <linux/cec.h>
 #include <thread>
@@ -24,38 +25,42 @@
 namespace android {
 namespace hardware {
 namespace tv {
+namespace hdmi {
 namespace cec {
-namespace V1_0 {
 namespace implementation {
 
 using std::shared_ptr;
 using std::thread;
 using std::vector;
 
-class HdmiCec : public IHdmiCec, public hidl_death_recipient {
+using ::aidl::android::hardware::tv::hdmi::cec::BnHdmiCec;
+using ::aidl::android::hardware::tv::hdmi::cec::CecLogicalAddress;
+using ::aidl::android::hardware::tv::hdmi::cec::CecMessage;
+using ::aidl::android::hardware::tv::hdmi::cec::IHdmiCec;
+using ::aidl::android::hardware::tv::hdmi::cec::IHdmiCecCallback;
+using ::aidl::android::hardware::tv::hdmi::cec::Result;
+using ::aidl::android::hardware::tv::hdmi::cec::SendMessageResult;
+
+struct HdmiCec : public BnHdmiCec {
   public:
     HdmiCec();
     ~HdmiCec();
-    // Methods from ::android::hardware::tv::cec::V1_0::IHdmiCec follow.
-    Return<Result> addLogicalAddress(CecLogicalAddress addr) override;
-    Return<void> clearLogicalAddress() override;
-    Return<void> getPhysicalAddress(getPhysicalAddress_cb _hidl_cb) override;
-    Return<SendMessageResult> sendMessage(const CecMessage& message) override;
-    Return<void> setCallback(const sp<IHdmiCecCallback>& callback) override;
-    Return<int32_t> getCecVersion() override;
-    Return<uint32_t> getVendorId() override;
-    Return<void> getPortInfo(getPortInfo_cb _hidl_cb) override;
-    Return<void> setOption(OptionKey key, bool value) override;
-    Return<void> setLanguage(const hidl_string& language) override;
-    Return<void> enableAudioReturnChannel(int32_t portId, bool enable) override;
-    Return<bool> isConnected(int32_t portId) override;
+    ::ndk::ScopedAStatus addLogicalAddress(CecLogicalAddress addr, Result* _aidl_return) override;
+    ::ndk::ScopedAStatus clearLogicalAddress() override;
+    ::ndk::ScopedAStatus enableAudioReturnChannel(int32_t portId, bool enable) override;
+    ::ndk::ScopedAStatus getCecVersion(int32_t* _aidl_return) override;
+    ::ndk::ScopedAStatus getPhysicalAddress(int32_t* _aidl_return) override;
+    ::ndk::ScopedAStatus getVendorId(int32_t* _aidl_return) override;
+    ::ndk::ScopedAStatus sendMessage(const CecMessage& message,
+                                     SendMessageResult* _aidl_return) override;
+    ::ndk::ScopedAStatus setCallback(const std::shared_ptr<IHdmiCecCallback>& callback) override;
+    ::ndk::ScopedAStatus setLanguage(const std::string& language) override;
+    ::ndk::ScopedAStatus enableWakeupByOtp(bool value) override;
+    ::ndk::ScopedAStatus enableCec(bool value) override;
+    ::ndk::ScopedAStatus enableSystemCecControl(bool value) override;
 
-    virtual void serviceDied(uint64_t, const wp<::android::hidl::base::V1_0::IBase>&) {
-        setCallback(nullptr);
-    }
-
-    Return<Result> init();
-    Return<void> release();
+    Result init();
+    void release();
 
   private:
     void event_thread(HdmiCecPort* hdmiCecPort);
@@ -64,7 +69,7 @@ class HdmiCec : public IHdmiCec, public hidl_death_recipient {
     static bool isWakeupMessage(cec_msg message);
     static bool isTransferableInSleep(cec_msg message);
     static bool isPowerUICommand(cec_msg message);
-    static Return<SendMessageResult> getSendMessageResult(int tx_status);
+    static SendMessageResult getSendMessageResult(int tx_status);
 
     vector<thread> mEventThreads;
     vector<shared_ptr<HdmiCecPort>> mHdmiCecPorts;
@@ -84,12 +89,15 @@ class HdmiCec : public IHdmiCec, public hidl_death_recipient {
      */
     bool mCecControlEnabled;
 
-    sp<IHdmiCecCallback> mCallback;
+    int32_t getCecVersion();
+    uint32_t getVendorId();
+
+    std::shared_ptr<IHdmiCecCallback> mCallback;
 };
 
 }  // namespace implementation
-}  // namespace V1_0
 }  // namespace cec
+}  // namespace hdmi
 }  // namespace tv
 }  // namespace hardware
 }  // namespace android

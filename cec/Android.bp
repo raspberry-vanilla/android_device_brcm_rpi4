@@ -4,23 +4,22 @@
 // SPDX-License-Identifier: Apache-2.0
 
 cc_binary {
-    name: "android.hardware.tv.cec@1.0-service.rpi",
+    name: "android.hardware.tv.hdmi.cec-service.rpi",
     relative_install_path: "hw",
-    init_rc: ["android.hardware.tv.cec@1.0-service.rpi.rc"],
-    vintf_fragments: ["android.hardware.tv.cec@1.0-service.rpi.xml"],
+    init_rc: ["android.hardware.tv.hdmi.cec-service.rpi.rc"],
+    vintf_fragments: ["android.hardware.tv.hdmi.cec-service.rpi.xml"],
     vendor: true,
     srcs: [
         "HdmiCec.cpp",
         "HdmiCecPort.cpp",
-        "service.cpp",
+        "main.cpp",
     ],
     shared_libs: [
-        "android.hardware.tv.cec@1.0",
+        "android.hardware.tv.hdmi.cec-V1-ndk",
         "libbase",
+        "libbinder_ndk",
         "libcutils",
         "libhardware",
-        "libhidlbase",
         "liblog",
-        "libutils",
     ],
 }
