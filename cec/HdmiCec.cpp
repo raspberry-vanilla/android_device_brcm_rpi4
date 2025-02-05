@@ -289,6 +289,11 @@ Return<bool> HdmiCec::isConnected(int32_t portId __unused) {
 // Initialise the cec file descriptor
 Return<Result> HdmiCec::init() {
     string cecDevice = GetProperty(PROPERTY_CEC_DEVICE, "cec0");
+    if (cecDevice != "cec0" && cecDevice != "cec1") {
+        LOG(ERROR) << "Invalid CEC device " << cecDevice;
+        return Result::FAILURE_NOT_SUPPORTED;
+    }
+
     string devicePath = "/dev/" + cecDevice;
     int portId = stoi(cecDevice.substr(3));
 
