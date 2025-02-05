@@ -117,8 +117,4 @@
     -->
     <integer name="config_defaultNightMode">2</integer>
 
-    <!-- CEC Configuration -->
-    <bool name="config_cecTvSendStandbyOnSleepEnabled_default">false</bool>
-    <bool name="config_cecTvSendStandbyOnSleepDisabled_default">true</bool>
-
 </resources>

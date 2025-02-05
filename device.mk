@@ -134,15 +134,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/camera/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
-# CEC
-PRODUCT_PACKAGES += \
-    android.hardware.tv.cec@1.0-impl \
-    android.hardware.tv.cec@1.0-service \
-    hdmi_cec.rpi
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.hdmi.cec.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hdmi.cec.xml
-
 # Debugfs
 PRODUCT_SET_DEBUGFS_RESTRICTIONS := false
 
