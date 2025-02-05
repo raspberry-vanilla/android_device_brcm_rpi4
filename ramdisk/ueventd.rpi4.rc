@@ -6,10 +6,6 @@
 /dev/v4l-subdev*                                                             0660   system     camera
 /dev/video*                                                                  0660   system     camera
 
-# CEC
-/dev/cec0                                                                    0660   system     graphics
-/dev/cec1                                                                    0660   system     graphics
-
 # DMA
 /dev/dma_heap/linux,cma                                                      0666   system     graphics
 
