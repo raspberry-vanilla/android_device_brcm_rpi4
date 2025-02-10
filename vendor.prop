@@ -53,7 +53,6 @@ persist.ffmpeg_codec2.v4l2.h265=true
 ro.hardware.egl=mesa
 ro.hardware.vulkan=broadcom
 ro.opengles.version=196609
-ro.vendor.hwc.drm.use_config_groups=0
 vendor.hwc.drm.ctm=DRM_OR_IGNORE
 
 # LMKD
