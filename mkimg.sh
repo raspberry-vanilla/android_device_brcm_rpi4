@@ -7,7 +7,7 @@
 #
 
 exit_with_error() {
-  echo "$@"
+  echo $@
   exit 1
 }
 
@@ -29,10 +29,14 @@ VERSION=RaspberryVanillaAOSP15
 DATE=$(date +%Y%m%d)
 TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
 IMGNAME=${VERSION}-${DATE}-${TARGET}.img
-IMGSIZE=7
+IMGSIZE=7GiB
+
+if [ -f ${ANDROID_PRODUCT_OUT}/${IMGNAME} ]; then
+  exit_with_error "${ANDROID_PRODUCT_OUT}/${IMGNAME} already exists!"
+fi
 
 echo "Creating image file ${ANDROID_PRODUCT_OUT}/${IMGNAME}..."
-sudo dd if=/dev/zero of="${ANDROID_PRODUCT_OUT}/${IMGNAME}" bs=1M count=$(echo "${IMGSIZE}*1024" | bc)
+sudo fallocate -l ${IMGSIZE} ${ANDROID_PRODUCT_OUT}/${IMGNAME}
 sync
 
 echo "Creating partitions..."
@@ -63,10 +67,10 @@ echo c
 echo a
 echo 1
 echo w
-) | sudo fdisk "${ANDROID_PRODUCT_OUT}/${IMGNAME}"
+) | sudo fdisk ${ANDROID_PRODUCT_OUT}/${IMGNAME}
 sync
 
-LOOPDEV=$(sudo kpartx -av "${ANDROID_PRODUCT_OUT}/${IMGNAME}" | awk 'NR==1{ sub(/p[0-9]$/, "", $3); print $3 }')
+LOOPDEV=$(sudo kpartx -av ${ANDROID_PRODUCT_OUT}/${IMGNAME} | awk 'NR==1{ sub(/p[0-9]$/, "", $3); print $3 }')
 if [ -z ${LOOPDEV} ]; then
   exit_with_error "Unable to find loop device!"
 fi
