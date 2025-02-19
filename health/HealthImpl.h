@@ -28,7 +28,12 @@ public:
     using Health::Health;
     virtual ~HealthImpl() {}
 
+    ndk::ScopedAStatus getChargeCounterUah(int32_t* out) override;
+    ndk::ScopedAStatus getCurrentNowMicroamps(int32_t* out) override;
+    ndk::ScopedAStatus getCurrentAverageMicroamps(int32_t* out) override;
+    ndk::ScopedAStatus getCapacity(int32_t* out) override;
     ndk::ScopedAStatus getChargeStatus(BatteryStatus* out) override;
+    ndk::ScopedAStatus getBatteryHealthData(BatteryHealthData* out) override;
 
 protected:
     void UpdateHealthInfo(HealthInfo* health_info) override;
