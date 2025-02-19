@@ -25,13 +25,57 @@ namespace aidl::android::hardware::health {
 
 void HealthImpl::UpdateHealthInfo(HealthInfo* health_info) {
     health_info->chargerAcOnline = true;
-    health_info->batteryLevel = 100;
-    health_info->batteryStatus = BatteryStatus::CHARGING;
+    health_info->chargerUsbOnline = true;
+    health_info->chargerWirelessOnline = false;
+    health_info->chargerDockOnline = false;
+    health_info->maxChargingCurrentMicroamps = 500000;
+    health_info->maxChargingVoltageMicrovolts = 5000000;
+    health_info->batteryStatus = BatteryStatus::FULL;
     health_info->batteryHealth = BatteryHealth::GOOD;
+    health_info->batteryPresent = true;
+    health_info->batteryLevel = 100;
+    health_info->batteryVoltageMillivolts = 5000;
+    health_info->batteryTemperatureTenthsCelsius = 250;
+    health_info->batteryCurrentMicroamps = 500000;
+    health_info->batteryCycleCount = 25;
+    health_info->batteryFullChargeUah = 5000000;
+    health_info->batteryChargeCounterUah = 5000000;
+    health_info->batteryTechnology = "Li-ion";
+    health_info->batteryCapacityLevel = BatteryCapacityLevel::FULL;
+    health_info->batteryFullChargeDesignCapacityUah = 5000000;
+}
+
+ndk::ScopedAStatus HealthImpl::getChargeCounterUah(int32_t* out) {
+    *out = 5000000;
+    return ndk::ScopedAStatus::ok();
+}
+
+ndk::ScopedAStatus HealthImpl::getCurrentNowMicroamps(int32_t* out) {
+    *out = 500000;
+    return ndk::ScopedAStatus::ok();
+}
+
+ndk::ScopedAStatus HealthImpl::getCurrentAverageMicroamps(int32_t*) {
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+}
+
+ndk::ScopedAStatus HealthImpl::getCapacity(int32_t* out) {
+    *out = 100;
+    return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus HealthImpl::getChargeStatus(BatteryStatus* out) {
-    *out = BatteryStatus::CHARGING;
+    *out = BatteryStatus::FULL;
+    return ndk::ScopedAStatus::ok();
+}
+
+ndk::ScopedAStatus HealthImpl::getBatteryHealthData(BatteryHealthData* out) {
+    out->batteryManufacturingDateSeconds = 1231006505;
+    out->batteryFirstUsageSeconds = 1231469665;
+    out->batteryStateOfHealth = 99;
+    out->batterySerialNumber =
+            "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f";
+    out->batteryPartStatus = BatteryPartStatus::ORIGINAL;
     return ndk::ScopedAStatus::ok();
 }
 
