@@ -177,8 +177,7 @@ PRODUCT_PACKAGES += \
     libEGL_mesa \
     libGLESv1_CM_mesa \
     libGLESv2_mesa \
-    libgallium_dri \
-    libglapi
+    libgallium_dri
 
 PRODUCT_PACKAGES += \
     dri_gbm \
