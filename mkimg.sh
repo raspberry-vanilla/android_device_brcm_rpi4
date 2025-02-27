@@ -29,7 +29,7 @@ VERSION=RaspberryVanillaAOSP15
 DATE=$(date +%Y%m%d)
 TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
 IMGNAME=${VERSION}-${DATE}-${TARGET}.img
-IMGSIZE=14.5GiB
+IMGSIZE=14848MiB
 
 if [ -f ${ANDROID_PRODUCT_OUT}/${IMGNAME} ]; then
   exit_with_error "${ANDROID_PRODUCT_OUT}/${IMGNAME} already exists!"
