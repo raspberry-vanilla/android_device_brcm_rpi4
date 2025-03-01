@@ -15,8 +15,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Overlays
 PRODUCT_PACKAGES += \
     AndroidRpiOverlay \
-    SettingsRpiOverlay \
+    BluetoothRpiOverlay \
     SettingsProviderRpiOverlay \
+    SettingsRpiOverlay \
     SystemUIRpiOverlay \
     WifiRpiOverlay
 

@@ -30,6 +30,7 @@ PRODUCT_COPY_FILES += \
 # Overlays
 PRODUCT_PACKAGES += \
     AndroidTvRpiOverlay \
+    BluetoothRpiOverlay \
     SettingsProviderTvRpiOverlay \
     WifiRpiOverlay
 
