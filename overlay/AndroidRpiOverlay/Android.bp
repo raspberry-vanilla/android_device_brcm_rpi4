@@ -6,5 +6,5 @@ runtime_resource_overlay {
     name: "AndroidRpiOverlay",
     resource_dirs: ["res"],
     sdk_version: "current",
-    proprietary: true
+    vendor: true,
 }
