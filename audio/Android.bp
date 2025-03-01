@@ -6,7 +6,7 @@
 cc_library_shared {
     name: "audio.primary.rpi",
     relative_install_path: "hw",
-    proprietary: true,
+    vendor: true,
     srcs: ["audio_hw.c"],
     include_dirs: [
         "external/expat/lib",
@@ -26,7 +26,7 @@ cc_library_shared {
 cc_library_shared {
     name: "audio.primary.rpi_hdmi",
     relative_install_path: "hw",
-    proprietary: true,
+    vendor: true,
     srcs: ["audio_hw_hdmi.c"],
     include_dirs: [
         "external/expat/lib",
