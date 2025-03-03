@@ -164,7 +164,7 @@ PRODUCT_PACKAGES += \
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-service.software
+    com.android.hardware.gatekeeper.nonsecure
 
 # Graphics
 PRODUCT_PACKAGES += \

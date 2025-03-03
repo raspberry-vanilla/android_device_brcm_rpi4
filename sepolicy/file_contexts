@@ -14,9 +14,6 @@
 # FFmpeg
 /vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-ffmpeg              u:object_r:mediacodec_exec:s0
 
-# Gatekeeper
-/vendor/bin/hw/android\.hardware\.gatekeeper@1\.0-service\.software          u:object_r:hal_gatekeeper_default_exec:s0
-
 # Graphics
 /dev/dri                                                                                u:object_r:gpu_device:s0
 /dev/dri/card0                                                                          u:object_r:gpu_device:s0
