@@ -208,9 +208,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
 
-# Keymaster
+# Keymint
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@4.1-service
+    com.android.hardware.keymint.rust_nonsecure
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.keystore.app_attest_key.xml
 
 # Lights
 PRODUCT_PACKAGES += \
