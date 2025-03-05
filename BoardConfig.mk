@@ -75,6 +75,9 @@ BOARD_VNDK_VERSION := current
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 TARGET_COPY_OUT_VENDOR := vendor
 
+# Virtualization
+BOARD_KERNEL_CMDLINE += androidboot.hypervisor.vm.supported=1
+
 # Wifi
 BOARD_WLAN_DEVICE := bcmdhd
 BOARD_HOSTAPD_DRIVER := NL80211
