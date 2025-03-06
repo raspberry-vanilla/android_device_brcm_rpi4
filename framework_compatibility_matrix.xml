@@ -5,7 +5,6 @@
         <version>1.2</version>
         <interface>
             <name>IComponentStore</name>
-            <instance>ffmpeg</instance>
             <instance>v4l2</instance>
         </interface>
     </hal>
