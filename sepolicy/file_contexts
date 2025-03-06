@@ -9,7 +9,7 @@
 /data/vendor/mediadrm(/.*)?  u:object_r:mediadrm_vendor_data_file:s0
 
 # FFmpeg
-/vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-ffmpeg  u:object_r:mediacodec_exec:s0
+/vendor/bin/hw/android\.hardware\.media\.c2-service-ffmpeg  u:object_r:mediacodec_exec:s0
 
 # Graphics
 /dev/dri(/.*)?                                                                   u:object_r:gpu_device:s0

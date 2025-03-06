@@ -67,6 +67,7 @@ ro.lockscreen.disable.default=true
 
 # Media
 debug.stagefright.c2inputsurface=-1
+media.c2.hal.selection=aidl
 
 # MGLRU
 persist.device_config.mglru_native.lru_gen_config=core
