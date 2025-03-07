@@ -78,9 +78,6 @@ debug.stagefright.c2inputsurface=-1
 # MGLRU
 persist.device_config.mglru_native.lru_gen_config=core
 
-# Storage
-persist.sys.fuse.backup.external_volume_backup=false
-
 # V4L2
 debug.stagefright.c2-poolmask=0xf50000
 persist.v4l2_codec2.rank.decoder=128
