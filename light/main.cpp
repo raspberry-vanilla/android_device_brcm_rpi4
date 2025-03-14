@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,5 +32,5 @@ int main() {
     CHECK(status == STATUS_OK);
 
     ABinderProcess_joinThreadPool();
-    return EXIT_FAILURE;  // should not reached
+    return EXIT_FAILURE;  // should not reach
 }

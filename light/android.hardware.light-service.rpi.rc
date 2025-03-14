@@ -4,7 +4,7 @@ on early-boot
     chmod 660 /sys/class/backlight/11-0045/brightness
     chmod 440 /sys/class/backlight/11-0045/max_brightness
 
-service vendor.light-default /vendor/bin/hw/android.hardware.light-service.rpi
+service vendor.light-rpi /apex/com.android.hardware.light.rpi4/bin/hw/android.hardware.light-service.rpi
     class hal
     user system
     group system

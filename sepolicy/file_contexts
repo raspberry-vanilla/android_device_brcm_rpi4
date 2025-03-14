@@ -31,7 +31,6 @@
 # Lights
 /sys/class/backlight/11-0045/brightness                                      u:object_r:sysfs_leds:s0
 /sys/class/backlight/11-0045/max_brightness                                  u:object_r:sysfs_leds:s0
-/vendor/bin/hw/android\.hardware\.light-service\.rpi                         u:object_r:hal_light_default_exec:s0
 
 # Partitions
 /dev/block/mmcblk0p1                                                         u:object_r:boot_block_device:s0

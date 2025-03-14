@@ -7,15 +7,43 @@ cc_binary {
     name: "android.hardware.light-service.rpi",
     relative_install_path: "hw",
     vendor: true,
-    init_rc: ["android.hardware.light-service.rpi.rc"],
-    vintf_fragments: ["android.hardware.light-service.rpi.xml"],
     srcs: [
         "Lights.cpp",
         "main.cpp",
     ],
     shared_libs: [
+        "android.hardware.light-V2-ndk",
         "libbase",
         "libbinder_ndk",
-        "android.hardware.light-V2-ndk",
+    ],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.light-service.rpi.rc",
+    src: "android.hardware.light-service.rpi.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.light-service.rpi.xml",
+    src: "android.hardware.light-service.rpi.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.light.rpi4",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["android.hardware.light-service.rpi"],
+    prebuilts: [
+        "android.hardware.light-service.rpi.rc",
+        "android.hardware.light-service.rpi.xml",
     ],
 }
