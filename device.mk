@@ -198,7 +198,7 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health-service.rpi
+    com.android.hardware.health.rpi4
 
 # Kernel
 PRODUCT_COPY_FILES += \

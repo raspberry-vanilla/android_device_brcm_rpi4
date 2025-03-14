@@ -28,9 +28,6 @@
 /vendor/lib(64)?/libminigbm_gralloc_gbm_mesa\.so                                        u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libminigbm_gralloc4_utils_gbm_mesa\.so                                 u:object_r:same_process_hal_file:s0
 
-# Health
-/vendor/bin/hw/android\.hardware\.health-service\.rpi                        u:object_r:hal_health_default_exec:s0
-
 # Lights
 /sys/class/backlight/11-0045/brightness                                      u:object_r:sysfs_leds:s0
 /sys/class/backlight/11-0045/max_brightness                                  u:object_r:sysfs_leds:s0

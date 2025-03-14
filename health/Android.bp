@@ -7,26 +7,52 @@ cc_binary {
     name: "android.hardware.health-service.rpi",
     relative_install_path: "hw",
     vendor: true,
-    init_rc: ["android.hardware.health-service.rpi.rc"],
-    vintf_fragments: ["android.hardware.health-service.rpi.xml"],
     srcs: [
         "HealthImpl.cpp",
         "main.cpp",
     ],
     static_libs: [
-        "android.hardware.health-translate-ndk",
         "libbatterymonitor",
-        "libhealthloop",
         "libhealth_aidl_impl",
+        "libhealthloop",
     ],
     shared_libs: [
+        "android.hardware.health-V4-ndk",
         "libbase",
         "libbinder_ndk",
         "libcutils",
-        "libhidlbase",
         "liblog",
         "libutils",
-        "android.hardware.health-V4-ndk",
     ],
     overrides: ["charger"],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.health-service.rpi.rc",
+    src: "android.hardware.health-service.rpi.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.health-service.rpi.xml",
+    src: "android.hardware.health-service.rpi.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.health.rpi4",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["android.hardware.health-service.rpi"],
+    prebuilts: [
+        "android.hardware.health-service.rpi.rc",
+        "android.hardware.health-service.rpi.xml",
+    ],
 }
