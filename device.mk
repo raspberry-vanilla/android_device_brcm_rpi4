@@ -284,7 +284,7 @@ $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk
 
 # Wifi
 PRODUCT_PACKAGES += \
-    android.hardware.wifi-service \
+    com.android.hardware.wifi \
     hostapd \
     hostapd_cli \
     libwpa_client \
