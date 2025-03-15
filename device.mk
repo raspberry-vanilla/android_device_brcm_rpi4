@@ -261,7 +261,7 @@ PRODUCT_COPY_FILES += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb-service.example \
+    com.android.hardware.usb \
     android.hardware.usb.gadget-service.rpi
 
 PRODUCT_COPY_FILES += \
