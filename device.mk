@@ -148,7 +148,7 @@ PRODUCT_SET_DEBUGFS_RESTRICTIONS := false
 
 # DRM
 PRODUCT_PACKAGES += \
-    android.hardware.drm-service.clearkey
+    com.android.hardware.drm.clearkey
 
 # Emergency info
 PRODUCT_PACKAGES += \

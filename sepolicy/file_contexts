@@ -7,8 +7,7 @@
 /vendor/bin/hw/android\.hardware\.tv\.cec@1\.0-service\.rpi                  u:object_r:hal_tv_cec_default_exec:s0
 
 # DRM
-/vendor/bin/hw/android\.hardware\.drm-service\.clearkey                      u:object_r:hal_drm_clearkey_exec:s0
-/vendor/bin/hw/android\.hardware\.drm-service\.widevine(.*)?                 u:object_r:hal_drm_widevine_exec:s0
+/data/vendor/mediadrm(/.*)?                                                  u:object_r:mediadrm_vendor_data_file:s0
 
 # FFmpeg
 /vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-ffmpeg              u:object_r:mediacodec_exec:s0
