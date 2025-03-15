@@ -1,6 +1,5 @@
 # Bluetooth
 /sys/class/rfkill/rfkill[0-9]/state                                          u:object_r:sysfs_bluetooth_writable:s0
-/vendor/bin/hw/android\.hardware\.bluetooth-service\.rpi                     u:object_r:hal_bluetooth_default_exec:s0
 
 # CEC
 /dev/cec0                                                                    u:object_r:cec_device:s0
