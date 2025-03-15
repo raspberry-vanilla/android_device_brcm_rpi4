@@ -115,8 +115,7 @@ PRODUCT_PACKAGES += \
 
 # Graphics
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm_gbm_mesa \
-    mapper.minigbm_gbm_mesa
+    com.android.hardware.graphics.allocator.minigbm_gbm_mesa
 
 PRODUCT_PACKAGES += \
     com.android.hardware.graphics.composer.drm_hwcomposer
@@ -126,10 +125,6 @@ PRODUCT_PACKAGES += \
     libGLESv1_CM_mesa \
     libGLESv2_mesa \
     libgallium_dri
-
-PRODUCT_PACKAGES += \
-    dri_gbm \
-    libgbm_mesa
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.opengles.deqp.level-2024-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
