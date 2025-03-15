@@ -228,7 +228,7 @@ PRODUCT_COPY_FILES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power-service.example
+    com.android.hardware.power
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
