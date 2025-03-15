@@ -17,7 +17,7 @@
 
 #define LOG_TAG "libusbconfigfs"
 
-#include "include/UsbGadgetCommon.h"
+#include "UsbGadgetCommon.h"
 
 namespace aidl {
 namespace android {

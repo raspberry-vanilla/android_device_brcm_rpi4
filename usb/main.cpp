@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
+#include "UsbGadget.h"
+
 #include <android-base/logging.h>
 #include <android/binder_manager.h>
 #include <android/binder_process.h>
-#include "UsbGadget.h"
 
 using ::aidl::android::hardware::usb::gadget::UsbGadget;
 
 int main() {
     ABinderProcess_setThreadPoolMaxThreadCount(0);
     std::shared_ptr<UsbGadget> usbgadget = ndk::SharedRefBase::make<UsbGadget>();
+
     const std::string instance = std::string() + UsbGadget::descriptor + "/default";
     binder_status_t status = AServiceManager_addService(usbgadget->asBinder().get(), instance.c_str());
     CHECK(status == STATUS_OK);
+
     ABinderProcess_joinThreadPool();
-    return -1;
+    return EXIT_FAILURE;  // should not reach
 }

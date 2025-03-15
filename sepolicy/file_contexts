@@ -41,8 +41,5 @@
 # Suspend
 /vendor/bin/suspend_blocker_rpi                                              u:object_r:suspend_blocker_exec:s0
 
-# USB
-/vendor/bin/hw/android\.hardware\.usb\.gadget-service\.rpi                   u:object_r:hal_usb_gadget_default_exec:s0
-
 # V4L2
 /vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-v4l2(.*)?           u:object_r:mediacodec_exec:s0

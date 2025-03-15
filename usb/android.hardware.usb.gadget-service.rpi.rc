@@ -1,4 +1,4 @@
-service vendor.usb_gadget-default /vendor/bin/hw/android.hardware.usb.gadget-service.rpi
+service vendor.usb_gadget-rpi /apex/com.android.hardware.usb.gadget.rpi4/bin/hw/android.hardware.usb.gadget-service.rpi
     class hal
     user system
     group system shell mtp
