@@ -5,7 +5,8 @@
 
 cc_binary {
     name: "suspend_blocker_rpi",
-    srcs: ["suspend_blocker_rpi.cpp"],
+    init_rc: ["suspend_blocker_rpi.rc"],
     vendor: true,
+    srcs: ["suspend_blocker_rpi.cpp"],
     shared_libs: ["libpower"],
 }
