@@ -1,0 +1,13 @@
+on property:apex.all.ready=true
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/hostapd 0770 wifi wifi
+    mkdir /data/vendor/wifi/hostapd/sockets 0770 wifi wifi
+
+service hostapd /apex/com.android.hardware.wifi.hostapd.rpi4/bin/hw/hostapd
+    interface aidl android.hardware.wifi.hostapd.IHostapd/default
+    class main
+    capabilities NET_ADMIN NET_RAW
+    user wifi
+    group wifi net_raw net_admin
+    disabled
+    oneshot

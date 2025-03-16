@@ -285,16 +285,12 @@ $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk
 # Wifi
 PRODUCT_PACKAGES += \
     com.android.hardware.wifi \
-    hostapd \
+    com.android.hardware.wifi.hostapd.rpi4 \
+    com.android.hardware.wifi.supplicant.rpi4 \
     hostapd_cli \
     libwpa_client \
     wificond \
-    wpa_cli \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
-PRODUCT_COPY_FILES += \
-    hardware/broadcom/wlan/bcmdhd/config/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
+    wpa_cli
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml

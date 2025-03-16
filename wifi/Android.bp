@@ -1,0 +1,68 @@
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+prebuilt_etc {
+    name: "android.hardware.wifi.hostapd-service.rc",
+    src: "android.hardware.wifi.hostapd-service.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.wifi.supplicant-service.rc",
+    src: "android.hardware.wifi.supplicant-service.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "wpa_supplicant.conf.rpi",
+    src: ":wpa_supplicant_template.conf",
+    filename: "wpa_supplicant.conf",
+    relative_install_path: "wifi",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "wpa_supplicant_overlay.conf",
+    src: "wpa_supplicant_overlay.conf",
+    relative_install_path: "wifi",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.wifi.hostapd.rpi4",
+    manifest: "apex_manifest_hostapd.json",
+    file_contexts: "apex_file_contexts_hostapd",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: [
+        "//external/wpa_supplicant_8/wpa_supplicant/wpa_supplicant:hostapd",
+    ],
+    prebuilts: [
+        "android.hardware.wifi.hostapd-service.rc",
+        "android.hardware.wifi.hostapd.xml.prebuilt",
+    ],
+}
+
+apex {
+    name: "com.android.hardware.wifi.supplicant.rpi4",
+    manifest: "apex_manifest_supplicant.json",
+    file_contexts: "apex_file_contexts_supplicant",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: [
+        "//external/wpa_supplicant_8/wpa_supplicant/wpa_supplicant:wpa_supplicant",
+    ],
+    prebuilts: [
+        "android.hardware.wifi.supplicant-service.rc",
+        "android.hardware.wifi.supplicant.xml.prebuilt",
+        "wpa_supplicant.conf.rpi",
+        "wpa_supplicant_overlay.conf",
+    ],
+}
