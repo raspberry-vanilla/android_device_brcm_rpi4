@@ -1,0 +1,4 @@
+service suspend_blocker_rpi /vendor/bin/suspend_blocker_rpi
+    class early_hal  # Start together with system_suspend HAL
+    group system
+    user root
