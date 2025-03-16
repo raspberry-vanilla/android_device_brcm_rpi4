@@ -12,10 +12,6 @@ on post-fs-data
     mkdir /data/vendor/wifi/wpa 0770 wifi wifi
     mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
 
-on property:sys.boot_completed=1
-    # Reinit lmkd to reconfigure lmkd properties
-    setprop lmkd.reinit 1
-
 service suspend_blocker_rpi /vendor/bin/suspend_blocker_rpi
     class early_hal # Start together with system_suspend HAL
     group system
