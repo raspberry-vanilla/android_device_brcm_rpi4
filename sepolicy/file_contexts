@@ -28,7 +28,6 @@
 /vendor/lib(64)?/libgallium_dri\.so                                                     u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libgbm_mesa\.so                                                        u:object_r:same_process_hal_file:s0
 /vendor/lib{64}?/libgbm_mesa_wrapper\.so                                                u:object_r:same_process_hal_file:s0
-/vendor/lib(64)?/libglapi\.so                                                           u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libminigbm_gralloc_gbm_mesa\.so                                        u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libminigbm_gralloc4_utils_gbm_mesa\.so                                 u:object_r:same_process_hal_file:s0
 
