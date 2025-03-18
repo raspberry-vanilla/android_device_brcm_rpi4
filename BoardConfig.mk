@@ -6,12 +6,7 @@
 
 DEVICE_PATH := device/brcm/rpi4
 
-# Platform
-TARGET_NO_BOOTLOADER := true
-TARGET_NO_RECOVERY := true
-
-TARGET_BOARD_PLATFORM := rpi
-
+# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -27,6 +22,9 @@ TARGET_2ND_CPU_VARIANT := generic
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH := true
+
+# Bootloader
+TARGET_NO_BOOTLOADER := true
 
 # Camera
 BOARD_LIBCAMERA_IPAS := rpi/vc4
@@ -62,8 +60,14 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# Platform
+TARGET_BOARD_PLATFORM := rpi
+
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
+
+# Recovery
+TARGET_NO_RECOVERY := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS += device/brcm/rpi4/sepolicy
