@@ -7,7 +7,7 @@
 # Inherit device configuration
 $(call inherit-product, device/brcm/rpi4/device.mk)
 
-DEVICE_CAR_PATH := device/brcm/rpi4/car
+DEVICE_PATH_CAR := device/brcm/rpi4/car
 
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
@@ -20,7 +20,7 @@ PRODUCT_PACKAGES += \
     android.hardware.automotive.audiocontrol-service.example
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_CAR_PATH)/car_audio_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/car_audio_configuration.xml
+    $(DEVICE_PATH_CAR)/car_audio_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/car_audio_configuration.xml
 
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \
@@ -66,7 +66,7 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_COPY_FILES += \
-    $(DEVICE_CAR_PATH)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
+    $(DEVICE_PATH_CAR)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
 
 # EVS
 ENABLE_CAREVSSERVICE_SAMPLE := true
@@ -75,7 +75,7 @@ ENABLE_EVS_SERVICE := true
 ENABLE_REAR_VIEW_CAMERA_SAMPLE := true
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_CAR_PATH)/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
+    $(DEVICE_PATH_CAR)/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
 
 # Occupant awareness
 PRODUCT_PACKAGES += \
