@@ -70,7 +70,6 @@ BOARD_SEPOLICY_DIRS += device/brcm/rpi4/sepolicy
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 # Treble
-BOARD_VNDK_VERSION := current
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Virtualization
