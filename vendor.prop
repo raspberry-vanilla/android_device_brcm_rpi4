@@ -1,4 +1,3 @@
-
 # Audio
 persist.audio.hdmi.device=vc4hdmi0
 persist.audio.pcm.card=0
@@ -39,6 +38,10 @@ ro.hardware.camera=libcamera
 # CEC
 persist.hdmi.cec_device=cec0
 ro.hdmi.device_type=4
+
+# Chipset
+ro.soc.manufacturer=Broadcom
+ro.soc.model=BCM2711
 
 # Display
 debug.drm.mode.force=1920x1080
@@ -81,4 +84,3 @@ wifi.interface=wlan0
 
 # Window extensions
 persist.settings.large_screen_opt.enabled=true
-
