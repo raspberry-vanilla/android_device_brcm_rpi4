@@ -5,8 +5,29 @@
 
 cc_binary {
     name: "suspend_blocker_rpi",
-    init_rc: ["suspend_blocker_rpi.rc"],
     vendor: true,
     srcs: ["suspend_blocker_rpi.cpp"],
     shared_libs: ["libpower"],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "suspend_blocker_rpi.rc",
+    src: "suspend_blocker_rpi.rc",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.suspend_blocker.rpi4",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["suspend_blocker_rpi"],
+    prebuilts: [
+        "suspend_blocker_rpi.rc",
+    ],
 }
