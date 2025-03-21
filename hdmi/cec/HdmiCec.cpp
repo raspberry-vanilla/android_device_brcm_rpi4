@@ -330,19 +330,6 @@ void HdmiCec::event_thread(HdmiCecPort* hdmiCecPort) {
             if (!mCecEnabled) {
                 continue;
             }
-
-/*
-            if (ev.event == CEC_EVENT_STATE_CHANGE) {
-                if (mCallback != nullptr) {
-                    HotplugEvent hotplugEvent{
-                            .connected = (ev.state_change.phys_addr != CEC_PHYS_ADDR_INVALID),
-                            .portId = hdmiCecPort->mPortId};
-                    mCallback->onHotplugEvent(hotplugEvent);
-                } else {
-                    LOG(ERROR) << "No event callback for hotplug";
-                }
-            }
-*/
         }
 
         if (ufds[0].revents == POLLIN) { /* CEC Driver */
