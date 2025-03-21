@@ -1,4 +1,4 @@
-service vendor.cec-default /vendor/bin/hw/android.hardware.tv.hdmi.cec-service.rpi
+service vendor.cec-rpi /apex/com.android.hardware.tv.hdmi.cec.rpi4/bin/hw/android.hardware.tv.hdmi.cec-service.rpi
     interface aidl android.hardware.tv.hdmi.cec.IHdmiCec/default
     class hal
     user system
