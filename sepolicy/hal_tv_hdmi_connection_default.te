@@ -1,0 +1,1 @@
+allow hal_tv_hdmi_connection_default sysfs_hdmi:file r_file_perms;
