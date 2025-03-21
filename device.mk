@@ -139,7 +139,7 @@ PRODUCT_COPY_FILES += \
 # CEC
 PRODUCT_PACKAGES += \
     com.android.hardware.tv.hdmi.cec.rpi4 \
-    android.hardware.tv.hdmi.connection-service.rpi
+    com.android.hardware.tv.hdmi.connection.rpi4
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.hdmi.cec.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hdmi.cec.xml

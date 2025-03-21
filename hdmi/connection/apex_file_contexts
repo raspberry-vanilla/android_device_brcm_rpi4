@@ -1,0 +1,3 @@
+(/.*)?                                                        u:object_r:vendor_file:s0
+/etc(/.*)?                                                    u:object_r:vendor_configs_file:s0
+/bin/hw/android\.hardware\.tv\.hdmi\.connection-service\.rpi  u:object_r:hal_tv_hdmi_connection_default_exec:s0

@@ -1,4 +1,4 @@
-service vendor.hdmi-default /vendor/bin/hw/android.hardware.tv.hdmi.connection-service.rpi
+service vendor.hdmi-rpi /apex/com.android.hardware.tv.hdmi.connection.rpi4/bin/hw/android.hardware.tv.hdmi.connection-service.rpi
     interface aidl android.hardware.tv.hdmi.connection.IHdmiConnection/default
     class hal
     user system
