@@ -29,9 +29,7 @@
 
 #include "HdmiCec.h"
 
-#define PROPERTY_CEC_DEVICE "persist.hdmi.cec_device"
-#define PROPERTY_CEC_VERSION "ro.hdmi.cec_version"
-#define PROPERTY_VENDOR_ID "ro.hdmi.vendor_id"
+#define PROPERTY_CEC_DEVICE "persist.vendor.hdmi.cec_device"
 
 using android::base::GetProperty;
 using ndk::ScopedAStatus;
@@ -75,8 +73,8 @@ ScopedAStatus HdmiCec::addLogicalAddress(CecLogicalAddress addr, Result* _aidl_r
         return ScopedAStatus::ok();
     }
 
-    cecLogAddrs.cec_version = getCecVersion();
-    cecLogAddrs.vendor_id = getVendorId();
+    cecLogAddrs.cec_version = CEC_OP_CEC_VERSION_1_4;
+    cecLogAddrs.vendor_id = 0x000c03;  // HDMI LLC vendor ID
 
     unsigned int logAddrType = CEC_LOG_ADDR_TYPE_UNREGISTERED;
     unsigned int allDevTypes = 0;
@@ -166,12 +164,8 @@ ScopedAStatus HdmiCec::enableAudioReturnChannel(int32_t portId __unused, bool en
     return ScopedAStatus::ok();
 }
 
-int32_t HdmiCec::getCecVersion() {
-    return property_get_int32(PROPERTY_CEC_VERSION, CEC_OP_CEC_VERSION_1_4);
-}
-
 ScopedAStatus HdmiCec::getCecVersion(int32_t* _aidl_return) {
-    *_aidl_return = getCecVersion();
+    *_aidl_return = CEC_OP_CEC_VERSION_1_4;
     return ScopedAStatus::ok();
 }
 
@@ -189,12 +183,8 @@ ScopedAStatus HdmiCec::getPhysicalAddress(int32_t* _aidl_return) {
     return ScopedAStatus::ok();
 }
 
-uint32_t HdmiCec::getVendorId() {
-    return property_get_int32(PROPERTY_VENDOR_ID, 0x000c03 /* HDMI LLC vendor ID */);
-}
-
 ScopedAStatus HdmiCec::getVendorId(int32_t* _aidl_return) {
-    *_aidl_return = getVendorId();
+    *_aidl_return = 0x000c03;  // HDMI LLC vendor ID
     return ScopedAStatus::ok();
 }
 

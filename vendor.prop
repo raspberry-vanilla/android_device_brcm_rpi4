@@ -38,7 +38,7 @@ media.settings.xml=/vendor/etc/media_profiles_V1_0.xml
 ro.hardware.camera=libcamera
 
 # CEC
-persist.hdmi.cec_device=cec0
+persist.vendor.hdmi.cec_device=cec0
 ro.hdmi.device_type=4
 
 # Chipset

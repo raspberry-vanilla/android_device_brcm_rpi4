@@ -1,0 +1,2 @@
+# CEC
+persist.vendor.hdmi.cec_device  u:object_r:vendor_hdmi_config_prop:s0

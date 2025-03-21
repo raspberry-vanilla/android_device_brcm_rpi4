@@ -89,9 +89,6 @@ struct HdmiCec : public BnHdmiCec {
      */
     bool mCecControlEnabled;
 
-    int32_t getCecVersion();
-    uint32_t getVendorId();
-
     std::shared_ptr<IHdmiCecCallback> mCallback;
 };
 
