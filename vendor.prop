@@ -39,6 +39,7 @@ ro.hardware.camera=libcamera
 
 # CEC
 persist.vendor.hdmi.cec_device=cec0
+ro.hdmi.cec_device_types=playback_device
 ro.hdmi.device_type=4
 
 # Chipset
