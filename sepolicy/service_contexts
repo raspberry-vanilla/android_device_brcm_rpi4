@@ -1,3 +1,8 @@
-android.hardware.drm.IDrmFactory/widevine                                    u:object_r:hal_drm_service:s0
-android.hardware.security.sharedsecret.ISharedSecret/gatekeeper              u:object_r:hal_gatekeeper_service:s0
-mapper/minigbm_gbm_mesa                                                      u:object_r:hal_graphics_mapper_service:s0
+# DRM
+android.hardware.drm.IDrmFactory/widevine  u:object_r:hal_drm_service:s0
+
+# Gatekeeper
+android.hardware.security.sharedsecret.ISharedSecret/gatekeeper  u:object_r:hal_gatekeeper_service:s0
+
+# Graphics
+mapper/minigbm_gbm_mesa  u:object_r:hal_graphics_mapper_service:s0
