@@ -1,6 +1,14 @@
+# CEC
+genfscon sysfs /devices/platform/gpu/drm/card0/card0-HDMI-A-1/status  u:object_r:sysfs_hdmi:s0
+genfscon sysfs /devices/platform/gpu/drm/card0/card0-HDMI-A-2/status  u:object_r:sysfs_hdmi:s0
+
 # Graphics
 genfscon sysfs /devices/platform/v3dbus/fec00000.v3d  u:object_r:sysfs_gpu:s0
 genfscon sysfs /devices/platform/gpu                  u:object_r:sysfs_gpu:s0
+
+# Lights
+genfscon sysfs /class/backlight/11-0045/brightness      u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/11-0045/max_brightness  u:object_r:sysfs_leds:s0
 
 # Serial number
 genfscon sysfs /firmware/devicetree/base/serial-number  u:object_r:sysfs_dt_firmware_android:s0
