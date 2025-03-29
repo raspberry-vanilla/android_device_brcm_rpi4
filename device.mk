@@ -15,7 +15,7 @@ $(call inherit-product, vendor/brcm/rpi4/rpi4-vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
 # API level
-PRODUCT_SHIPPING_API_LEVEL := 34
+PRODUCT_SHIPPING_API_LEVEL := 35
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -200,6 +200,11 @@ PRODUCT_COPY_FILES += \
 # Health
 PRODUCT_PACKAGES += \
     com.android.hardware.health.rpi4
+
+# HIDL
+PRODUCT_PACKAGES += \
+    android.hidl.allocator@1.0-service \
+    hwservicemanager
 
 # Kernel
 PRODUCT_COPY_FILES += \
