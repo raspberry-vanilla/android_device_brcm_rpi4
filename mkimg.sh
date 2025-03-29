@@ -21,7 +21,7 @@ fi
 
 for PARTITION in "boot" "system" "vendor"; do
   if [ ! -f ${ANDROID_PRODUCT_OUT}/${PARTITION}.img ]; then
-    exit_with_error "Partition image not found. Run make first."
+    exit_with_error "Partition image not found. Run 'make ${PARTITION}image' first."
   fi
 done
 
