@@ -55,6 +55,8 @@
 #define CHANNEL_STEREO 2
 #define MIN_WRITE_SLEEP_US      5000
 
+char device_name[PROPERTY_VALUE_MAX];
+
 struct stub_stream_in {
     struct audio_stream_in stream;
 };
@@ -101,8 +103,6 @@ static int start_output_stream(struct alsa_stream_out *out)
     if (out->unavailable)
         return -ENODEV;
 
-    char device_name[PROPERTY_VALUE_MAX];
-    get_alsa_device_name(device_name);
     ALOGI("start_output_stream: %s", device_name);
 
     int r;
@@ -716,6 +716,9 @@ static int adev_open(const hw_module_t* module, const char* name,
     struct alsa_audio_device *adev;
 
     ALOGV("adev_open: %s", name);
+
+    get_alsa_device_name(device_name);
+    ALOGI("adev_open: %s", device_name);
 
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
         return -EINVAL;
