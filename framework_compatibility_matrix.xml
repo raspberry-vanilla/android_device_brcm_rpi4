@@ -1,4 +1,13 @@
 <compatibility-matrix version="1.0" type="framework">
+    <hal format="hidl">
+        <name>android.hardware.camera.provider</name>
+        <transport>hwbinder</transport>
+        <version>2.5</version>
+        <interface>
+            <name>ICameraProvider</name>
+            <instance>legacy/0</instance>
+        </interface>
+    </hal>
     <hal format="hidl" optional="true">
         <name>android.hardware.media.c2</name>
         <transport>hwbinder</transport>
