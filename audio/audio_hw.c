@@ -57,6 +57,9 @@
 #define CHANNEL_STEREO 2
 #define MIN_WRITE_SLEEP_US      5000
 
+int pcm_card;
+int pcm_device;
+
 struct stub_stream_in {
     struct audio_stream_in stream;
 };
@@ -148,7 +151,7 @@ static int start_output_stream(struct alsa_stream_out *out)
     out->config.start_threshold = PLAYBACK_PERIOD_START_THRESHOLD * PERIOD_SIZE;
     out->config.avail_min = PERIOD_SIZE;
 
-    out->pcm = pcm_open(get_pcm_card(), get_pcm_device(), PCM_OUT | PCM_MMAP | PCM_NOIRQ | PCM_MONOTONIC, &out->config);
+    out->pcm = pcm_open(pcm_card, pcm_device, PCM_OUT | PCM_MMAP | PCM_NOIRQ | PCM_MONOTONIC, &out->config);
 
     if (!pcm_is_ready(out->pcm)) {
         ALOGE("cannot open pcm_out driver: %s", pcm_get_error(out->pcm));
@@ -484,7 +487,7 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     struct pcm_params *params;
     int ret = 0;
 
-    params = pcm_params_get(get_pcm_card(), get_pcm_device(), PCM_OUT);
+    params = pcm_params_get(pcm_card, pcm_device, PCM_OUT);
     if (!params)
         return -ENOSYS;
 
@@ -689,6 +692,10 @@ static int adev_open(const hw_module_t* module, const char* name,
     struct alsa_audio_device *adev;
 
     ALOGV("adev_open: %s", name);
+
+    pcm_card = get_pcm_card();
+    pcm_device = get_pcm_device();
+    ALOGI("adev_open: pcm_card %d, pcm_device %d", pcm_card, pcm_device);
 
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
         return -EINVAL;
