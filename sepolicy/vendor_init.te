@@ -1,1 +1,2 @@
 set_prop(vendor_init, vendor_audio_config_prop)
+set_prop(vendor_init, vendor_ffmpeg_config_prop)

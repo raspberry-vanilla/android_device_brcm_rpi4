@@ -50,10 +50,10 @@ ro.soc.model=BCM2711
 debug.drm.mode.force=1920x1080
 
 # FFmpeg
-persist.ffmpeg_codec2.rank.audio=16
-persist.ffmpeg_codec2.rank.video=256
-persist.ffmpeg_codec2.v4l2.h264=false
-persist.ffmpeg_codec2.v4l2.h265=true
+persist.vendor.ffmpeg_codec2.rank.audio=16
+persist.vendor.ffmpeg_codec2.rank.video=256
+persist.vendor.ffmpeg_codec2.v4l2.h264=false
+persist.vendor.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
 ro.hardware.egl=mesa

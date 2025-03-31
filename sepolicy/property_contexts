@@ -7,3 +7,9 @@ persist.vendor.audio.pcm.device     u:object_r:vendor_audio_config_prop:s0
 
 # CEC
 persist.vendor.hdmi.cec_device  u:object_r:vendor_hdmi_config_prop:s0
+
+# FFmpeg
+persist.vendor.ffmpeg_codec2.rank.audio  u:object_r:vendor_ffmpeg_config_prop:s0
+persist.vendor.ffmpeg_codec2.rank.video  u:object_r:vendor_ffmpeg_config_prop:s0
+persist.vendor.ffmpeg_codec2.v4l2.h264   u:object_r:vendor_ffmpeg_config_prop:s0
+persist.vendor.ffmpeg_codec2.v4l2.h265   u:object_r:vendor_ffmpeg_config_prop:s0
