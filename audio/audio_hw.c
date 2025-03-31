@@ -93,7 +93,7 @@ static int probe_pcm_out_card() {
     char card_id[16];
 
     char card_prop[PROPERTY_VALUE_MAX];
-    property_get("persist.audio.device", card_prop, "");
+    property_get("persist.vendor.audio.device", card_prop, "");
 
     for (int i = 0; i < 5; i++) {
         snprintf(card_node, sizeof(card_node), "/proc/asound/card%d/id", i);
@@ -121,18 +121,18 @@ static int probe_pcm_out_card() {
 static int get_pcm_card()
 {
     char card[PROPERTY_VALUE_MAX];
-    property_get("persist.audio.pcm.card.auto", card, "false");
+    property_get("persist.vendor.audio.pcm.card.auto", card, "false");
     if (!strcmp(card, "true"))
         return probe_pcm_out_card();
 
-    property_get("persist.audio.pcm.card", card, "0");
+    property_get("persist.vendor.audio.pcm.card", card, "0");
     return atoi(card);
 }
 
 static int get_pcm_device()
 {
     char device[PROPERTY_VALUE_MAX];
-    property_get("persist.audio.pcm.device", device, "0");
+    property_get("persist.vendor.audio.pcm.device", device, "0");
     return atoi(device);
 }
 

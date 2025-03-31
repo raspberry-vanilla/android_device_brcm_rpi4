@@ -1,2 +1,9 @@
+# Audio
+persist.vendor.audio.device         u:object_r:vendor_audio_config_prop:s0
+persist.vendor.audio.hdmi.device    u:object_r:vendor_audio_config_prop:s0
+persist.vendor.audio.pcm.card.auto  u:object_r:vendor_audio_config_prop:s0
+persist.vendor.audio.pcm.card       u:object_r:vendor_audio_config_prop:s0
+persist.vendor.audio.pcm.device     u:object_r:vendor_audio_config_prop:s0
+
 # CEC
 persist.vendor.hdmi.cec_device  u:object_r:vendor_hdmi_config_prop:s0

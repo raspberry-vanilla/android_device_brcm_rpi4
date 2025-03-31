@@ -1,7 +1,7 @@
 # Audio
-persist.audio.device=jack
-persist.audio.hdmi.device=vc4hdmi0
-persist.audio.pcm.card.auto=true
+persist.vendor.audio.device=jack
+persist.vendor.audio.hdmi.device=vc4hdmi0
+persist.vendor.audio.pcm.card.auto=true
 ro.config.media_vol_default=20
 ro.config.media_vol_steps=25
 ro.hardware.audio.primary=rpi

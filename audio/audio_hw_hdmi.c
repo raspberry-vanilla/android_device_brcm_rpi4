@@ -89,7 +89,7 @@ struct alsa_stream_out {
 
 static void get_alsa_device_name(char *name) {
     char hdmi_device[PROPERTY_VALUE_MAX];
-    property_get("persist.audio.hdmi.device", hdmi_device, "vc4hdmi0");
+    property_get("persist.vendor.audio.hdmi.device", hdmi_device, "vc4hdmi0");
 
     // use card configured in vc4-hdmi.conf to get IEC958 subframe conversion
     sprintf(name, "default:CARD=%s", hdmi_device);
