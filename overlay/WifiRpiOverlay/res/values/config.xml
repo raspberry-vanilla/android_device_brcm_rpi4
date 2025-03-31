@@ -24,4 +24,7 @@
          is no longer indicative, and a separate config now exists for each band -->
     <bool translatable="false" name ="config_wifi5ghzSupport">true</bool>
 
+    <!-- Do not translate. Default access point SSID used for tethering -->
+    <string name="wifi_tether_configure_ssid_default" translatable="false">Raspberry Pi 4</string>
+
 </resources>
