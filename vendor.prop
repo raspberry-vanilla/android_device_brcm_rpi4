@@ -73,7 +73,7 @@ persist.device_config.mglru_native.lru_gen_config=core
 persist.sys.fuse.backup.external_volume_backup=false
 
 # V4L2
-debug.stagefright.c2-poolmask=0xf50000
+debug.stagefright.c2-poolmask=0xfc0000
 persist.v4l2_codec2.rank.decoder=128
 persist.v4l2_codec2.rank.encoder=128
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
