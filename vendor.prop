@@ -71,7 +71,7 @@ debug.stagefright.c2inputsurface=-1
 persist.device_config.mglru_native.lru_gen_config=core
 
 # V4L2
-debug.stagefright.c2-poolmask=0xf50000
+debug.stagefright.c2-poolmask=0xfc0000
 persist.vendor.v4l2_codec2.rank.decoder=128
 persist.vendor.v4l2_codec2.rank.encoder=128
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
