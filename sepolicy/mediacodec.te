@@ -1,2 +1,3 @@
 gpu_access(mediacodec)
 get_prop(mediacodec, vendor_ffmpeg_config_prop)
+get_prop(mediacodec, vendor_v4l2_config_prop)
