@@ -12,8 +12,10 @@ DEVICE_PATH_CAR := device/brcm/rpi4/car
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_CHARACTERISTICS := automotive,nosdcard
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
+$(call enforce-product-packages-exist,)
 
 # Audio
 PRODUCT_PACKAGES += \

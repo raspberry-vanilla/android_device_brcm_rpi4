@@ -10,7 +10,9 @@ $(call inherit-product, device/brcm/rpi4/device.mk)
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+$(call enforce-product-packages-exist,)
 
 # Overlays
 PRODUCT_PACKAGES += \

@@ -9,7 +9,9 @@ $(call inherit-product, device/brcm/rpi4/device.mk)
 
 PRODUCT_AAPT_PREF_CONFIG := tvdpi
 PRODUCT_CHARACTERISTICS := tv
+
 $(call inherit-product, device/google/atv/products/atv_base.mk)
+$(call enforce-product-packages-exist,)
 
 # Android TV
 PRODUCT_PACKAGES += \
