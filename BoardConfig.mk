@@ -41,6 +41,7 @@ BOARD_KERNEL_CMDLINE := console=ttyS0,115200 no_console_suspend root=/dev/ram0 r
 # Manifest
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+PRODUCT_MANIFEST_FILES := $(DEVICE_PATH)/product_manifest.xml
 
 # Partition sizes
 BOARD_FLASH_BLOCK_SIZE := 4096
