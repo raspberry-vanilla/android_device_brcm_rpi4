@@ -163,6 +163,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.media.c2@1.2-service-ffmpeg
 
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/media/media_codecs_ffmpeg_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_ffmpeg_c2.xml \
+    $(DEVICE_PATH)/seccomp_policy/android.hardware.media.c2-ffmpeg.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/android.hardware.media.c2-ffmpeg.policy
+
 # Gatekeeper
 PRODUCT_PACKAGES += \
     com.android.hardware.gatekeeper.nonsecure
