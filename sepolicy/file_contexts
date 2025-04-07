@@ -8,9 +8,6 @@
 # DRM
 /data/vendor/mediadrm(/.*)?  u:object_r:mediadrm_vendor_data_file:s0
 
-# FFmpeg
-/vendor/bin/hw/android\.hardware\.media\.c2-service-ffmpeg  u:object_r:mediacodec_exec:s0
-
 # Graphics
 /dev/dri(/.*)?                                                                   u:object_r:gpu_device:s0
 /vendor/bin/hw/android\.hardware\.graphics\.allocator-service\.minigbm_gbm_mesa  u:object_r:hal_graphics_allocator_default_exec:s0

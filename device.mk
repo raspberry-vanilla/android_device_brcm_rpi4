@@ -104,7 +104,7 @@ PRODUCT_COPY_FILES += \
 
 # FFmpeg
 PRODUCT_PACKAGES += \
-    android.hardware.media.c2-service-ffmpeg
+    com.android.hardware.media.c2.ffmpeg
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/media/media_codecs_ffmpeg_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_ffmpeg_c2.xml \
