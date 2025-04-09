@@ -35,7 +35,6 @@ bluetooth.profile.vcp.controller.enabled?=true
 persist.bluetooth.a2dp_aac.vbr_supported=true
 
 # Camera
-media.settings.xml=/vendor/etc/media_profiles_V1_0.xml
 ro.hardware.camera=libcamera
 
 # CEC
