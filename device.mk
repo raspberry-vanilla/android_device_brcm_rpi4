@@ -284,10 +284,8 @@ PRODUCT_PACKAGES += \
     com.android.hardware.wifi \
     com.android.hardware.wifi.hostapd.rpi4 \
     com.android.hardware.wifi.supplicant.rpi4 \
-    hostapd_cli \
     libwpa_client \
-    wificond \
-    wpa_cli
+    wificond
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
