@@ -51,7 +51,7 @@ echo n
 echo p
 echo 2
 echo
-echo +2048M
+echo +2560M
 echo n
 echo p
 echo 3
