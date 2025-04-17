@@ -26,7 +26,7 @@ check_device() {
   if [ $(echo ${PARTITION1} | awk {'print $1'}) != "boot" ] || [ $(echo ${PARTITION1} | awk {'print $2'}) != "134217728" ]; then
     return 1
   fi
-  if [ $(echo ${PARTITION2} | awk {'print $1'}) != "/" ] || [ $(echo ${PARTITION2} | awk {'print $2'}) != "2147483648" ]; then
+  if [ $(echo ${PARTITION2} | awk {'print $1'}) != "/" ] || [ $(echo ${PARTITION2} | awk {'print $2'}) != "2684354560" ]; then
     return 1
   fi
   if [ $(echo ${PARTITION3} | awk {'print $1'}) != "vendor" ] || [ $(echo ${PARTITION3} | awk {'print $2'}) != "268435456" ]; then
