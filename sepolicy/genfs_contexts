@@ -7,8 +7,12 @@ genfscon sysfs /devices/platform/v3dbus/fec00000.v3d  u:object_r:sysfs_gpu:s0
 genfscon sysfs /devices/platform/gpu                  u:object_r:sysfs_gpu:s0
 
 # Lights
-genfscon sysfs /class/backlight/11-0045/brightness      u:object_r:sysfs_leds:s0
-genfscon sysfs /class/backlight/11-0045/max_brightness  u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/10-0045/brightness            u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/10-0045/max_brightness        u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/11-0045/brightness            u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/11-0045/max_brightness        u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/rpi_backlight/brightness      u:object_r:sysfs_leds:s0
+genfscon sysfs /class/backlight/rpi_backlight/max_brightness  u:object_r:sysfs_leds:s0
 
 # Serial number
 genfscon sysfs /firmware/devicetree/base/serial-number  u:object_r:sysfs_dt_firmware_android:s0

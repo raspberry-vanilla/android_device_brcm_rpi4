@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
+#define LOG_TAG "android.hardware.light-service.rpi"
+
 #include "Lights.h"
 
 #include <android-base/file.h>
+#include <android-base/logging.h>
 
 using ::android::base::ReadFileToString;
 using ::android::base::WriteStringToFile;
@@ -26,8 +29,13 @@ namespace aidl::android::hardware::light {
 
 static const uint32_t defaultMaxBrightness = 255;
 
-static const std::string backlightBrightnessPath = "/sys/class/backlight/11-0045/brightness";
-static const std::string backlightMaxBrightnessPath = "/sys/class/backlight/11-0045/max_brightness";
+static const std::string backlightBasePath = "/sys/class/backlight/";
+
+static const std::string backlightPaths[] = {
+    "10-0045",
+    "11-0045",
+    "rpi_backlight",
+};
 
 static const std::vector<HwLight> availableLights = {
     {.id = (int)LightType::BACKLIGHT, .type = LightType::BACKLIGHT, .ordinal = 0}
@@ -36,10 +44,15 @@ static const std::vector<HwLight> availableLights = {
 Lights::Lights() {
     maxBrightness = defaultMaxBrightness;
 
-    if (!access(backlightMaxBrightnessPath.c_str(), R_OK)) {
-        std::string maxBrightnessValue;
-        if (ReadFileToString(backlightMaxBrightnessPath, &maxBrightnessValue)) {
-            maxBrightness = std::stoi(maxBrightnessValue);
+    for (auto &path : backlightPaths) {
+        std::string backlightMaxBrightnessPath = backlightBasePath + path + "/max_brightness";
+        if (!access(backlightMaxBrightnessPath.c_str(), R_OK)) {
+            std::string maxBrightnessValue;
+            if (ReadFileToString(backlightMaxBrightnessPath, &maxBrightnessValue)) {
+                maxBrightness = std::stoi(maxBrightnessValue);
+                LOG(INFO) << backlightMaxBrightnessPath << " = " << maxBrightnessValue;
+                break;
+            }
         }
     }
 }
@@ -50,8 +63,12 @@ ndk::ScopedAStatus Lights::setLightState(int id, const HwLightState& state) {
 
     switch (light.type) {
         case LightType::BACKLIGHT:
-            if (!access(backlightBrightnessPath.c_str(), W_OK)) {
-                WriteStringToFile(brightness, backlightBrightnessPath);
+            for (auto &path : backlightPaths) {
+                std::string backlightBrightnessPath = backlightBasePath + path + "/brightness";
+                if (!access(backlightBrightnessPath.c_str(), W_OK)) {
+                   WriteStringToFile(brightness, backlightBrightnessPath);
+                   break;
+                }
             }
             break;
         default:
