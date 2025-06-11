@@ -12,7 +12,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
-$(call enforce-product-packages-exist,)
+$(call enforce-product-packages-exist,com.android.ranging)
 
 # Overlays
 PRODUCT_PACKAGES += \
