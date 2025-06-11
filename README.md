@@ -1,1 +1,1 @@
-Raspberry Vanilla AOSP 15 device configuration for Raspberry Pi 4.
+Raspberry Vanilla AOSP 16 device configuration for Raspberry Pi 4.
