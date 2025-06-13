@@ -15,7 +15,7 @@ $(call inherit-product, vendor/brcm/rpi4/rpi4-vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
 # API level
-PRODUCT_SHIPPING_API_LEVEL := 35
+PRODUCT_SHIPPING_API_LEVEL := 36
 
 # Audio
 PRODUCT_PACKAGES += \
