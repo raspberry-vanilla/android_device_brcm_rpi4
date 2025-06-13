@@ -68,13 +68,20 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH_CAR)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
 
 # EVS
-ENABLE_CAREVSSERVICE_SAMPLE := true
-ENABLE_EVS_SAMPLE := true
-ENABLE_EVS_SERVICE := true
-ENABLE_REAR_VIEW_CAMERA_SAMPLE := true
+PRODUCT_PACKAGES += \
+    android.hardware.automotive.evs-v4l2 \
+    cardisplayproxyd \
+    CarEvsCameraPreviewApp \
+    evs_app \
+    evsmanagerd
+
+PRODUCT_COPY_FILES += \
+    packages/services/Car/cpp/evs/manager/aidl/init.evs.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/init.evs.rc
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH_CAR)/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
+
+include packages/services/Car/cpp/evs/apps/sepolicy/evsapp.mk
 
 # Occupant awareness
 PRODUCT_PACKAGES += \
