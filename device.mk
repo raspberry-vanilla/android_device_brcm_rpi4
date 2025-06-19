@@ -118,8 +118,7 @@ PRODUCT_PACKAGES += \
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator-service.minigbm_gbm_mesa \
-    mapper.minigbm_gbm_mesa \
-    libgbm_mesa_wrapper
+    mapper.minigbm_gbm_mesa
 
 PRODUCT_PACKAGES += \
     com.android.hardware.graphics.composer.drm_hwcomposer
