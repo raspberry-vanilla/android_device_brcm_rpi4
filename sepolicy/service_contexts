@@ -1,3 +1,7 @@
+# Camera
+android.hardware.camera.provider.ICameraProvider/external/0   u:object_r:hal_camera_service:s0
+android.hardware.camera.provider.ICameraProvider/libcamera/0  u:object_r:hal_camera_service:s0
+
 # DRM
 android.hardware.drm.IDrmFactory/widevine  u:object_r:hal_drm_service:s0
 
