@@ -25,12 +25,12 @@
     <version>3</version>
     <fqname>IModule/stub</fqname>
   </hal>
+  -->
   <hal format="aidl">
     <name>android.hardware.audio.core</name>
     <version>3</version>
     <fqname>IModule/usb</fqname>
   </hal>
-  -->
   <hal format="aidl">
     <name>android.hardware.audio.effect</name>
     <version>3</version>
