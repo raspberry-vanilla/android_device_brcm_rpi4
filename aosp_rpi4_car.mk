@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+DEVICE_PATH := device/brcm/rpi4
+
 # Inherit device configuration
 $(call inherit-product, device/brcm/rpi4/device.mk)
-
-DEVICE_PATH_CAR := device/brcm/rpi4/car
 
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
@@ -22,7 +22,7 @@ PRODUCT_PACKAGES += \
     android.hardware.automotive.audiocontrol-service.example
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH_CAR)/car_audio_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/car_audio_configuration.xml
+    $(DEVICE_PATH)/car/car_audio_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/car_audio_configuration.xml
 
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \
@@ -65,7 +65,7 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH_CAR)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
+    $(DEVICE_PATH)/car/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
 
 # EVS
 PRODUCT_PACKAGES += \
@@ -79,9 +79,13 @@ PRODUCT_COPY_FILES += \
     packages/services/Car/cpp/evs/manager/aidl/init.evs.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/init.evs.rc
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH_CAR)/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
+    $(DEVICE_PATH)/car/evs_config_override.json:${TARGET_COPY_OUT_VENDOR}/etc/automotive/evs/config_override.json
 
 include packages/services/Car/cpp/evs/apps/sepolicy/evsapp.mk
+
+# Keylayout
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
 
 # Occupant awareness
 PRODUCT_PACKAGES += \
