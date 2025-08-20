@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+DEVICE_PATH := device/brcm/rpi4
+
 # Inherit device configuration
 $(call inherit-product, device/brcm/rpi4/device.mk)
 
@@ -13,6 +15,10 @@ PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call enforce-product-packages-exist,)
+
+# Keylayout
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
 
 # Overlays
 PRODUCT_PACKAGES += \

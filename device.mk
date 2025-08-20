@@ -5,7 +5,6 @@
 #
 
 DEVICE_PATH := device/brcm/rpi4
-PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, frameworks/native/build/tablet-7in-xhdpi-2048-dalvik-heap.mk)
@@ -157,10 +156,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)-kernel/Image:$(PRODUCT_OUT)/kernel
 
-# Keylayout
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
-
 # Keymint
 PRODUCT_PACKAGES += \
     com.android.hardware.keymint.rust_nonsecure
@@ -195,6 +190,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/seccomp_policy/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
     $(DEVICE_PATH)/seccomp_policy/mediaswcodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaswcodec.policy
+
+# Soong
+PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
 # Storage
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)

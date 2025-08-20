@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+DEVICE_PATH := device/brcm/rpi4
+
 # Inherit device configuration
 $(call inherit-product, device/brcm/rpi4/device.mk)
 
@@ -28,6 +30,10 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Boot animation
 PRODUCT_COPY_FILES += \
     device/google/atv/products/bootanimations/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
+
+# Keylayout
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/keylayout/Generic-tv.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
 
 # Overlays
 PRODUCT_PACKAGES += \
