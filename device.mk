@@ -223,8 +223,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_SOONG_NAMESPACES += external/v4l2_codec2
 
 PRODUCT_PACKAGES += \
-    android.hardware.media.c2-service-v4l2 \
-    libc2plugin_store
+    android.hardware.media.c2-default-seccomp_policy \
+    com.android.hardware.media.c2.v4l2
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/media/media_codecs_v4l2_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_v4l2_c2_video.xml \
