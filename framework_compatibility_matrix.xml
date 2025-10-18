@@ -1,11 +1,1 @@
-<compatibility-matrix version="1.0" type="framework">
-    <hal format="hidl" optional="true">
-        <name>android.hardware.media.c2</name>
-        <transport>hwbinder</transport>
-        <version>1.2</version>
-        <interface>
-            <name>IComponentStore</name>
-            <instance>v4l2</instance>
-        </interface>
-    </hal>
-</compatibility-matrix>
+<compatibility-matrix version="1.0" type="framework" />

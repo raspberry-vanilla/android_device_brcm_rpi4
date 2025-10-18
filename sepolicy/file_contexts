@@ -29,4 +29,4 @@
 /dev/block/mmcblk0p4  u:object_r:userdata_block_device:s0
 
 # V4L2
-/vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-v4l2(.*)?  u:object_r:mediacodec_exec:s0
+/vendor/bin/hw/android\.hardware\.media\.c2-service-v4l2(.*)?  u:object_r:mediacodec_exec:s0
