@@ -1,34 +1,35 @@
-package {
-    default_team: "trendy_team_android_media_audio_framework",
-    // See: http://go/android-license-faq
-    // A large-scale-change added 'default_applicable_licenses' to import
-    // all of the 'license_kinds' from "hardware_interfaces_license"
-    // to get the below license kinds:
-    //   SPDX-license-identifier-Apache-2.0
-    default_applicable_licenses: ["hardware_interfaces_license"],
-}
+// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
 
 cc_defaults {
     name: "aidlaudioservice_rpi_defaults",
     vendor: true,
     shared_libs: [
+        "android.hardware.audio.core-V3-ndk",
+        "android.hardware.audio.core.sounddose-V3-ndk",
+        "android.hardware.bluetooth.audio-V5-ndk",
+        "android.hardware.bluetooth.audio-impl",
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "android.media.audio.common.types-V4-ndk",
         "libalsautilsv2-rpi",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioaidlcommon",
         "libaudioutils",
         "libbase",
         "libbinder_ndk",
+        "libbluetooth_audio_session_aidl",
         "libcutils",
         "libfmq",
-        "libnbaio_mono",
         "liblog",
         "libmedia_helper",
+        "libnbaio_mono",
         "libstagefright_foundation",
         "libtinyalsav2",
         "libutils",
         "libxml2",
-        "android.hardware.common-V2-ndk",
-        "android.hardware.common.fmq-V1-ndk",
     ],
     header_libs: [
         "libaudio_system_headers",
@@ -37,18 +38,16 @@ cc_defaults {
     ],
     cflags: [
         "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wthread-safety",
     ],
 }
 
 cc_library {
     name: "libaudioserviceimpl-rpi",
-    defaults: [
-        "aidlaudioservice_rpi_defaults",
-        "latest_android_media_audio_common_types_ndk_shared",
-        "latest_android_hardware_audio_core_ndk_shared",
-        "latest_android_hardware_audio_core_sounddose_ndk_shared",
-        "latest_android_hardware_bluetooth_audio_ndk_shared",
-    ],
+    defaults: ["aidlaudioservice_rpi_defaults"],
     export_include_dirs: ["include"],
     srcs: [
         "AidlConversionXsdc.cpp",
@@ -75,8 +74,8 @@ cc_library {
         "primary/PrimaryMixer.cpp",
         "primary/StreamPrimary.cpp",
         "r_submix/ModuleRemoteSubmix.cpp",
-        "r_submix/SubmixRoute.cpp",
         "r_submix/StreamRemoteSubmix.cpp",
+        "r_submix/SubmixRoute.cpp",
         "stub/DriverStubImpl.cpp",
         "stub/ModuleStub.cpp",
         "stub/StreamStub.cpp",
@@ -100,67 +99,32 @@ cc_library {
         "audio_policy_engine_configuration_aidl_rpi",
     ],
     shared_libs: [
-        "android.hardware.bluetooth.audio-impl",
-        "libaudio_aidl_conversion_common_ndk",
-        "libaudioutils",
-        "libbluetooth_audio_session_aidl",
-        "liblog",
-        "libmedia_helper",
         "libmediautils_vendor",
-        "libstagefright_foundation",
     ],
     export_shared_lib_headers: [
         "libaudio_aidl_conversion_common_ndk",
-    ],
-    cflags: [
-        "-Wall",
-        "-Wextra",
-        "-Werror",
-        "-Wthread-safety",
-        "-DBACKEND_NDK",
     ],
 }
 
 cc_binary {
     name: "android.hardware.audio.service.rpi",
     relative_install_path: "hw",
-    defaults: [
-        "aidlaudioservice_rpi_defaults",
-        "latest_android_hardware_audio_core_sounddose_ndk_shared",
-        "latest_android_hardware_audio_core_ndk_shared",
-        "latest_android_hardware_bluetooth_audio_ndk_shared",
-        "latest_android_media_audio_common_types_ndk_shared",
-    ],
+    defaults: ["aidlaudioservice_rpi_defaults"],
     static_libs: [
         "libaudioserviceimpl-rpi",
     ],
-    shared_libs: [
-        "android.hardware.bluetooth.audio-impl",
-        "libaudio_aidl_conversion_common_ndk",
-        "libbluetooth_audio_session_aidl",
-        "liblog",
-        "libmedia_helper",
-        "libstagefright_foundation",
-    ],
     srcs: ["main.cpp"],
-    cflags: [
-        "-Wall",
-        "-Wextra",
-        "-Werror",
-        "-Wthread-safety",
-        "-DBACKEND_NDK",
-    ],
-    installable: false, //installed in apex com.android.hardware.audio.rpi4
+    installable: false,
 }
 
 cc_defaults {
     name: "aidlaudioeffectservice_rpi_defaults",
-    defaults: [
-        "latest_android_media_audio_common_types_ndk_shared",
-        "latest_android_hardware_audio_effect_ndk_shared",
-    ],
     vendor: true,
     shared_libs: [
+        "android.hardware.audio.effect-V3-ndk",
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "android.media.audio.common.types-V4-ndk",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioaidlcommon",
         "libaudioutils",
@@ -170,20 +134,18 @@ cc_defaults {
         "libfmq",
         "liblog",
         "libutils",
-        "android.hardware.common-V2-ndk",
-        "android.hardware.common.fmq-V1-ndk",
     ],
     header_libs: [
-        "libaudioaidl_rpi_headers",
         "libaudio_system_headers",
+        "libaudioaidl_rpi_headers",
         "libsystem_headers",
     ],
     cflags: [
-        "-Wall",
-        "-Wextra",
-        "-Werror",
-        "-Wthread-safety",
         "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wthread-safety",
     ],
 }
 
@@ -200,14 +162,13 @@ cc_binary {
         "EffectFactory.cpp",
         "EffectMain.cpp",
     ],
-    installable: false, //installed in apex com.android.hardware.audio.rpi4
+    installable: false,
 }
 
 cc_library_headers {
     name: "libaudioaidl_rpi_headers",
     export_include_dirs: ["include"],
     vendor_available: true,
-    host_supported: true,
 }
 
 prebuilt_etc {
@@ -221,4 +182,31 @@ prebuilt_etc {
     src: "android.hardware.audio.service.rpi.xml",
     sub_dir: "vintf",
     installable: false,
+}
+
+apex {
+    name: "com.android.hardware.audio.rpi4",
+    manifest: "manifest.json",
+    file_contexts: "file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: [
+        "android.hardware.audio.effect.service.rpi",
+        "android.hardware.audio.service.rpi",
+    ],
+    prebuilts: [
+        "android.hardware.audio.service.rpi.rc",
+        "android.hardware.audio.service.rpi.xml",
+        "android.hardware.bluetooth.audio.xml",
+    ],
+    required: [
+        "aidl_audio_set_configurations_bfbs",
+        "aidl_audio_set_scenarios_bfbs",
+        "aidl_default_audio_set_configurations_json",
+        "aidl_default_audio_set_scenarios_json",
+        "hfp_codec_capabilities_xml",
+    ],
 }
