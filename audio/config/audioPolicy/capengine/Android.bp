@@ -1,0 +1,17 @@
+package {
+    default_team: "trendy_team_android_media_audio_framework",
+    // See: http://go/android-license-faq
+    // A large-scale-change added 'default_applicable_licenses' to import
+    // all of the 'license_kinds' from "hardware_interfaces_license"
+    // to get the below license kinds:
+    //   SPDX-license-identifier-Apache-2.0
+    default_applicable_licenses: ["hardware_interfaces_license"],
+}
+
+xsd_config {
+    name: "audio_policy_capengine_configuration_aidl_default",
+    srcs: ["PolicyConfigurableDomains.xsd"],
+    package_name: "android.audio.policy.capengine.configuration",
+    nullability: true,
+    root_elements: ["ConfigurableDomains"],
+}
