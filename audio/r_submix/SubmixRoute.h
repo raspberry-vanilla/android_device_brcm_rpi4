@@ -1,0 +1,164 @@
+/*
+ * Copyright (C) 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#pragma once
+
+#include <mutex>
+#include <string>
+
+#include <android-base/thread_annotations.h>
+#include <audio_utils/clock.h>
+
+#include <media/nbaio/MonoPipe.h>
+#include <media/nbaio/MonoPipeReader.h>
+
+#include <aidl/android/media/audio/common/AudioChannelLayout.h>
+#include <aidl/android/media/audio/common/AudioDeviceAddress.h>
+#include <aidl/android/media/audio/common/AudioFormatDescription.h>
+
+using aidl::android::media::audio::common::AudioChannelLayout;
+using aidl::android::media::audio::common::AudioFormatDescription;
+using aidl::android::media::audio::common::AudioFormatType;
+using aidl::android::media::audio::common::PcmType;
+using ::android::MonoPipe;
+using ::android::MonoPipeReader;
+using ::android::sp;
+
+namespace aidl::android::hardware::audio::core::r_submix {
+
+static constexpr int kDefaultSampleRateHz = 48000;
+// Value used to divide the MonoPipe buffer into segments that are written to the source and
+// read from the sink. The maximum latency of the device is the size of the MonoPipe's buffer
+// the minimum latency is the MonoPipe buffer size divided by this value.
+static constexpr int kDefaultPipePeriodCount = 4;
+// Size at the default sample rate
+// NOTE: This value will be rounded up to the nearest power of 2 by MonoPipe.
+static constexpr int kDefaultPipeSizeInFrames = 1024 * kDefaultPipePeriodCount;
+
+// Configuration of the audio stream.
+struct AudioConfig {
+    int sampleRate = kDefaultSampleRateHz;
+    AudioFormatDescription format =
+            AudioFormatDescription{.type = AudioFormatType::PCM, .pcm = PcmType::INT_16_BIT};
+    AudioChannelLayout channelLayout =
+            AudioChannelLayout::make<AudioChannelLayout::Tag::layoutMask>(
+                    AudioChannelLayout::LAYOUT_STEREO);
+    size_t frameSize;
+    size_t frameCount;
+};
+
+class SubmixRoute {
+  public:
+    static std::shared_ptr<SubmixRoute> findOrCreateRoute(
+            const ::aidl::android::media::audio::common::AudioDeviceAddress& deviceAddress,
+            const AudioConfig& pipeConfig);
+    static std::shared_ptr<SubmixRoute> findRoute(
+            const ::aidl::android::media::audio::common::AudioDeviceAddress& deviceAddress);
+    static void removeRoute(
+            const ::aidl::android::media::audio::common::AudioDeviceAddress& deviceAddress);
+    static std::string dumpRoutes();
+
+    bool isStreamInOpen() {
+        std::lock_guard guard(mLock);
+        return mStreamInOpen;
+    }
+    bool getStreamInStandby() {
+        std::lock_guard guard(mLock);
+        return mStreamInStandby;
+    }
+    bool isStreamOutOpen() {
+        std::lock_guard guard(mLock);
+        return mStreamOutOpen;
+    }
+    bool getStreamOutStandby() {
+        std::lock_guard guard(mLock);
+        return mStreamOutStandby;
+    }
+    long getReadCounterFrames() {
+        std::lock_guard guard(mLock);
+        return mReadCounterFrames;
+    }
+    sp<MonoPipe> getSink() {
+        std::lock_guard guard(mLock);
+        return mSink;
+    }
+    sp<MonoPipeReader> getSource() {
+        std::lock_guard guard(mLock);
+        return mSource;
+    }
+    AudioConfig getPipeConfig() {
+        std::lock_guard guard(mLock);
+        return mPipeConfig;
+    }
+
+    bool isStreamConfigValid(bool isInput, const AudioConfig& streamConfig);
+    void closeStream(bool isInput);
+    ::android::status_t createPipe(const AudioConfig& streamConfig);
+    void exitStandby(bool isInput);
+    bool hasAtleastOneStreamOpen();
+    int notifyReadError();
+    void openStream(bool isInput);
+    AudioConfig releasePipe();
+    ::android::status_t resetPipe();
+    bool shouldBlockWrite();
+    void standby(bool isInput);
+    long updateReadCounterFrames(size_t frameCount);
+
+    std::string dump();
+
+  private:
+    using RoutesMap = std::map<::aidl::android::media::audio::common::AudioDeviceAddress,
+                               std::shared_ptr<r_submix::SubmixRoute>>;
+    class RoutesMonitor {
+      public:
+        RoutesMonitor(std::mutex& mutex, RoutesMap& routes) : mLock(mutex), mRoutes(routes) {}
+        RoutesMonitor(std::mutex& mutex, RoutesMap& routes, bool /*tryLock*/)
+            : mLock(mutex, std::try_to_lock), mRoutes(routes) {}
+        RoutesMap* operator->() { return &mRoutes; }
+
+      private:
+        std::unique_lock<std::mutex> mLock;
+        RoutesMap& mRoutes;
+    };
+
+    static RoutesMonitor getRoutes(bool tryLock = false);
+
+    bool isStreamConfigCompatible(const AudioConfig& streamConfig);
+
+    std::mutex mLock;
+    AudioConfig mPipeConfig GUARDED_BY(mLock);
+    bool mStreamInOpen GUARDED_BY(mLock) = false;
+    int mInputRefCount GUARDED_BY(mLock) = 0;
+    bool mStreamInStandby GUARDED_BY(mLock) = true;
+    bool mStreamOutStandbyTransition GUARDED_BY(mLock) = false;
+    bool mStreamOutOpen GUARDED_BY(mLock) = false;
+    bool mStreamOutStandby GUARDED_BY(mLock) = true;
+    // how many frames have been requested to be read since standby
+    long mReadCounterFrames GUARDED_BY(mLock) = 0;
+
+    // Pipe variables: they handle the ring buffer that "pipes" audio:
+    //  - from the submix virtual audio output == what needs to be played
+    //    remotely, seen as an output for the client
+    //  - to the virtual audio source == what is captured by the component
+    //    which "records" the submix / virtual audio source, and handles it as needed.
+    // A usecase example is one where the component capturing the audio is then sending it over
+    // Wifi for presentation on a remote Wifi Display device (e.g. a dongle attached to a TV, or a
+    // TV with Wifi Display capabilities), or to a wireless audio player.
+    sp<MonoPipe> mSink GUARDED_BY(mLock);
+    sp<MonoPipeReader> mSource GUARDED_BY(mLock);
+};
+
+}  // namespace aidl::android::hardware::audio::core::r_submix

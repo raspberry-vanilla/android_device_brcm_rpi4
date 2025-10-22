@@ -1,0 +1,264 @@
+// Signature format: 2.0
+package android.audio.policy.capengine.configuration {
+
+  public class BitParameterBlockType {
+    ctor public BitParameterBlockType();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.IntegerParameterType> getBitParameter();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+  }
+
+  public class BooleanParameterType {
+    ctor public BooleanParameterType();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method @Nullable public String getValue();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+    method public void setValue(@Nullable String);
+  }
+
+  public class ComponentType {
+    ctor public ComponentType();
+    method @Nullable public String getName();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.ComponentType> getSubsystem_optional();
+    method public void setName(@Nullable String);
+  }
+
+  public class CompoundRuleType {
+    ctor public CompoundRuleType();
+    method @Nullable public android.audio.policy.capengine.configuration.CompoundRuleType getCompoundRule_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.SelectionCriterionRuleType getSelectionCriterionRule_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.TypeEnum getType();
+    method public void setCompoundRule_optional(@Nullable android.audio.policy.capengine.configuration.CompoundRuleType);
+    method public void setSelectionCriterionRule_optional(@Nullable android.audio.policy.capengine.configuration.SelectionCriterionRuleType);
+    method public void setType(@Nullable android.audio.policy.capengine.configuration.TypeEnum);
+  }
+
+  public class ConfigurableDomainType {
+    ctor public ConfigurableDomainType();
+    method @Nullable public android.audio.policy.capengine.configuration.ConfigurableElementsType getConfigurableElements();
+    method @Nullable public android.audio.policy.capengine.configuration.ConfigurationsType getConfigurations();
+    method @Nullable public String getName();
+    method @Nullable public boolean getSequenceAware();
+    method @Nullable public android.audio.policy.capengine.configuration.SettingsType getSettings();
+    method public void setConfigurableElements(@Nullable android.audio.policy.capengine.configuration.ConfigurableElementsType);
+    method public void setConfigurations(@Nullable android.audio.policy.capengine.configuration.ConfigurationsType);
+    method public void setName(@Nullable String);
+    method public void setSequenceAware(@Nullable boolean);
+    method public void setSettings(@Nullable android.audio.policy.capengine.configuration.SettingsType);
+  }
+
+  public class ConfigurableDomains {
+    ctor public ConfigurableDomains();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.ConfigurableDomainType> getConfigurableDomain();
+    method @Nullable public String getSystemClassName();
+    method public void setSystemClassName(@Nullable String);
+  }
+
+  public class ConfigurableElementSettingsType {
+    ctor public ConfigurableElementSettingsType();
+    method @Nullable public android.audio.policy.capengine.configuration.BitParameterBlockType getBitParameterBlock_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.IntegerParameterType getBitParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.BooleanParameterType getBooleanParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.EnumParameterType getEnumParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.PointParameterType getFixedPointParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.PointParameterType getFloatingPointParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.IntegerParameterType getIntegerParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterBlockType getParameterBlock_optional();
+    method @Nullable public String getPath();
+    method @Nullable public android.audio.policy.capengine.configuration.StringParameterType getStringParameter_optional();
+    method public void setBitParameterBlock_optional(@Nullable android.audio.policy.capengine.configuration.BitParameterBlockType);
+    method public void setBitParameter_optional(@Nullable android.audio.policy.capengine.configuration.IntegerParameterType);
+    method public void setBooleanParameter_optional(@Nullable android.audio.policy.capengine.configuration.BooleanParameterType);
+    method public void setEnumParameter_optional(@Nullable android.audio.policy.capengine.configuration.EnumParameterType);
+    method public void setFixedPointParameter_optional(@Nullable android.audio.policy.capengine.configuration.PointParameterType);
+    method public void setFloatingPointParameter_optional(@Nullable android.audio.policy.capengine.configuration.PointParameterType);
+    method public void setIntegerParameter_optional(@Nullable android.audio.policy.capengine.configuration.IntegerParameterType);
+    method public void setParameterBlock_optional(@Nullable android.audio.policy.capengine.configuration.ParameterBlockType);
+    method public void setPath(@Nullable String);
+    method public void setStringParameter_optional(@Nullable android.audio.policy.capengine.configuration.StringParameterType);
+  }
+
+  public class ConfigurableElementsType {
+    ctor public ConfigurableElementsType();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.ConfigurableElementsType.ConfigurableElement> getConfigurableElement();
+  }
+
+  public static class ConfigurableElementsType.ConfigurableElement {
+    ctor public ConfigurableElementsType.ConfigurableElement();
+    method @Nullable public String getPath();
+    method public void setPath(@Nullable String);
+  }
+
+  public class ConfigurationsType {
+    ctor public ConfigurationsType();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.ConfigurationsType.Configuration> getConfiguration();
+  }
+
+  public static class ConfigurationsType.Configuration {
+    ctor public ConfigurationsType.Configuration();
+    method @Nullable public android.audio.policy.capengine.configuration.CompoundRuleType getCompoundRule();
+    method @Nullable public String getName();
+    method public void setCompoundRule(@Nullable android.audio.policy.capengine.configuration.CompoundRuleType);
+    method public void setName(@Nullable String);
+  }
+
+  public class EnumParameterType {
+    ctor public EnumParameterType();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method @Nullable public String getValue();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+    method public void setValue(@Nullable String);
+  }
+
+  public class IntegerParameterType {
+    ctor public IntegerParameterType();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method @Nullable public String getValue();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+    method public void setValue(@Nullable String);
+  }
+
+  public enum LangEnum {
+    method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.capengine.configuration.LangEnum EMPTY;
+  }
+
+  public enum MatchesWhenEnum {
+    method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.capengine.configuration.MatchesWhenEnum Excludes;
+    enum_constant public static final android.audio.policy.capengine.configuration.MatchesWhenEnum Includes;
+    enum_constant public static final android.audio.policy.capengine.configuration.MatchesWhenEnum Is;
+    enum_constant public static final android.audio.policy.capengine.configuration.MatchesWhenEnum IsNot;
+  }
+
+  public class ParameterBlockType {
+    ctor public ParameterBlockType();
+    method @Nullable public android.audio.policy.capengine.configuration.BitParameterBlockType getBitParameterBlock_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.BooleanParameterType getBooleanParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.EnumParameterType getEnumParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.PointParameterType getFixedPointParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.PointParameterType getFloatingPointParameter_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.IntegerParameterType getIntegerParameter_optional();
+    method @Nullable public String getName();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterBlockType getParameterBlock_optional();
+    method @Nullable public android.audio.policy.capengine.configuration.StringParameterType getStringParameter_optional();
+    method public void setBitParameterBlock_optional(@Nullable android.audio.policy.capengine.configuration.BitParameterBlockType);
+    method public void setBooleanParameter_optional(@Nullable android.audio.policy.capengine.configuration.BooleanParameterType);
+    method public void setEnumParameter_optional(@Nullable android.audio.policy.capengine.configuration.EnumParameterType);
+    method public void setFixedPointParameter_optional(@Nullable android.audio.policy.capengine.configuration.PointParameterType);
+    method public void setFloatingPointParameter_optional(@Nullable android.audio.policy.capengine.configuration.PointParameterType);
+    method public void setIntegerParameter_optional(@Nullable android.audio.policy.capengine.configuration.IntegerParameterType);
+    method public void setName(@Nullable String);
+    method public void setParameterBlock_optional(@Nullable android.audio.policy.capengine.configuration.ParameterBlockType);
+    method public void setStringParameter_optional(@Nullable android.audio.policy.capengine.configuration.StringParameterType);
+  }
+
+  public enum ParameterNameEnumType {
+    method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType ambient;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType anlg_dock_headset;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType aux_line;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType back_mic;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType ble_broadcast;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType ble_headset;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType ble_speaker;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_a2dp;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_a2dp_headphones;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_a2dp_speaker;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_ble;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_sco;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_sco_carkit;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bluetooth_sco_headset;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType builtin_mic;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType bus;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType communication;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType device_address;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType dgtl_dock_headset;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType earpiece;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType echo_canceller;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType echo_reference;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType fm;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType fm_tuner;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType hdmi;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType hdmi_arc;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType hdmi_earc;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType hearing_aid;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType ip;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType line;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType loopback;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType proxy;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType remote_submix;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType spdif;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType speaker;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType speaker_safe;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType stub;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType telephony_rx;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType telephony_tx;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType tv_tuner;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType usb_accessory;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType usb_device;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType usb_headset;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType volume_profile;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType wired_headphone;
+    enum_constant public static final android.audio.policy.capengine.configuration.ParameterNameEnumType wired_headset;
+  }
+
+  public class PointParameterType {
+    ctor public PointParameterType();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method @Nullable public String getValue();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+    method public void setValue(@Nullable String);
+  }
+
+  public class SelectionCriterionRuleType {
+    ctor public SelectionCriterionRuleType();
+    method @Nullable public android.audio.policy.capengine.configuration.MatchesWhenEnum getMatchesWhen();
+    method @Nullable public String getSelectionCriterion();
+    method @Nullable public String getValue();
+    method public void setMatchesWhen(@Nullable android.audio.policy.capengine.configuration.MatchesWhenEnum);
+    method public void setSelectionCriterion(@Nullable String);
+    method public void setValue(@Nullable String);
+  }
+
+  public class SettingsType {
+    ctor public SettingsType();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.SettingsType.Configuration> getConfiguration();
+  }
+
+  public static class SettingsType.Configuration {
+    ctor public SettingsType.Configuration();
+    method @Nullable public java.util.List<android.audio.policy.capengine.configuration.ConfigurableElementSettingsType> getConfigurableElement();
+    method @Nullable public String getName();
+    method public void setName(@Nullable String);
+  }
+
+  public enum SpaceEnum {
+    method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.capengine.configuration.SpaceEnum _default;
+    enum_constant public static final android.audio.policy.capengine.configuration.SpaceEnum preserve;
+  }
+
+  public class StringParameterType {
+    ctor public StringParameterType();
+    method @Nullable public android.audio.policy.capengine.configuration.ParameterNameEnumType getName();
+    method @Nullable public String getValue();
+    method public void setName(@Nullable android.audio.policy.capengine.configuration.ParameterNameEnumType);
+    method public void setValue(@Nullable String);
+  }
+
+  public enum TypeEnum {
+    method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.capengine.configuration.TypeEnum All;
+    enum_constant public static final android.audio.policy.capengine.configuration.TypeEnum Any;
+  }
+
+  public class XmlParser {
+    ctor public XmlParser();
+    method @Nullable public static android.audio.policy.capengine.configuration.ConfigurableDomains readConfigurableDomains(@NonNull java.io.InputStream) throws javax.xml.datatype.DatatypeConfigurationException, java.io.IOException, org.xmlpull.v1.XmlPullParserException;
+    method @Nullable public static String readText(@NonNull org.xmlpull.v1.XmlPullParser) throws java.io.IOException, org.xmlpull.v1.XmlPullParserException;
+    method public static void skip(@NonNull org.xmlpull.v1.XmlPullParser) throws java.io.IOException, org.xmlpull.v1.XmlPullParserException;
+  }
+
+}
+
