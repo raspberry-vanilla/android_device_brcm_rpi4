@@ -21,7 +21,7 @@ package {
 }
 
 cc_defaults {
-    name: "libalsautils_defaults",
+    name: "libalsautils_rpi_defaults",
     vendor_available: true,
     srcs: [
         "alsa_device_profile.c",
@@ -49,16 +49,16 @@ cc_defaults {
 }
 
 cc_library {
-    name: "libalsautils",
-    defaults: ["libalsautils_defaults"],
+    name: "libalsautils-rpi",
+    defaults: ["libalsautils_rpi_defaults"],
     shared_libs: [
         "libtinyalsa",
     ],
 }
 
 cc_library {
-    name: "libalsautilsv2",
-    defaults: ["libalsautils_defaults"],
+    name: "libalsautilsv2-rpi",
+    defaults: ["libalsautils_rpi_defaults"],
     shared_libs: [
         "libtinyalsav2",
     ],

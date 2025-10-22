@@ -9,7 +9,7 @@ package {
 }
 
 xsd_config {
-    name: "audio_policy_engine_configuration_aidl_default",
+    name: "audio_policy_engine_configuration_aidl_rpi",
     srcs: ["audio_policy_engine_configuration.xsd"],
     package_name: "android.audio.policy.engine.configuration",
     nullability: true,
