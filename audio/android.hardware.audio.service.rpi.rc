@@ -1,5 +1,4 @@
-
-service vendor.audio-hal-aidl /apex/com.android.hardware.audio/bin/hw/android.hardware.audio.service-aidl.example
+service vendor.audio-rpi /apex/com.android.hardware.audio.rpi4/bin/hw/android.hardware.audio.service.rpi
     class hal
     user audioserver
     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
@@ -11,7 +10,7 @@ service vendor.audio-hal-aidl /apex/com.android.hardware.audio/bin/hw/android.ha
     task_profiles ProcessCapacityHigh HighPerformance
     onrestart restart audioserver
 
-service vendor.audio-effect-hal-aidl /apex/com.android.hardware.audio/bin/hw/android.hardware.audio.effect.service-aidl.example
+service vendor.audio-effect-rpi /apex/com.android.hardware.audio.rpi4/bin/hw/android.hardware.audio.effect.service.rpi
     class hal
     user audioserver
     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)

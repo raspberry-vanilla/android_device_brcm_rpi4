@@ -9,10 +9,10 @@ package {
 }
 
 cc_defaults {
-    name: "aidlaudioservice_defaults",
+    name: "aidlaudioservice_rpi_defaults",
     vendor: true,
     shared_libs: [
-        "libalsautilsv2",
+        "libalsautilsv2-rpi",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioaidlcommon",
         "libaudioutils",
@@ -32,7 +32,7 @@ cc_defaults {
     ],
     header_libs: [
         "libaudio_system_headers",
-        "libaudioaidl_headers",
+        "libaudioaidl_rpi_headers",
         "libxsdc-utils",
     ],
     cflags: [
@@ -41,9 +41,9 @@ cc_defaults {
 }
 
 cc_library {
-    name: "libaudioserviceexampleimpl",
+    name: "libaudioserviceimpl-rpi",
     defaults: [
-        "aidlaudioservice_defaults",
+        "aidlaudioservice_rpi_defaults",
         "latest_android_media_audio_common_types_ndk_shared",
         "latest_android_hardware_audio_core_ndk_shared",
         "latest_android_hardware_audio_core_sounddose_ndk_shared",
@@ -88,19 +88,19 @@ cc_library {
         "usb/UsbAlsaMixerControl.cpp",
     ],
     generated_sources: [
-        "audio_policy_capengine_configuration_aidl_default",
-        "audio_policy_configuration_aidl_default",
-        "audio_policy_engine_configuration_aidl_default",
+        "audio_policy_capengine_configuration_aidl_rpi",
+        "audio_policy_configuration_aidl_rpi",
+        "audio_policy_engine_configuration_aidl_rpi",
     ],
     generated_headers: [
-        "audio_policy_capengine_configuration_aidl_default",
-        "audio_policy_configuration_aidl_default",
-        "audio_policy_engine_configuration_aidl_default",
+        "audio_policy_capengine_configuration_aidl_rpi",
+        "audio_policy_configuration_aidl_rpi",
+        "audio_policy_engine_configuration_aidl_rpi",
     ],
     export_generated_headers: [
-        "audio_policy_capengine_configuration_aidl_default",
-        "audio_policy_configuration_aidl_default",
-        "audio_policy_engine_configuration_aidl_default",
+        "audio_policy_capengine_configuration_aidl_rpi",
+        "audio_policy_configuration_aidl_rpi",
+        "audio_policy_engine_configuration_aidl_rpi",
     ],
     shared_libs: [
         "android.hardware.bluetooth.audio-impl",
@@ -125,7 +125,7 @@ cc_library {
 }
 
 cc_library {
-    name: "libeffectconfig",
+    name: "libeffectconfig-rpi",
     srcs: [
         "EffectConfig.cpp",
     ],
@@ -145,7 +145,7 @@ cc_library {
     ],
     header_libs: [
         "libaudio_system_headers",
-        "libaudioaidl_headers",
+        "libaudioaidl_rpi_headers",
     ],
     export_shared_lib_headers: [
         "libtinyxml2",
@@ -171,17 +171,17 @@ cc_library {
 }
 
 cc_binary {
-    name: "android.hardware.audio.service-aidl.example",
+    name: "android.hardware.audio.service.rpi",
     relative_install_path: "hw",
     defaults: [
-        "aidlaudioservice_defaults",
+        "aidlaudioservice_rpi_defaults",
         "latest_android_hardware_audio_core_sounddose_ndk_shared",
         "latest_android_hardware_audio_core_ndk_shared",
         "latest_android_hardware_bluetooth_audio_ndk_shared",
         "latest_android_media_audio_common_types_ndk_shared",
     ],
     static_libs: [
-        "libaudioserviceexampleimpl",
+        "libaudioserviceimpl-rpi",
     ],
     shared_libs: [
         "android.hardware.bluetooth.audio-impl",
@@ -199,11 +199,11 @@ cc_binary {
         "-Wthread-safety",
         "-DBACKEND_NDK",
     ],
-    installable: false, //installed in apex com.android.hardware.audio
+    installable: false, //installed in apex com.android.hardware.audio.rpi4
 }
 
 cc_defaults {
-    name: "aidlaudioeffectservice_defaults",
+    name: "aidlaudioeffectservice_rpi_defaults",
     defaults: [
         "latest_android_media_audio_common_types_ndk_shared",
         "latest_android_hardware_audio_effect_ndk_shared",
@@ -223,7 +223,7 @@ cc_defaults {
         "android.hardware.common.fmq-V1-ndk",
     ],
     header_libs: [
-        "libaudioaidl_headers",
+        "libaudioaidl_rpi_headers",
         "libaudio_system_headers",
         "libsystem_headers",
     ],
@@ -237,36 +237,36 @@ cc_defaults {
 }
 
 cc_binary {
-    name: "android.hardware.audio.effect.service-aidl.example",
+    name: "android.hardware.audio.effect.service.rpi",
     relative_install_path: "hw",
-    defaults: ["aidlaudioeffectservice_defaults"],
+    defaults: ["aidlaudioeffectservice_rpi_defaults"],
     shared_libs: [
         "libapexsupport",
-        "libeffectconfig",
+        "libeffectconfig-rpi",
     ],
     srcs: [
         "EffectFactory.cpp",
         "EffectMain.cpp",
     ],
-    installable: false, //installed in apex com.android.hardware.audio
+    installable: false, //installed in apex com.android.hardware.audio.rpi4
 }
 
 cc_library_headers {
-    name: "libaudioaidl_headers",
+    name: "libaudioaidl_rpi_headers",
     export_include_dirs: ["include"],
     vendor_available: true,
     host_supported: true,
 }
 
 prebuilt_etc {
-    name: "android.hardware.audio.service-aidl.example.rc",
-    src: "android.hardware.audio.service-aidl.example.rc",
+    name: "android.hardware.audio.service.rpi.rc",
+    src: "android.hardware.audio.service.rpi.rc",
     installable: false,
 }
 
 prebuilt_etc {
-    name: "android.hardware.audio.service-aidl.xml",
-    src: "android.hardware.audio.service-aidl.xml",
+    name: "android.hardware.audio.service.rpi.xml",
+    src: "android.hardware.audio.service.rpi.xml",
     sub_dir: "vintf",
     installable: false,
 }

@@ -9,7 +9,7 @@ package {
 }
 
 apex {
-    name: "com.android.hardware.audio",
+    name: "com.android.hardware.audio.rpi4",
     manifest: "manifest.json",
     file_contexts: "file_contexts",
     key: "com.android.hardware.key",
@@ -18,12 +18,12 @@ apex {
     vendor: true,
 
     binaries: [
-        "android.hardware.audio.service-aidl.example",
-        "android.hardware.audio.effect.service-aidl.example",
+        "android.hardware.audio.service.rpi",
+        "android.hardware.audio.effect.service.rpi",
     ],
     prebuilts: [
-        "android.hardware.audio.service-aidl.example.rc",
-        "android.hardware.audio.service-aidl.xml",
+        "android.hardware.audio.service.rpi.rc",
+        "android.hardware.audio.service.rpi.xml",
         "android.hardware.bluetooth.audio.xml",
     ],
     required: [
