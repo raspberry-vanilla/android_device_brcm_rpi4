@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "alsa_format"
+#define LOG_TAG "AHAL_alsa_format"
 /*#define LOG_NDEBUG 0*/
 
 #include "include/alsa_format.h"

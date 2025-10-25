@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "alsa_device_proxy"
+#define LOG_TAG "AHAL_alsa_device_proxy"
 /*#define LOG_NDEBUG 0*/
 /*#define LOG_PCM_PARAMS 0*/
 

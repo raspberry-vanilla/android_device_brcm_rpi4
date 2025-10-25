@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "alsa_logging"
+#define LOG_TAG "AHAL_alsa_logging"
 /*#define LOG_NDEBUG 0*/
 
 #include <string.h>
