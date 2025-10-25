@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +19,7 @@
 
 #include <cstdio>
 
+#include <android-base/file.h>
 #include <android-base/logging.h>
 #include <android-base/parseint.h>
 #include <android-base/properties.h>
@@ -36,6 +38,8 @@ using aidl::android::media::audio::common::AudioDeviceType;
 using aidl::android::media::audio::common::AudioOffloadInfo;
 using aidl::android::media::audio::common::MicrophoneInfo;
 using android::base::GetBoolProperty;
+using android::base::GetProperty;
+using android::base::ReadFileToString;
 
 namespace aidl::android::hardware::audio::core {
 
@@ -150,7 +154,7 @@ ndk::ScopedAStatus StreamPrimary::setConnectedDevices(const ConnectedDevices& de
     {
         const bool useStubDriver = devices.empty() || useStubStream(mIsInput, devices[0]);
         std::lock_guard l(mLock);
-        mAlsaDeviceId = useStubDriver ? kStubDeviceId : getCardAndDeviceId(devices);
+        mAlsaDeviceId = useStubDriver ? kStubDeviceId : getCardId();
     }
     if (!devices.empty()) {
         auto streamDataProcessor = getContext().getStreamDataProcessor().lock();
@@ -171,6 +175,43 @@ std::vector<alsa::DeviceProfile> StreamPrimary::getDeviceProfiles() {
 bool StreamPrimary::isStubStream() {
     std::lock_guard l(mLock);
     return mAlsaDeviceId == kStubDeviceId;
+}
+
+// static
+StreamPrimary::AlsaDeviceId StreamPrimary::getCardId() {
+    AlsaDeviceId cardAndDeviceId;
+    cardAndDeviceId.second = 0;
+
+    const std::string forceCard = GetProperty("persist.vendor.audio.pcm.card", "-1");
+    if (forceCard != "-1") {
+        int cardId = std::stoi(forceCard.c_str());
+        LOG(INFO) << "Forcing PCM card " << cardId;
+        cardAndDeviceId.first = cardId;
+        return cardAndDeviceId;
+    }
+
+    const std::string deviceName = GetProperty("persist.vendor.audio.device", "hdmi0");
+    std::string cardPath;
+    for (int i = 0; i < 8; i++) {
+        cardPath = "/proc/asound/card" + std::to_string(i) + "/id";
+        std::string cardName;
+        if (ReadFileToString(cardPath, &cardName)) {
+            if (deviceName == "jack" && cardName.starts_with("Headphones")) {
+                LOG(INFO) << "Using PCM card " << i << " for 3.5mm audio jack";
+                cardAndDeviceId.first = i;
+                return cardAndDeviceId;
+            } else if (deviceName == "dac" && !cardName.starts_with("Headphones")
+                    && !cardName.starts_with("vc4hdmi")) {
+                LOG(INFO) << "Using PCM card " << i << " for audio DAC " << cardName;
+                cardAndDeviceId.first = i;
+                return cardAndDeviceId;
+            }
+        }
+    }
+
+    LOG(INFO) << "Could not probe PCM card for " << deviceName << ", falling back to PCM card 0";
+    cardAndDeviceId.first = 0;
+    return cardAndDeviceId;
 }
 
 // static
