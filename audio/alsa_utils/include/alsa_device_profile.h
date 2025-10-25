@@ -32,7 +32,7 @@
                                         * standard channel formats in std_channel_counts[]
                                         * (in alsa_device_profile.c) */
 
-#define DEFAULT_SAMPLE_RATE         44100
+#define DEFAULT_SAMPLE_RATE         48000
 #define DEFAULT_SAMPLE_FORMAT       PCM_FORMAT_S16_LE
 #define DEFAULT_CHANNEL_COUNT       2
 #define DEFAULT_PERIOD_COUNT        4
