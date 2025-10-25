@@ -20,6 +20,7 @@ cc_library {
         "libaudio_system_headers",
     ],
     shared_libs: [
+        "libasound",
         "libaudioutils",
         "libcutils",
         "liblog",

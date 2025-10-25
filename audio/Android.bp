@@ -15,6 +15,7 @@ cc_defaults {
         "android.hardware.common.fmq-V1-ndk",
         "android.media.audio.common.types-V4-ndk",
         "libalsautilsv2-rpi",
+        "libasound",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioaidlcommon",
         "libaudioutils",
@@ -208,5 +209,7 @@ apex {
         "aidl_default_audio_set_configurations_json",
         "aidl_default_audio_set_scenarios_json",
         "hfp_codec_capabilities_xml",
+        "libasound-config",
+        "libasound-config-pcm",
     ],
 }

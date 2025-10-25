@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +48,8 @@ static const unsigned format_byte_size_map[] = {
     4, /* PCM_FORMAT_S24_LE */
     3, /* PCM_FORMAT_S24_3LE */
 };
+
+static const bool hdmi = true;
 
 int proxy_prepare(alsa_device_proxy * proxy, const alsa_device_profile* profile,
                   struct pcm_config * config, bool require_exact_match)
@@ -140,6 +143,10 @@ int proxy_prepare(alsa_device_proxy * proxy, const alsa_device_profile* profile,
 int proxy_prepare_from_default_config(alsa_device_proxy * proxy,
         const alsa_device_profile * profile)
 {
+    if (hdmi) {
+        return hdmi_proxy_prepare_from_default_config(proxy, profile);
+    }
+
     ALOGD("proxy_prepare_from_default_config(c:%d, d:%d)", profile->card, profile->device);
 
     proxy->profile = profile;
@@ -164,8 +171,33 @@ int proxy_prepare_from_default_config(alsa_device_proxy * proxy,
     return 0;
 }
 
+int hdmi_proxy_prepare_from_default_config(alsa_device_proxy * proxy,
+        const alsa_device_profile * profile)
+{
+    ALOGV("hdmi_proxy_prepare_from_default_config");
+    proxy->profile = profile;
+    proxy->alsa_config.format = profile->default_config.format;
+    proxy->alsa_config.rate = profile->default_config.rate;
+    proxy->alsa_config.channels = profile->default_config.channels;
+    proxy->alsa_config.period_count = profile->default_config.period_count;
+    proxy->alsa_config.period_size = profile->default_config.period_size;
+    proxy->pcm_alsa = NULL;
+    enum pcm_format format = profile->default_config.format;
+    if (format >= 0 && (size_t)format < ARRAY_SIZE(format_byte_size_map)) {
+        proxy->frame_size = format_byte_size_map[format] * proxy->alsa_config.channels;
+    } else {
+        proxy->frame_size = 1;
+    }
+
+    return 0;
+}
+
 int proxy_open(alsa_device_proxy * proxy)
 {
+    if (hdmi) {
+        return hdmi_proxy_open(proxy);
+    }
+
     const alsa_device_profile* profile = proxy->profile;
     ALOGD("proxy_open(card:%d device:%d %s)", profile->card, profile->device,
           profile->direction == PCM_OUT ? "PCM_OUT" : "PCM_IN");
@@ -193,13 +225,67 @@ int proxy_open(alsa_device_proxy * proxy)
     return 0;
 }
 
+int hdmi_proxy_open(alsa_device_proxy * proxy)
+{
+    ALOGV("hdmi_proxy_open");
+    int err;
+    snd_pcm_t *pcm;
+
+    if ((err = snd_pcm_open(&pcm, "default:CARD=vc4hdmi0", SND_PCM_STREAM_PLAYBACK, 0) < 0)) {
+        ALOGE("Error snd_pcm_open: %s", snd_strerror(err));
+        return -ENODEV;
+    }
+
+    snd_pcm_hw_params_t *hwp;
+    snd_pcm_hw_params_alloca(&hwp);
+    snd_pcm_hw_params_any(pcm, hwp);
+    snd_pcm_hw_params_set_access(pcm, hwp, SND_PCM_ACCESS_RW_INTERLEAVED);
+    snd_pcm_hw_params_set_format(pcm, hwp, SND_PCM_FORMAT_S16_LE);
+    snd_pcm_hw_params_set_rate(pcm, hwp, proxy->alsa_config.rate, 0);
+    snd_pcm_hw_params_set_channels(pcm, hwp, proxy->alsa_config.channels);
+    snd_pcm_hw_params_set_periods(pcm, hwp, proxy->alsa_config.period_count, 0);
+    snd_pcm_hw_params_set_period_size(pcm, hwp, proxy->alsa_config.period_size, 0);
+    snd_pcm_hw_params_set_buffer_size(pcm, hwp, proxy->alsa_config.period_count * proxy->alsa_config.period_size);
+    snd_pcm_hw_params(pcm, hwp);
+
+    snd_pcm_sw_params_t *swp;
+    snd_pcm_sw_params_alloca(&swp);
+    snd_pcm_sw_params_current(pcm, swp);
+    snd_pcm_sw_params_set_start_threshold(pcm, swp, proxy->alsa_config.period_count * proxy->alsa_config.period_size);
+    snd_pcm_sw_params(pcm, swp);
+
+    if ((err = snd_pcm_prepare(pcm)) < 0) {
+        ALOGE("Error snd_pcm_prepare: %s", snd_strerror(err));
+        snd_pcm_close(pcm);
+        proxy->pcm_alsa = NULL;
+        return -ENOMEM;
+    }
+
+    proxy->pcm_alsa = pcm;
+
+    return 0;
+}
+
 void proxy_close(alsa_device_proxy * proxy)
 {
+    if (hdmi) {
+        return hdmi_proxy_close(proxy);
+    }
+
     ALOGD("proxy_close() [pcm:%p]", proxy->pcm);
 
     if (proxy->pcm != NULL) {
         pcm_close(proxy->pcm);
         proxy->pcm = NULL;
+    }
+}
+
+void hdmi_proxy_close(alsa_device_proxy * proxy)
+{
+    ALOGV("hdmi_proxy_close");
+    if (proxy->pcm_alsa != NULL) {
+        snd_pcm_close(proxy->pcm_alsa);
+        proxy->pcm_alsa = NULL;
     }
 }
 
@@ -254,6 +340,10 @@ unsigned proxy_get_latency(const alsa_device_proxy * proxy)
 int proxy_get_presentation_position(const alsa_device_proxy * proxy,
         uint64_t *frames, struct timespec *timestamp)
 {
+    if (hdmi) {
+        return hdmi_proxy_get_presentation_position(proxy, frames, timestamp);
+    }
+
     int ret = -EPERM; // -1
     unsigned int avail;
     struct timespec alsaTs;
@@ -265,6 +355,40 @@ int proxy_get_presentation_position(const alsa_device_proxy * proxy,
             // hw_ptr and the appl_ptr levels. In underrun, the hw_ptr may keep running and report
             // an excessively large number available number.
             ALOGW("available frames(%u) > buffer size(%zu), clamped", avail, kernel_buffer_size);
+            avail = kernel_buffer_size;
+        }
+        if (alsaTs.tv_sec != 0 || alsaTs.tv_nsec != 0) {
+            *timestamp = alsaTs;
+        } else {  // If ALSA returned a zero timestamp, do not use it.
+            clock_gettime(SYSTEM_CLOCK_TYPE, timestamp);
+        }
+        int64_t signed_frames = proxy->transferred - kernel_buffer_size + avail;
+        // It is possible to compensate for additional driver and device delay
+        // by changing signed_frames.  Example:
+        // signed_frames -= 20 /* ms */ * proxy->alsa_config.rate / 1000;
+        if (signed_frames >= 0) {
+            *frames = signed_frames;
+            ret = 0;
+        }
+    }
+    return ret;
+}
+
+int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
+        uint64_t *frames, struct timespec *timestamp)
+{
+    ALOGV("hdmi_proxy_get_presentation_position");
+    int ret = -EPERM; // -1
+    snd_pcm_uframes_t avail;
+    struct timespec alsaTs;
+    if (proxy->pcm_alsa != NULL
+            && snd_pcm_htimestamp(proxy->pcm_alsa, &avail, &alsaTs) == 0) {
+        const snd_pcm_uframes_t kernel_buffer_size = proxy->alsa_config.period_count * proxy->alsa_config.period_size;
+        if (avail > kernel_buffer_size) {
+            // pcm_get_htimestamp() computes the available frames by comparing the ALSA driver
+            // hw_ptr and the appl_ptr levels. In underrun, the hw_ptr may keep running and report
+            // an excessively large number available number.
+            ALOGW("available frames(%lu) > buffer size(%lu), clamped", avail, kernel_buffer_size);
             avail = kernel_buffer_size;
         }
         if (alsaTs.tv_sec != 0 || alsaTs.tv_nsec != 0) {
@@ -318,6 +442,10 @@ int proxy_write(alsa_device_proxy * proxy, const void *data, unsigned int count)
 int proxy_write_with_retries(
         alsa_device_proxy * proxy, const void *data, unsigned int count, int tries)
 {
+    if (hdmi) {
+        return hdmi_proxy_write_with_retries(proxy, data, count, tries);
+    }
+
     while (true) {
         --tries;
         const int ret = pcm_write(proxy->pcm, data, count);
@@ -325,6 +453,29 @@ int proxy_write_with_retries(
             proxy->transferred += count / proxy->frame_size;
             return 0;
         } else if (tries > 0 && (ret == -EIO || ret == -EAGAIN)) {
+            continue;
+        }
+        return ret;
+    }
+}
+
+int hdmi_proxy_write_with_retries(
+        alsa_device_proxy * proxy, const void *data, unsigned int count, int tries)
+{
+    ALOGV("hdmi_proxy_write_with_retries");
+    while (true) {
+        --tries;
+        if (snd_pcm_state(proxy->pcm_alsa) == SND_PCM_STATE_XRUN) {
+            ALOGW("Device in state SND_PCM_STATE_XRUN -> snd_pcm_prepare()");
+            snd_pcm_prepare(proxy->pcm_alsa);
+        }
+        const int ret = snd_pcm_writei(proxy->pcm_alsa, data, count / proxy->frame_size);
+        if (ret == count / proxy->frame_size) {
+            proxy->transferred += count / proxy->frame_size;
+            return 0;
+        } else if (tries > 0 && ret == -EPIPE) {
+            ALOGE("Underrun detected -> snd_pcm_prepare() to recover");
+            snd_pcm_prepare(proxy->pcm_alsa);
             continue;
         }
         return ret;

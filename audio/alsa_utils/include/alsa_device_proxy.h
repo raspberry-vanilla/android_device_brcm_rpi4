@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2025 KonstaKANG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +18,7 @@
 #ifndef ANDROID_SYSTEM_MEDIA_ALSA_UTILS_ALSA_DEVICE_PROXY_H
 #define ANDROID_SYSTEM_MEDIA_ALSA_UTILS_ALSA_DEVICE_PROXY_H
 
+#include <alsa/asoundlib.h>
 #include <tinyalsa/asoundlib.h>
 
 #include "alsa_device_profile.h"
@@ -27,6 +29,7 @@ typedef struct {
     struct pcm_config alsa_config;
 
     struct pcm * pcm;
+    snd_pcm_t * pcm_alsa;
 
     size_t frame_size;    /* valid after proxy_prepare(), the frame size in bytes */
     uint64_t transferred; /* the total frames transferred, not cleared on standby */
@@ -38,9 +41,15 @@ int proxy_prepare(alsa_device_proxy * proxy, const alsa_device_profile * profile
                   struct pcm_config * config, bool require_exact_match);
 int proxy_prepare_from_default_config(
         alsa_device_proxy * proxy, const alsa_device_profile * profile);
+int hdmi_proxy_prepare_from_default_config(
+        alsa_device_proxy * proxy, const alsa_device_profile * profile);
 int proxy_open(alsa_device_proxy * proxy);
+int hdmi_proxy_open(alsa_device_proxy * proxy);
 void proxy_close(alsa_device_proxy * proxy);
+void hdmi_proxy_close(alsa_device_proxy * proxy);
 int proxy_get_presentation_position(const alsa_device_proxy * proxy,
+        uint64_t *frames, struct timespec *timestamp);
+int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
         uint64_t *frames, struct timespec *timestamp);
 int proxy_get_capture_position(const alsa_device_proxy * proxy,
         int64_t *frames, int64_t *time);
@@ -64,6 +73,8 @@ int proxy_scan_rates(alsa_device_proxy * proxy, const unsigned sample_rates[],
 /* I/O */
 int proxy_write(alsa_device_proxy * proxy, const void *data, unsigned int count);
 int proxy_write_with_retries(
+        alsa_device_proxy * proxy, const void *data, unsigned int count, int tries);
+int hdmi_proxy_write_with_retries(
         alsa_device_proxy * proxy, const void *data, unsigned int count, int tries);
 int proxy_read(alsa_device_proxy * proxy, void *data, unsigned int count);
 int proxy_read_with_retries(
