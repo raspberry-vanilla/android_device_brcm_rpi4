@@ -18,6 +18,8 @@
 #ifndef ANDROID_SYSTEM_MEDIA_ALSA_UTILS_ALSA_DEVICE_PROXY_H
 #define ANDROID_SYSTEM_MEDIA_ALSA_UTILS_ALSA_DEVICE_PROXY_H
 
+#include <cutils/properties.h>
+
 #include <alsa/asoundlib.h>
 #include <tinyalsa/asoundlib.h>
 
@@ -33,6 +35,9 @@ typedef struct {
 
     size_t frame_size;    /* valid after proxy_prepare(), the frame size in bytes */
     uint64_t transferred; /* the total frames transferred, not cleared on standby */
+
+    bool hdmi;
+    char hdmi_device_name[PROPERTY_VALUE_MAX];
 } alsa_device_proxy;
 
 

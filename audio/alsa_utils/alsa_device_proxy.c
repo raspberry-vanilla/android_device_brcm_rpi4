@@ -50,11 +50,25 @@ static const unsigned format_byte_size_map[] = {
     3, /* PCM_FORMAT_S24_3LE */
 };
 
-static const bool hdmi = true;
+static bool is_hdmi(char *hdmi_device_name) {
+    char hdmi_device[PROPERTY_VALUE_MAX];
+    property_get("persist.vendor.audio.device", hdmi_device, "hdmi0");
+
+    if (!strcmp(hdmi_device, "hdmi0") || !strcmp(hdmi_device, "hdmi1")) {
+        // Use card configured in ALSA vc4-hdmi.conf to get IEC958 subframe conversion
+        sprintf(hdmi_device_name, "default:CARD=vc4%s", hdmi_device);
+        return true;
+    }
+
+    return false;
+}
 
 int proxy_prepare(alsa_device_proxy * proxy, const alsa_device_profile* profile,
                   struct pcm_config * config, bool require_exact_match)
 {
+    // Disable HDMI for external devices
+    proxy->hdmi = false;
+
     int ret = 0;
 
     ALOGD("proxy_prepare(c:%d, d:%d)", profile->card, profile->device);
@@ -144,7 +158,10 @@ int proxy_prepare(alsa_device_proxy * proxy, const alsa_device_profile* profile,
 int proxy_prepare_from_default_config(alsa_device_proxy * proxy,
         const alsa_device_profile * profile)
 {
-    if (hdmi) {
+    // Enable HDMI based on audio device property
+    proxy->hdmi = is_hdmi(proxy->hdmi_device_name);
+
+    if (proxy->hdmi) {
         return hdmi_proxy_prepare_from_default_config(proxy, profile);
     }
 
@@ -195,7 +212,7 @@ int hdmi_proxy_prepare_from_default_config(alsa_device_proxy * proxy,
 
 int proxy_open(alsa_device_proxy * proxy)
 {
-    if (hdmi) {
+    if (proxy->hdmi) {
         return hdmi_proxy_open(proxy);
     }
 
@@ -232,7 +249,7 @@ int hdmi_proxy_open(alsa_device_proxy * proxy)
     int err;
     snd_pcm_t *pcm;
 
-    if ((err = snd_pcm_open(&pcm, "default:CARD=vc4hdmi0", SND_PCM_STREAM_PLAYBACK, 0) < 0)) {
+    if ((err = snd_pcm_open(&pcm, proxy->hdmi_device_name, SND_PCM_STREAM_PLAYBACK, 0) < 0)) {
         ALOGE("Error snd_pcm_open: %s", snd_strerror(err));
         return -ENODEV;
     }
@@ -287,7 +304,7 @@ int hdmi_proxy_open(alsa_device_proxy * proxy)
 
 void proxy_close(alsa_device_proxy * proxy)
 {
-    if (hdmi) {
+    if (proxy->hdmi) {
         return hdmi_proxy_close(proxy);
     }
 
@@ -359,7 +376,7 @@ unsigned proxy_get_latency(const alsa_device_proxy * proxy)
 int proxy_get_presentation_position(const alsa_device_proxy * proxy,
         uint64_t *frames, struct timespec *timestamp)
 {
-    if (hdmi) {
+    if (proxy->hdmi) {
         return hdmi_proxy_get_presentation_position(proxy, frames, timestamp);
     }
 
@@ -462,7 +479,7 @@ int proxy_write(alsa_device_proxy * proxy, const void *data, unsigned int count)
 int proxy_write_with_retries(
         alsa_device_proxy * proxy, const void *data, unsigned int count, int tries)
 {
-    if (hdmi) {
+    if (proxy->hdmi) {
         return hdmi_proxy_write_with_retries(proxy, data, count, tries);
     }
 
