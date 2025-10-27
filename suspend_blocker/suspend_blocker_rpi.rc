@@ -1,4 +1,4 @@
-service suspend_blocker_rpi /apex/com.android.hardware.suspend_blocker.rpi4/bin/suspend_blocker_rpi
+service vendor.suspend_blocker-rpi /apex/com.android.hardware.suspend_blocker.rpi4/bin/suspend_blocker_rpi
     class hal
     group system
     user root
