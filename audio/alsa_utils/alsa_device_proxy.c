@@ -32,7 +32,8 @@
 
 #include "include/alsa_logging.h"
 
-#define DEFAULT_PERIOD_SIZE     1024
+#define DEFAULT_PERIOD_SIZE 1024
+#define EXTRA_START_THRESHOLD 960 // 20ms
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -243,15 +244,17 @@ int hdmi_proxy_open(alsa_device_proxy * proxy)
     snd_pcm_hw_params_set_format(pcm, hwp, SND_PCM_FORMAT_S16_LE);
     snd_pcm_hw_params_set_rate(pcm, hwp, proxy->alsa_config.rate, 0);
     snd_pcm_hw_params_set_channels(pcm, hwp, proxy->alsa_config.channels);
-    snd_pcm_hw_params_set_periods(pcm, hwp, proxy->alsa_config.period_count, 0);
+    snd_pcm_hw_params_set_periods(pcm, hwp, proxy->alsa_config.period_count * 2, 0);
     snd_pcm_hw_params_set_period_size(pcm, hwp, proxy->alsa_config.period_size, 0);
-    snd_pcm_hw_params_set_buffer_size(pcm, hwp, proxy->alsa_config.period_count * proxy->alsa_config.period_size);
+    snd_pcm_hw_params_set_buffer_size(pcm, hwp,
+            proxy->alsa_config.period_count * proxy->alsa_config.period_size * 2);
     snd_pcm_hw_params(pcm, hwp);
 
     snd_pcm_sw_params_t *swp;
     snd_pcm_sw_params_alloca(&swp);
     snd_pcm_sw_params_current(pcm, swp);
-    snd_pcm_sw_params_set_start_threshold(pcm, swp, proxy->alsa_config.period_count * proxy->alsa_config.period_size);
+    snd_pcm_sw_params_set_start_threshold(pcm, swp,
+            proxy->alsa_config.period_count * proxy->alsa_config.period_size + EXTRA_START_THRESHOLD);
     snd_pcm_sw_params(pcm, swp);
 
     if ((err = snd_pcm_prepare(pcm)) < 0) {
@@ -260,6 +263,22 @@ int hdmi_proxy_open(alsa_device_proxy * proxy)
         proxy->pcm_alsa = NULL;
         return -ENOMEM;
     }
+
+    unsigned int rate, channels, periods;
+    snd_pcm_uframes_t period_size, buffer_size, avail_min, start_threshold, stop_threshold, silence_threshold;
+    snd_pcm_hw_params_get_rate(hwp, &rate, 0);
+    snd_pcm_hw_params_get_channels(hwp, &channels);
+    snd_pcm_hw_params_get_periods(hwp, &periods, 0);
+    snd_pcm_hw_params_get_period_size(hwp, &period_size, 0);
+    snd_pcm_hw_params_get_buffer_size(hwp, &buffer_size);
+    snd_pcm_sw_params_get_avail_min(swp, &avail_min);
+    snd_pcm_sw_params_get_start_threshold(swp, &start_threshold);
+    snd_pcm_sw_params_get_stop_threshold(swp, &stop_threshold);
+    snd_pcm_sw_params_get_silence_threshold(swp, &silence_threshold);
+    ALOGI("rate %i, channels %i", rate, channels);
+    ALOGI("periods %i, period_size %lu, buffer_size %lu", periods, period_size, buffer_size);
+    ALOGI("avail_min %lu, start_threshold %lu, stop_threshold %lu, silence_threshold %lu",
+            avail_min, start_threshold, stop_threshold, silence_threshold);
 
     proxy->pcm_alsa = pcm;
 
@@ -383,7 +402,7 @@ int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
     struct timespec alsaTs;
     if (proxy->pcm_alsa != NULL
             && snd_pcm_htimestamp(proxy->pcm_alsa, &avail, &alsaTs) == 0) {
-        const snd_pcm_uframes_t kernel_buffer_size = proxy->alsa_config.period_count * proxy->alsa_config.period_size;
+        const snd_pcm_uframes_t kernel_buffer_size = proxy->alsa_config.period_count * proxy->alsa_config.period_size * 2;
         if (avail > kernel_buffer_size) {
             // pcm_get_htimestamp() computes the available frames by comparing the ALSA driver
             // hw_ptr and the appl_ptr levels. In underrun, the hw_ptr may keep running and report
@@ -400,6 +419,7 @@ int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
         // It is possible to compensate for additional driver and device delay
         // by changing signed_frames.  Example:
         // signed_frames -= 20 /* ms */ * proxy->alsa_config.rate / 1000;
+        signed_frames -= EXTRA_START_THRESHOLD;
         if (signed_frames >= 0) {
             *frames = signed_frames;
             ret = 0;
