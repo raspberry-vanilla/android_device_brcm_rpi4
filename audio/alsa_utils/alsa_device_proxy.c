@@ -385,7 +385,8 @@ int proxy_get_presentation_position(const alsa_device_proxy * proxy,
     struct timespec alsaTs;
     if (proxy->pcm != NULL
             && pcm_get_htimestamp(proxy->pcm, &avail, &alsaTs) == 0) {
-        const size_t kernel_buffer_size = pcm_get_buffer_size(proxy->pcm);
+        const size_t kernel_buffer_size = proxy->alsa_config.period_count
+                * proxy->alsa_config.period_size;
         if (avail > kernel_buffer_size) {
             // pcm_get_htimestamp() computes the available frames by comparing the ALSA driver
             // hw_ptr and the appl_ptr levels. In underrun, the hw_ptr may keep running and report
@@ -402,6 +403,8 @@ int proxy_get_presentation_position(const alsa_device_proxy * proxy,
         // It is possible to compensate for additional driver and device delay
         // by changing signed_frames.  Example:
         // signed_frames -= 20 /* ms */ * proxy->alsa_config.rate / 1000;
+        signed_frames -= proxy->alsa_config.period_count
+                * proxy->alsa_config.period_size; // start_threshold
         if (signed_frames >= 0) {
             *frames = signed_frames;
             ret = 0;
@@ -419,7 +422,8 @@ int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
     struct timespec alsaTs;
     if (proxy->pcm_alsa != NULL
             && snd_pcm_htimestamp(proxy->pcm_alsa, &avail, &alsaTs) == 0) {
-        const snd_pcm_uframes_t kernel_buffer_size = proxy->alsa_config.period_count * proxy->alsa_config.period_size * 2;
+        const snd_pcm_uframes_t kernel_buffer_size = proxy->alsa_config.period_count
+                * proxy->alsa_config.period_size * 2;
         if (avail > kernel_buffer_size) {
             // pcm_get_htimestamp() computes the available frames by comparing the ALSA driver
             // hw_ptr and the appl_ptr levels. In underrun, the hw_ptr may keep running and report
@@ -436,7 +440,8 @@ int hdmi_proxy_get_presentation_position(const alsa_device_proxy * proxy,
         // It is possible to compensate for additional driver and device delay
         // by changing signed_frames.  Example:
         // signed_frames -= 20 /* ms */ * proxy->alsa_config.rate / 1000;
-        signed_frames -= EXTRA_START_THRESHOLD;
+        signed_frames -= proxy->alsa_config.period_count
+                * proxy->alsa_config.period_size + EXTRA_START_THRESHOLD; // start_threshold
         if (signed_frames >= 0) {
             *frames = signed_frames;
             ret = 0;
