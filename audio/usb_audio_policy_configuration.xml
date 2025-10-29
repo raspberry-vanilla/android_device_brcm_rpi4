@@ -19,7 +19,7 @@
     <mixPorts>
         <mixPort name="usb_accessory output" role="source">
             <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-                     samplingRates="44100" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                     samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
         </mixPort>
         <mixPort name="usb_device output" role="source"/>
         <mixPort name="usb_device input" role="sink"/>
@@ -27,17 +27,17 @@
     <devicePorts>
         <devicePort tagName="USB Host Out" type="AUDIO_DEVICE_OUT_USB_ACCESSORY" role="sink">
             <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-                     samplingRates="44100" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                     samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
         </devicePort>
         <devicePort tagName="USB Device Out" type="AUDIO_DEVICE_OUT_USB_DEVICE" role="sink"/>
         <devicePort tagName="USB Headset Out" type="AUDIO_DEVICE_OUT_USB_HEADSET" role="sink"/>
         <devicePort tagName="USB Device In" type="AUDIO_DEVICE_IN_USB_DEVICE" role="source">
             <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-                samplingRates="44100" channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                samplingRates="48000" channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
         </devicePort>
         <devicePort tagName="USB Headset In" type="AUDIO_DEVICE_IN_USB_HEADSET" role="source">
             <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-                samplingRates="44100" channelMasks="AUDIO_CHANNEL_IN_MONO"/>
+                samplingRates="48000" channelMasks="AUDIO_CHANNEL_IN_MONO"/>
         </devicePort>
 
     </devicePorts>
