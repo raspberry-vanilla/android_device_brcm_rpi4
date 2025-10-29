@@ -129,13 +129,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     com.android.hardware.health.rpi4
 
-# HIDL
-PRODUCT_HIDL_ENABLED := true
-
-PRODUCT_PACKAGES += \
-    android.hidl.allocator@1.0-service \
-    hwservicemanager
-
 # Kernel
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)-kernel/Image:$(PRODUCT_OUT)/kernel
