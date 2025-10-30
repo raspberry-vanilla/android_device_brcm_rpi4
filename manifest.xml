@@ -17,12 +17,4 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="aidl">
-        <name>android.hardware.camera.provider</name>
-        <version>1</version>
-        <interface>
-            <name>ICameraProvider</name>
-            <instance>external/0</instance>
-        </interface>
-    </hal>
 </manifest>
