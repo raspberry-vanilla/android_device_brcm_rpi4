@@ -1,6 +1,3 @@
-# Camera
-/vendor/bin/hw/android\.hardware\.camera\.provider-V1-libcamera-service  u:object_r:hal_camera_default_exec:s0
-
 # CEC
 /dev/cec0  u:object_r:cec_device:s0
 /dev/cec1  u:object_r:cec_device:s0

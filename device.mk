@@ -61,12 +61,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.external.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.external.xml
 
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider-V1-libcamera-service \
-    camera.libcamera \
-    ipa_rpi_vc4
+    com.android.hardware.camera.libcamera
+
+$(call soong_config_set,libcamera,ipa,vc4)
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/camera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml
+    $(DEVICE_PATH)/camera/libcamera/camera_hal.yaml:$(TARGET_COPY_OUT_VENDOR)/etc/libcamera/camera_hal.yaml
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.xml \

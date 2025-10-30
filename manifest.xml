@@ -23,7 +23,6 @@
         <interface>
             <name>ICameraProvider</name>
             <instance>external/0</instance>
-            <instance>libcamera/0</instance>
         </interface>
     </hal>
 </manifest>
