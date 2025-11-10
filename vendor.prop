@@ -41,9 +41,6 @@ ro.hdmi.device_type=4
 ro.soc.manufacturer=Broadcom
 ro.soc.model=BCM2711
 
-# Display
-debug.drm.mode.force=1920x1080
-
 # FFmpeg
 persist.vendor.ffmpeg_codec2.rank.audio=16
 persist.vendor.ffmpeg_codec2.rank.video=256
@@ -55,6 +52,7 @@ ro.hardware.egl=mesa
 ro.opengles.version=196609
 vendor.hwc.drm.ctm=DRM_OR_IGNORE
 vendor.hwc.drm.disable_hdr=1
+vendor.hwc.drm.force_mode=1920x1080
 
 # Lockscreen
 ro.lockscreen.disable.default=true
