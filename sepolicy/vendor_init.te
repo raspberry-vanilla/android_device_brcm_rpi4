@@ -1,4 +1,5 @@
 set_prop(vendor_init, vendor_audio_config_prop)
 set_prop(vendor_init, vendor_ffmpeg_config_prop)
 set_prop(vendor_init, vendor_hdmi_config_prop)
+set_prop(vendor_init, vendor_hwc_config_prop)
 set_prop(vendor_init, vendor_v4l2_config_prop)

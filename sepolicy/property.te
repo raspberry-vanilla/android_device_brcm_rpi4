@@ -1,4 +1,5 @@
 vendor_internal_prop(vendor_audio_config_prop)
 vendor_internal_prop(vendor_ffmpeg_config_prop)
 vendor_internal_prop(vendor_hdmi_config_prop)
+vendor_internal_prop(vendor_hwc_config_prop)
 vendor_internal_prop(vendor_v4l2_config_prop)
