@@ -72,6 +72,7 @@ ro.vendor.v4l2_codec2.decode_concurrent_instances=8
 ro.vendor.v4l2_codec2.encode_concurrent_instances=8
 
 # Wifi
+ro.boot.wificountrycode=00
 wifi.interface=wlan0
 
 # Window extensions
