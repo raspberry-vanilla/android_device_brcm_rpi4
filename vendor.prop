@@ -71,6 +71,9 @@ persist.vendor.v4l2_codec2.rank.encoder=128
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
 ro.vendor.v4l2_codec2.encode_concurrent_instances=8
 
+# Virtualization
+ro.boot.hypervisor.vm.supported=1
+
 # Wifi
 ro.boot.wificountrycode=00
 wifi.interface=wlan0
