@@ -18,9 +18,9 @@
 
 <resources>
 
-    <!-- The default tiles to display in QuickSettings -->
-    <string name="quick_settings_tiles_default" translatable="false">
-        internet,bt,airplane,hotspot,dark,screenrecord,custom(com.android.permissioncontroller/.permission.service.v33.SafetyCenterQsTileService)
+    <!-- The default tiles to display in QuickSettings with the new UI -->
+    <string name="quick_settings_tiles_new_default" translatable="false">
+        internet,bt,dnd,location,airplane,hotspot,dark,dream,screenrecord
     </string>
 
 </resources>
