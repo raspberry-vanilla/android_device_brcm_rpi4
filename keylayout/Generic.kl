@@ -426,6 +426,7 @@ key 582   VOICE_ASSIST
 key 583   ASSIST
 key 585   EMOJI_PICKER
 key 586   DICTATE
+key 591   DO_NOT_DISTURB
 key 656   MACRO_1
 key 657   MACRO_2
 key 658   MACRO_3
@@ -438,8 +439,6 @@ key 141   POWER
 key 174   BACK
 
 # Keys defined by HID usages
-key usage 0x010082 LOCK                      FALLBACK_USAGE_MAPPING
-key usage 0x01009B DO_NOT_DISTURB            FALLBACK_USAGE_MAPPING
 key usage 0x0c0065 SCREENSHOT                FALLBACK_USAGE_MAPPING
 key usage 0x0c0067 WINDOW                    FALLBACK_USAGE_MAPPING
 key usage 0x0c006F BRIGHTNESS_UP             FALLBACK_USAGE_MAPPING
