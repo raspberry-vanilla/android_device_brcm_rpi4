@@ -1,2 +1,1 @@
 gpu_access(system_server)
-allow system_server self:capability sys_module;
