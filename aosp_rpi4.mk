@@ -16,6 +16,10 @@ PRODUCT_CHARACTERISTICS := tablet,nosdcard
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call enforce-product-packages-exist,com.android.ranging)
 
+# Freeform windows
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml
+
 # Keylayout
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
