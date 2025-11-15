@@ -14,14 +14,17 @@
 
 # Partitions
 /dev/block/mmcblk0p1  u:object_r:boot_block_device:s0
-/dev/block/mmcblk0p2  u:object_r:system_block_device:s0
-/dev/block/mmcblk0p3  u:object_r:system_block_device:s0
-/dev/block/mmcblk0p4  u:object_r:userdata_block_device:s0
+/dev/block/mmcblk0p3  u:object_r:userdata_block_device:s0
+/dev/block/mmcblk0p5  u:object_r:system_block_device:s0
+/dev/block/mmcblk0p6  u:object_r:system_block_device:s0
+/dev/block/mmcblk0p7  u:object_r:metadata_block_device:s0
 /dev/block/nvme0n1p1  u:object_r:boot_block_device:s0
-/dev/block/nvme0n1p2  u:object_r:system_block_device:s0
-/dev/block/nvme0n1p3  u:object_r:system_block_device:s0
-/dev/block/nvme0n1p4  u:object_r:userdata_block_device:s0
+/dev/block/nvme0n1p3  u:object_r:userdata_block_device:s0
+/dev/block/nvme0n1p5  u:object_r:system_block_device:s0
+/dev/block/nvme0n1p6  u:object_r:system_block_device:s0
+/dev/block/nvme0n1p7  u:object_r:metadata_block_device:s0
 /dev/block/sda1       u:object_r:boot_block_device:s0
-/dev/block/sda2       u:object_r:system_block_device:s0
-/dev/block/sda3       u:object_r:system_block_device:s0
-/dev/block/sda4       u:object_r:userdata_block_device:s0
+/dev/block/sda3       u:object_r:userdata_block_device:s0
+/dev/block/sda5       u:object_r:system_block_device:s0
+/dev/block/sda6       u:object_r:system_block_device:s0
+/dev/block/sda7       u:object_r:metadata_block_device:s0
