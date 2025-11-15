@@ -12,27 +12,36 @@ exit_with_error() {
 }
 
 check_device() {
-  for PARTITION in "1" "2" "3" "4"; do
+  for PARTITION in "1" "3" "5" "6" "7"; do
     if [ ! -b /dev/${1}${PARTITION} ]; then
       return 1
     fi
   done
 
-  PARTITION1=$(lsblk -o LABEL,SIZE -b /dev/${1}1 | tail -n 1)
-  PARTITION2=$(lsblk -o LABEL,SIZE -b /dev/${1}2 | tail -n 1)
-  PARTITION3=$(lsblk -o LABEL,SIZE -b /dev/${1}3 | tail -n 1)
-  PARTITION4=$(lsblk -o LABEL,SIZE -b /dev/${1}4 | tail -n 1)
+  BOOT_PARTITION_SIZE=134217728
+  SYSTEM_PARTITION_SIZE=2684354560
+  VENDOR_PARTITION_SIZE=268435456
+  METADATA_PARTITION_SIZE=16777216
 
-  if [ $(echo ${PARTITION1} | awk {'print $1'}) != "boot" ] || [ $(echo ${PARTITION1} | awk {'print $2'}) != "134217728" ]; then
+  PARTITION1=$(lsblk -o LABEL,SIZE -b /dev/${1}1 | tail -n 1)
+  PARTITION3=$(lsblk -o LABEL,SIZE -b /dev/${1}3 | tail -n 1)
+  PARTITION5=$(lsblk -o LABEL,SIZE -b /dev/${1}5 | tail -n 1)
+  PARTITION6=$(lsblk -o LABEL,SIZE -b /dev/${1}6 | tail -n 1)
+  PARTITION7=$(lsblk -o LABEL,SIZE -b /dev/${1}7 | tail -n 1)
+
+  if [ $(echo ${PARTITION1} | awk {'print $1'}) != "boot" ] || [ $(echo ${PARTITION1} | awk {'print $2'}) != ${BOOT_PARTITION_SIZE} ]; then
     return 1
   fi
-  if [ $(echo ${PARTITION2} | awk {'print $1'}) != "/" ] || [ $(echo ${PARTITION2} | awk {'print $2'}) != "2684354560" ]; then
+  if [ $(echo ${PARTITION5} | awk {'print $1'}) != "/" ] || [ $(echo ${PARTITION5} | awk {'print $2'}) != ${SYSTEM_PARTITION_SIZE} ]; then
     return 1
   fi
-  if [ $(echo ${PARTITION3} | awk {'print $1'}) != "vendor" ] || [ $(echo ${PARTITION3} | awk {'print $2'}) != "268435456" ]; then
+  if [ $(echo ${PARTITION6} | awk {'print $1'}) != "vendor" ] || [ $(echo ${PARTITION6} | awk {'print $2'}) != ${VENDOR_PARTITION_SIZE} ]; then
     return 1
   fi
-  if [ $(echo ${PARTITION4} | awk {'print $1'}) != "userdata" ]; then
+  if [ $(echo ${PARTITION7} | awk {'print $1'}) != "metadata" ] || [ $(echo ${PARTITION7} | awk {'print $2'}) != ${METADATA_PARTITION_SIZE} ]; then
+    return 1
+  fi
+  if [ $(echo ${PARTITION3} | awk {'print $1'}) != "userdata" ]; then
     return 1
   fi
 
@@ -56,7 +65,7 @@ find_device() {
 confirm() {
   echo "Build target ${1}..."
   if [ "${2}" == "wipe" ]; then
-    echo "Wiping userdata partition..."
+    echo "Wiping metadata and userdata partitions..."
   else
     echo "Writing ${2} image..."
   fi
@@ -81,10 +90,15 @@ write_partition() {
 }
 
 wipe_userdata() {
+  echo "Creating metadata..."
+  sudo umount /dev/${DEVICE}7
+  sudo wipefs -a /dev/${DEVICE}7
+  sudo mkfs.ext4 /dev/${DEVICE}7 -I 512 -L metadata
+
   echo "Creating userdata..."
-  sudo umount /dev/${DEVICE}4
-  sudo wipefs -a /dev/${DEVICE}4
-  sudo mkfs.ext4 /dev/${DEVICE}4 -I 512 -L userdata
+  sudo umount /dev/${DEVICE}3
+  sudo wipefs -a /dev/${DEVICE}3
+  sudo mkfs.ext4 /dev/${DEVICE}3 -I 512 -L userdata
 }
 
 finish() {
@@ -119,12 +133,12 @@ elif [ ! -z $1 ] && [ $1 == "boot" ]; then
 elif [ ! -z $1 ] && [ $1 == "system" ]; then
   find_device
   confirm ${TARGET} "system"
-  write_partition system 2
+  write_partition system 5
   finish
 elif [ ! -z $1 ] && [ $1 == "vendor" ]; then
   find_device
   confirm ${TARGET} "vendor"
-  write_partition vendor 3
+  write_partition vendor 6
   finish
 elif [ ! -z $1 ] && [ $1 == "wipe" ]; then
   find_device

@@ -31,6 +31,12 @@ TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
 IMGNAME=${VERSION}-${DATE}-${TARGET}.img
 IMGSIZE=15360000000
 
+BOOT_PARTITION_SIZE=128
+SYSTEM_PARTITION_SIZE=2560
+VENDOR_PARTITION_SIZE=256
+METADATA_PARTITION_SIZE=16
+EXTENDED_PARTITION_SIZE=$((${SYSTEM_PARTITION_SIZE}+${VENDOR_PARTITION_SIZE}+${METADATA_PARTITION_SIZE}+4))
+
 if [ -f ${ANDROID_PRODUCT_OUT}/${IMGNAME} ]; then
   exit_with_error "${ANDROID_PRODUCT_OUT}/${IMGNAME} already exists!"
 fi
@@ -42,30 +48,46 @@ sync
 echo "Creating partitions..."
 (
 echo o
+
 echo n
 echo p
 echo 1
 echo
-echo +128M
+echo +${BOOT_PARTITION_SIZE}M
+
 echo n
-echo p
+echo e
 echo 2
 echo
-echo +2560M
+echo +${EXTENDED_PARTITION_SIZE}M
+
+echo n
+echo l
+echo
+echo +${SYSTEM_PARTITION_SIZE}M
+
+echo n
+echo l
+echo
+echo +${VENDOR_PARTITION_SIZE}M
+
+echo n
+echo l
+echo
+echo +${METADATA_PARTITION_SIZE}M
+
 echo n
 echo p
 echo 3
 echo
-echo +256M
-echo n
-echo p
 echo
-echo
+
 echo t
 echo 1
 echo c
 echo a
 echo 1
+
 echo w
 ) | sudo fdisk ${ANDROID_PRODUCT_OUT}/${IMGNAME}
 sync
@@ -80,11 +102,13 @@ sleep 1
 echo "Copying boot..."
 sudo dd if=${ANDROID_PRODUCT_OUT}/boot.img of=/dev/mapper/${LOOPDEV}p1 bs=1M
 echo "Copying system..."
-sudo dd if=${ANDROID_PRODUCT_OUT}/system.img of=/dev/mapper/${LOOPDEV}p2 bs=1M
+sudo dd if=${ANDROID_PRODUCT_OUT}/system.img of=/dev/mapper/${LOOPDEV}p5 bs=1M
 echo "Copying vendor..."
-sudo dd if=${ANDROID_PRODUCT_OUT}/vendor.img of=/dev/mapper/${LOOPDEV}p3 bs=1M
+sudo dd if=${ANDROID_PRODUCT_OUT}/vendor.img of=/dev/mapper/${LOOPDEV}p6 bs=1M
+echo "Creating metadata..."
+sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p7 -I 512 -L metadata
 echo "Creating userdata..."
-sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p4 -I 512 -L userdata
+sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p3 -I 512 -L userdata
 sync
 
 sudo kpartx -d "/dev/${LOOPDEV}"
