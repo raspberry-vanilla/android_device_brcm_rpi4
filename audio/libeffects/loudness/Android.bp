@@ -1,47 +1,45 @@
-// LoudnessEnhancer library
-package {
-    default_applicable_licenses: [
-        "frameworks_av_media_libeffects_loudness_license",
-    ],
-}
-
-// Added automatically by a large-scale-change
-// See: http://go/android-license-faq
-license {
-    name: "frameworks_av_media_libeffects_loudness_license",
-    visibility: [":__subpackages__"],
-    license_kinds: [
-        "SPDX-license-identifier-Apache-2.0",
-    ],
-    license_text: [
-        "NOTICE",
-    ],
-}
+// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
 
 cc_library_shared {
-    name: "libloudnessenhanceraidl",
+    name: "libloudnessenhanceraidl_rpi",
+    relative_install_path: "soundfx",
+    vendor: true,
     srcs: [
-        ":effectCommonFile",
+        ":effectCommonFileRpi",
         "aidl/EffectLoudnessEnhancer.cpp",
         "aidl/LoudnessEnhancerContext.cpp",
         "dsp/core/dynamic_range_compression.cpp",
     ],
-    defaults: [
-        "aidlaudioeffectservice_defaults",
+    shared_libs: [
+        "android.hardware.audio.effect-V3-ndk",
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "android.media.audio.common.types-V4-ndk",
+        "libaudio_aidl_conversion_common_ndk",
+        "libaudioaidlcommon",
+        "libaudioutils",
+        "libbase",
+        "libbinder_ndk",
+        "libcutils",
+        "libfmq",
+        "liblog",
+        "libutils",
     ],
     header_libs: [
+        "libaudio_system_headers",
+        "libaudioaidl_rpi_headers",
         "libaudioeffects",
         "libhardware_headers",
+        "libsystem_headers",
     ],
     cflags: [
+        "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
         "-Wthread-safety",
-    ],
-    shared_libs: [
-        "libcutils",
-        "liblog",
-    ],
-    relative_install_path: "soundfx",
-    visibility: [
-        "//hardware/interfaces/audio/aidl/default:__subpackages__",
     ],
 }

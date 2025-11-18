@@ -118,6 +118,15 @@ cc_binary {
     installable: false,
 }
 
+filegroup {
+    name: "effectCommonFileRpi",
+    srcs: [
+        "EffectContext.cpp",
+        "EffectImpl.cpp",
+        "EffectThread.cpp",
+    ],
+}
+
 cc_defaults {
     name: "aidlaudioeffectservice_rpi_defaults",
     vendor: true,
@@ -197,6 +206,14 @@ apex {
     binaries: [
         "android.hardware.audio.effect.service.rpi",
         "android.hardware.audio.service.rpi",
+    ],
+    native_shared_libs: [
+        "libbundleaidl_rpi",
+        "libdownmixaidl_rpi",
+        "libdynamicsprocessingaidl_rpi",
+        "libloudnessenhanceraidl_rpi",
+        "libreverbaidl_rpi",
+        "libvisualizeraidl_rpi",
     ],
     prebuilts: [
         "android.hardware.audio.service.rpi.rc",
