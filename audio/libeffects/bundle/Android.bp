@@ -1,21 +1,20 @@
-// Copyright (C) 2018 The Android Open Source Project
+// Copyright (C) 2022 The Android Open Source Project
 // Copyright (C) 2025 KonstaKANG
 //
 // SPDX-License-Identifier: Apache-2.0
 
 cc_library_shared {
-    name: "libdynamicsprocessingaidl_rpi",
+    name: "libbundleaidl_rpi",
     relative_install_path: "soundfx",
     vendor: true,
     srcs: [
         ":effectCommonFileRpi",
-        "aidl/DynamicsProcessing.cpp",
-        "aidl/DynamicsProcessingContext.cpp",
-        "dsp/DPBase.cpp",
-        "dsp/DPFrequency.cpp",
+        "aidl/BundleContext.cpp",
+        "aidl/EffectBundleAidl.cpp",
     ],
+    local_include_dirs: ["aidl"],
     static_libs: [
-        "libaudioaidlranges",
+        "libmusicbundle",
     ],
     shared_libs: [
         "android.hardware.audio.effect-V3-ndk",
@@ -30,13 +29,14 @@ cc_library_shared {
         "libcutils",
         "libfmq",
         "liblog",
+        "libstagefright_foundation",
         "libutils",
     ],
     header_libs: [
         "libaudio_system_headers",
         "libaudioaidl_rpi_headers",
         "libaudioeffects",
-        "libeigen",
+        "libhardware_headers",
         "libsystem_headers",
     ],
     cflags: [
