@@ -1,0 +1,47 @@
+// LoudnessEnhancer library
+package {
+    default_applicable_licenses: [
+        "frameworks_av_media_libeffects_loudness_license",
+    ],
+}
+
+// Added automatically by a large-scale-change
+// See: http://go/android-license-faq
+license {
+    name: "frameworks_av_media_libeffects_loudness_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+    ],
+    license_text: [
+        "NOTICE",
+    ],
+}
+
+cc_library_shared {
+    name: "libloudnessenhanceraidl",
+    srcs: [
+        ":effectCommonFile",
+        "aidl/EffectLoudnessEnhancer.cpp",
+        "aidl/LoudnessEnhancerContext.cpp",
+        "dsp/core/dynamic_range_compression.cpp",
+    ],
+    defaults: [
+        "aidlaudioeffectservice_defaults",
+    ],
+    header_libs: [
+        "libaudioeffects",
+        "libhardware_headers",
+    ],
+    cflags: [
+        "-Wthread-safety",
+    ],
+    shared_libs: [
+        "libcutils",
+        "liblog",
+    ],
+    relative_install_path: "soundfx",
+    visibility: [
+        "//hardware/interfaces/audio/aidl/default:__subpackages__",
+    ],
+}

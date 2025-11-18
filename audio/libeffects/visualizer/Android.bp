@@ -1,0 +1,60 @@
+// Visualizer library
+package {
+    default_applicable_licenses: [
+        "frameworks_av_media_libeffects_visualizer_license",
+    ],
+}
+
+// Added automatically by a large-scale-change
+// See: http://go/android-license-faq
+license {
+    name: "frameworks_av_media_libeffects_visualizer_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+    ],
+    license_text: [
+        "NOTICE",
+    ],
+}
+
+cc_defaults {
+    name: "visualizer_defaults",
+    vendor: true,
+    cflags: [
+        "-DBUILD_FLOAT", // TODO: remove BUILD_FLOAT and SUPPORT_MC in lvm libs
+        "-DSUPPORT_MC",
+        "-Wall",
+        "-Werror",
+    ],
+    shared_libs: [
+        "liblog",
+    ],
+    header_libs: [
+        "libaudioeffects",
+        "libaudioutils_headers",
+    ],
+}
+
+cc_library_shared {
+    name: "libvisualizeraidl",
+    srcs: [
+        ":effectCommonFile",
+        "aidl/Visualizer.cpp",
+        "aidl/VisualizerContext.cpp",
+    ],
+    defaults: [
+        "aidlaudioeffectservice_defaults",
+        "visualizer_defaults",
+    ],
+    cflags: [
+        "-Wthread-safety",
+    ],
+    shared_libs: [
+        "libcutils",
+    ],
+    relative_install_path: "soundfx",
+    visibility: [
+        "//hardware/interfaces/audio/aidl/default:__subpackages__",
+    ],
+}
