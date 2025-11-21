@@ -34,16 +34,6 @@
          Do not set this to true for production devices. Doing so will cause you to fail CTS. -->
     <bool name="config_disableUsbPermissionDialogs">true</bool>
 
-    <!-- Control the behavior when the user long presses the power button.
-            0 - Nothing
-            1 - Global actions menu
-            2 - Power off (with confirmation)
-            3 - Power off (without confirmation)
-            4 - Go to voice assist
-            5 - Go to assistant (Settings.Secure.ASSISTANT)
-    -->
-    <integer name="config_longPressOnPowerBehavior">1</integer>
-
     <!-- CEC Configuration -->
     <bool name="config_cecTvSendStandbyOnSleepEnabled_default">false</bool>
     <bool name="config_cecTvSendStandbyOnSleepDisabled_default">true</bool>
