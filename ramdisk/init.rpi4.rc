@@ -4,4 +4,7 @@ on init
     symlink /sdcard /storage/sdcard0
 
 on fs
-    mount_all /vendor/etc/fstab.rpi4
+    mount_all /vendor/etc/fstab.rpi4 --early
+
+on late-fs
+    mount_all /vendor/etc/fstab.rpi4 --late
