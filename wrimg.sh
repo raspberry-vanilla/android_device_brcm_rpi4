@@ -122,8 +122,8 @@ if [ -z $1 ]; then
   find_device
   confirm ${TARGET} "boot, system, and vendor"
   write_partition boot 1
-  write_partition system 2
-  write_partition vendor 3
+  write_partition system 5
+  write_partition vendor 6
   finish
 elif [ ! -z $1 ] && [ $1 == "boot" ]; then
   find_device
