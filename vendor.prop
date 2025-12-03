@@ -48,8 +48,6 @@ persist.vendor.ffmpeg_codec2.v4l2.h264=false
 persist.vendor.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
-ro.hardware.egl=mesa
-ro.opengles.version=196609
 vendor.hwc.drm.ctm=DRM_OR_IGNORE
 vendor.hwc.drm.disable_hdr=1
 vendor.hwc.drm.force_mode=1920x1080

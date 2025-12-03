@@ -109,10 +109,7 @@ PRODUCT_PACKAGES += \
     com.android.hardware.graphics.composer.drm_hwcomposer
 
 PRODUCT_PACKAGES += \
-    libEGL_mesa \
-    libGLESv1_CM_mesa \
-    libGLESv2_mesa \
-    libgallium_dri
+    com.android.hardware.egl.mesa
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.opengles.deqp.level-latest.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
