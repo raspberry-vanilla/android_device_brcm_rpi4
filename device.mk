@@ -103,25 +103,10 @@ PRODUCT_PACKAGES += \
 
 # Graphics
 PRODUCT_PACKAGES += \
-    com.android.hardware.graphics.allocator.minigbm_gbm_mesa
-
-PRODUCT_PACKAGES += \
-    com.android.hardware.graphics.composer.drm_hwcomposer
-
-PRODUCT_PACKAGES += \
-    com.android.hardware.egl.mesa
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.opengles.deqp.level-latest.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
-
-PRODUCT_PACKAGES += \
+    com.android.hardware.egl.mesa \
+    com.android.hardware.graphics.allocator.minigbm_gbm_mesa \
+    com.android.hardware.graphics.composer.drm_hwcomposer \
     com.android.hardware.vulkan.broadcom
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.compute.xml \
-    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.level.xml \
-    frameworks/native/data/etc/android.hardware.vulkan.version-1_3.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version.xml \
-    frameworks/native/data/etc/android.software.vulkan.deqp.level-latest.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml
 
 # Health
 PRODUCT_PACKAGES += \
