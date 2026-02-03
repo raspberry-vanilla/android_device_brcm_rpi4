@@ -32,8 +32,10 @@ PRODUCT_COPY_FILES += \
     device/google/atv/products/bootanimations/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
 
 # Keylayout
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/keylayout/Generic-tv.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
+PRODUCT_PACKAGES += \
+    atv_generic_keylayout_rpi
+
+$(call soong_config_set_bool,rpi_keylayout,use_atv_generic_keylayout_rpi,true)
 
 # Overlays
 PRODUCT_PACKAGES += \

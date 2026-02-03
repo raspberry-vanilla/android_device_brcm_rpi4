@@ -21,8 +21,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml
 
 # Keylayout
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
+PRODUCT_PACKAGES += \
+    generic_keylayout_rpi
+
+$(call soong_config_set_bool,rpi_keylayout,use_generic_keylayout_rpi,true)
 
 # Large screen
 $(call inherit-product, $(SRC_TARGET_DIR)/product/large_screen_common.mk)

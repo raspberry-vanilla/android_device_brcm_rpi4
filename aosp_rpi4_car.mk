@@ -88,8 +88,10 @@ PRODUCT_COPY_FILES += \
 include packages/services/Car/cpp/evs/apps/sepolicy/evsapp.mk
 
 # Keylayout
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/keylayout/Generic.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Generic.kl
+PRODUCT_PACKAGES += \
+    generic_keylayout_rpi
+
+$(call soong_config_set_bool,rpi_keylayout,use_generic_keylayout_rpi,true)
 
 # Occupant awareness
 PRODUCT_PACKAGES += \

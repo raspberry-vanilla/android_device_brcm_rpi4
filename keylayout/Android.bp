@@ -1,0 +1,25 @@
+// Copyright (C) 2021-2022 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+prebuilt_usr_keylayout {
+    name: "generic_keylayout_rpi",
+    vendor: true,
+    srcs: ["Generic.kl"],
+    enabled: select(soong_config_variable("rpi_keylayout", "use_generic_keylayout_rpi"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_usr_keylayout {
+    name: "atv_generic_keylayout_rpi",
+    vendor: true,
+    filename: "Generic.kl",
+    src: "Generic-tv.kl",
+    overrides: ["atv_generic_keylayout"],
+    enabled: select(soong_config_variable("rpi_keylayout", "use_atv_generic_keylayout_rpi"), {
+        true: true,
+        default: false,
+    }),
+}
