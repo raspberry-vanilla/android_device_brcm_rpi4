@@ -18,7 +18,7 @@ prebuilt_etc {
 }
 
 apex {
-    name: "com.android.hardware.suspend_blocker.rpi4",
+    name: "com.android.hardware.suspend_blocker.rpi",
     manifest: "apex_manifest.json",
     file_contexts: "apex_file_contexts",
     key: "com.android.hardware.key",

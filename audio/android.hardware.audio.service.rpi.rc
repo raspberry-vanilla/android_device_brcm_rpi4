@@ -1,4 +1,4 @@
-service vendor.audio-rpi /apex/com.android.hardware.audio.rpi4/bin/hw/android.hardware.audio.service.rpi
+service vendor.audio-rpi /apex/com.android.hardware.audio.rpi/bin/hw/android.hardware.audio.service.rpi
     class hal
     user audioserver
     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
@@ -10,7 +10,7 @@ service vendor.audio-rpi /apex/com.android.hardware.audio.rpi4/bin/hw/android.ha
     task_profiles ProcessCapacityHigh HighPerformance
     onrestart restart audioserver
 
-service vendor.audio-effect-rpi /apex/com.android.hardware.audio.rpi4/bin/hw/android.hardware.audio.effect.service.rpi
+service vendor.audio-effect-rpi /apex/com.android.hardware.audio.rpi/bin/hw/android.hardware.audio.effect.service.rpi
     class hal
     user audioserver
     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)

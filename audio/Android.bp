@@ -219,7 +219,7 @@ prebuilt_etc {
 }
 
 apex {
-    name: "com.android.hardware.audio.rpi4",
+    name: "com.android.hardware.audio.rpi",
     manifest: "manifest.json",
     file_contexts: "file_contexts",
     key: "com.android.hardware.key",

@@ -3,7 +3,7 @@ on property:apex.all.ready=true
     mkdir /data/vendor/wifi/wpa 0770 wifi wifi
     mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
 
-service wpa_supplicant /apex/com.android.hardware.wifi.supplicant.rpi4/bin/hw/wpa_supplicant \
+service wpa_supplicant /apex/com.android.hardware.wifi.supplicant.rpi/bin/hw/wpa_supplicant \
     -O/data/vendor/wifi/wpa/sockets -dd \
     -g@android:wpa_wlan0
     interface aidl android.hardware.wifi.supplicant.ISupplicant/default

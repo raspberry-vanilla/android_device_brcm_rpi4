@@ -18,7 +18,7 @@ PRODUCT_SHIPPING_API_LEVEL := 36
 
 # Audio
 PRODUCT_PACKAGES += \
-    com.android.hardware.audio.rpi4
+    com.android.hardware.audio.rpi
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/audio/audio_effects_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects_config.xml \
@@ -31,7 +31,7 @@ PRODUCT_COPY_FILES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    com.android.hardware.bluetooth.rpi4
+    com.android.hardware.bluetooth.rpi
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
@@ -39,7 +39,7 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    com.android.hardware.camera.external.rpi4
+    com.android.hardware.camera.external.rpi
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/camera/external/external_camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/external_camera_config.xml
@@ -68,8 +68,8 @@ PRODUCT_COPY_FILES += \
 
 # CEC
 PRODUCT_PACKAGES += \
-    com.android.hardware.tv.hdmi.cec.rpi4 \
-    com.android.hardware.tv.hdmi.connection.rpi4
+    com.android.hardware.tv.hdmi.cec.rpi \
+    com.android.hardware.tv.hdmi.connection.rpi
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.hdmi.cec.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hdmi.cec.xml
@@ -106,7 +106,7 @@ PRODUCT_PACKAGES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    com.android.hardware.health.rpi4
+    com.android.hardware.health.rpi
 
 # Kernel
 PRODUCT_COPY_FILES += \
@@ -121,7 +121,7 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    com.android.hardware.light.rpi4
+    com.android.hardware.light.rpi
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -155,7 +155,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Suspend
 PRODUCT_PACKAGES += \
-    com.android.hardware.suspend_blocker.rpi4
+    com.android.hardware.suspend_blocker.rpi
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -168,7 +168,7 @@ PRODUCT_COPY_FILES += \
 # USB
 PRODUCT_PACKAGES += \
     com.android.hardware.usb \
-    com.android.hardware.usb.gadget.rpi4
+    com.android.hardware.usb.gadget.rpi
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.accessory.xml \
@@ -190,8 +190,8 @@ $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk
 # Wifi
 PRODUCT_PACKAGES += \
     com.android.hardware.wifi \
-    com.android.hardware.wifi.hostapd.rpi4 \
-    com.android.hardware.wifi.supplicant.rpi4 \
+    com.android.hardware.wifi.hostapd.rpi \
+    com.android.hardware.wifi.supplicant.rpi \
     libwpa_client \
     wificond
 

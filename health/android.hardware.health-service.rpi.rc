@@ -1,4 +1,4 @@
-service vendor.health-rpi /apex/com.android.hardware.health.rpi4/bin/hw/android.hardware.health-service.rpi
+service vendor.health-rpi /apex/com.android.hardware.health.rpi/bin/hw/android.hardware.health-service.rpi
     class hal
     user system
     group system

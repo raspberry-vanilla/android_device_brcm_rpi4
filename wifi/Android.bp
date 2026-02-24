@@ -30,7 +30,7 @@ prebuilt_etc {
 }
 
 apex {
-    name: "com.android.hardware.wifi.hostapd.rpi4",
+    name: "com.android.hardware.wifi.hostapd.rpi",
     manifest: "apex_manifest_hostapd.json",
     file_contexts: "apex_file_contexts_hostapd",
     key: "com.android.hardware.key",
@@ -48,7 +48,7 @@ apex {
 }
 
 apex {
-    name: "com.android.hardware.wifi.supplicant.rpi4",
+    name: "com.android.hardware.wifi.supplicant.rpi",
     manifest: "apex_manifest_supplicant.json",
     file_contexts: "apex_file_contexts_supplicant",
     key: "com.android.hardware.key",

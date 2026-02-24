@@ -1,4 +1,4 @@
-service vendor.camera.provider-ext /apex/com.android.hardware.camera.external.rpi4/bin/hw/android.hardware.camera.provider-V1-external-service
+service vendor.camera.provider-ext /apex/com.android.hardware.camera.external.rpi/bin/hw/android.hardware.camera.provider-V1-external-service
     interface aidl android.hardware.camera.provider.ICameraProvider/external/0
     class hal
     user cameraserver

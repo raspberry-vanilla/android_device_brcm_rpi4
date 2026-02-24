@@ -33,7 +33,7 @@ prebuilt_etc {
 }
 
 apex {
-    name: "com.android.hardware.light.rpi4",
+    name: "com.android.hardware.light.rpi",
     manifest: "apex_manifest.json",
     file_contexts: "apex_file_contexts",
     key: "com.android.hardware.key",
