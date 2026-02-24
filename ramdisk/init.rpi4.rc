@@ -1,10 +1,10 @@
-import /vendor/etc/init/hw/init.rpi4.usb.rc
+import /vendor/etc/init/hw/init.${ro.hardware}.usb.rc
 
 on init
     symlink /sdcard /storage/sdcard0
 
 on fs
-    mount_all /vendor/etc/fstab.rpi4 --early
+    mount_all /vendor/etc/fstab.${ro.hardware} --early
 
 on late-fs
-    mount_all /vendor/etc/fstab.rpi4 --late
+    mount_all /vendor/etc/fstab.${ro.hardware} --late
