@@ -12,9 +12,8 @@ persist.vendor.ffmpeg_codec2.v4l2.h264   u:object_r:vendor_ffmpeg_config_prop:s0
 persist.vendor.ffmpeg_codec2.v4l2.h265   u:object_r:vendor_ffmpeg_config_prop:s0
 
 # Graphics
-vendor.hwc.drm.ctm          u:object_r:vendor_hwc_config_prop:s0
-vendor.hwc.drm.disable_hdr  u:object_r:vendor_hwc_config_prop:s0
-vendor.hwc.drm.force_mode   u:object_r:vendor_hwc_config_prop:s0
+vendor.hwc.drm.ctm         u:object_r:vendor_hwc_config_prop:s0
+vendor.hwc.drm.force_mode  u:object_r:vendor_hwc_config_prop:s0
 
 # V4L2
 persist.vendor.v4l2_codec2.rank.decoder  u:object_r:vendor_v4l2_config_prop:s0

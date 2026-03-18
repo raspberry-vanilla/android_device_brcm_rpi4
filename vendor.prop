@@ -49,7 +49,6 @@ persist.vendor.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
 vendor.hwc.drm.ctm=DRM_OR_IGNORE
-vendor.hwc.drm.disable_hdr=1
 vendor.hwc.drm.force_mode=1920x1080
 
 # Lockscreen
