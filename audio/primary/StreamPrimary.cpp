@@ -134,7 +134,11 @@ StreamPrimary::StreamPrimary(StreamContext* context, const Metadata& metadata)
 }
 
 ::android::status_t StreamPrimary::refinePosition(StreamDescriptor::Position* position) {
-    RETURN_STATUS_IF_ERROR(StreamAlsa::refinePosition(position));
+    const bool refinePosition =
+            GetBoolProperty("persist.vendor.audio.refine_position", true);
+    if (refinePosition) {
+        RETURN_STATUS_IF_ERROR(StreamAlsa::refinePosition(position));
+    }
     return ::android::OK;
 }
 
