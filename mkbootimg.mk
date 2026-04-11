@@ -9,7 +9,7 @@ KERNEL_PATH := device/brcm/rpi4-kernel
 VENDOR_PATH := vendor/brcm
 
 RPI_BOOT_OUT := $(PRODUCT_OUT)/rpiboot
-$(RPI_BOOT_OUT): $(INSTALLED_RAMDISK_TARGET)
+$(RPI_BOOT_OUT): $(INSTALLED_RAMDISK_TARGET) $(KERNEL_PATH)/Image
 	mkdir -p $(RPI_BOOT_OUT)
 	mkdir -p $(RPI_BOOT_OUT)/overlays
 	cp $(DEVICE_PATH)/boot/* $(RPI_BOOT_OUT)
