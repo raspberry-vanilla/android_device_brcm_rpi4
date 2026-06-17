@@ -76,6 +76,9 @@ ndk::ScopedAStatus HealthImpl::getBatteryHealthData(BatteryHealthData* out) {
     out->batterySerialNumber =
             "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f";
     out->batteryPartStatus = BatteryPartStatus::ORIGINAL;
+    out->batteryManufacturer = "Raspberry Pi";
+    out->batteryModelName = "Raspberry Pi fake battery";
+    out->batteryVoltageMinDesignUv = 5000000;
     return ndk::ScopedAStatus::ok();
 }
 

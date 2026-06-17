@@ -17,7 +17,7 @@ cc_binary {
         "libhealthloop",
     ],
     shared_libs: [
-        "android.hardware.health-V4-ndk",
+        "android.hardware.health-V5-ndk",
         "libbase",
         "libbinder_ndk",
         "libcutils",
