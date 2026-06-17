@@ -14,7 +14,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
-$(call enforce-product-packages-exist,com.android.ranging)
+$(call enforce-product-packages-exist,com.android.ranging vendor_tracing_descriptors)
 
 # Freeform windows
 PRODUCT_COPY_FILES += \

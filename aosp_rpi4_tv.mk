@@ -13,7 +13,7 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_CHARACTERISTICS := tv
 
 $(call inherit-product, device/google/atv/products/atv_base.mk)
-$(call enforce-product-packages-exist,com.android.ranging)
+$(call enforce-product-packages-exist,com.android.ranging vendor_tracing_descriptors)
 
 # Android TV
 PRODUCT_PACKAGES += \
