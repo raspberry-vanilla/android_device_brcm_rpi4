@@ -35,6 +35,9 @@ class ModuleAlsa : public Module {
     ndk::ScopedAStatus populateConnectedDevicePort(
             ::aidl::android::media::audio::common::AudioPort* audioPort,
             int32_t nextPortId) override;
+
+    virtual bool isDevicePortSupportAmbisonics(
+            const ::aidl::android::media::audio::common::AudioPort& audioPort);
 };
 
 }  // namespace aidl::android::hardware::audio::core

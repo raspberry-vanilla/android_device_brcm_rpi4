@@ -19,6 +19,8 @@
 #include "dsp/core/dynamic_range_compression.h"
 #include <system/audio.h>
 
+#include <cmath>
+
 namespace le_fx {
 
 AdaptiveDynamicRangeCompression::AdaptiveDynamicRangeCompression() {

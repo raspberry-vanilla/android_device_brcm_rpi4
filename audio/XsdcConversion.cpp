@@ -19,12 +19,13 @@
 #include <unordered_set>
 
 #define LOG_TAG "AHAL_Config"
-#include <android-base/logging.h>
+#include <Log.h>
 #include <android-base/strings.h>
 #include <android/binder_enums.h>
 
 #include <aidl/android/media/audio/common/AudioPort.h>
 #include <aidl/android/media/audio/common/AudioPortConfig.h>
+#include <aidl/android/media/audio/common/AudioProductStrategyType.h>
 #include <media/AidlConversionCppNdk.h>
 #include <media/TypeConverter.h>
 #include <media/convert.h>
@@ -59,6 +60,7 @@ using aidl::android::media::audio::common::AudioPortConfig;
 using aidl::android::media::audio::common::AudioPortDeviceExt;
 using aidl::android::media::audio::common::AudioPortExt;
 using aidl::android::media::audio::common::AudioPortMixExt;
+using aidl::android::media::audio::common::AudioProductStrategyType;
 using aidl::android::media::audio::common::AudioProfile;
 using aidl::android::media::audio::common::AudioSource;
 using aidl::android::media::audio::common::AudioStreamType;
@@ -284,7 +286,14 @@ ConversionResult<int> convertGainModeToAidl(const std::vector<ap_xsd::AudioGainM
             gainModeMask |= static_cast<int>(legacyGainMode);
         }
     }
-    return gainModeMask;
+    ConversionResult<int> result = legacy2aidl_audio_gain_mode_t_int32_t_mask(
+            static_cast<audio_gain_mode_t>(gainModeMask));
+    if (!result.ok()) {
+        LOG(ERROR) << __func__ << " Review Audio Policy config, " << gainModeMask
+                   << " has invalid gain mode(s).";
+        return unexpected(BAD_VALUE);
+    }
+    return result;
 }
 
 ConversionResult<AudioChannelLayout> convertChannelMaskToAidl(
@@ -817,21 +826,21 @@ ConversionResult<AudioHalVolumeCurve::CurvePoint> convertCurvePointToAidl(
     return aidlCurvePoint;
 }
 
-/**
- * The hard coded id must be in sync with policy.h definition of legacy strategy ids.
- */
 std::unordered_map<std::string, int> getLegacyProductStrategyMap() {
 #define STRATEGY_ENTRY(name, id) {"STRATEGY_" #name, static_cast<int>(id)}
 
-        return {STRATEGY_ENTRY(MEDIA, 5),
-                STRATEGY_ENTRY(PHONE, 0),
-                STRATEGY_ENTRY(SONIFICATION, 1),
-                STRATEGY_ENTRY(SONIFICATION_RESPECTFUL, 4),
-                STRATEGY_ENTRY(DTMF, 6),
-                STRATEGY_ENTRY(ENFORCED_AUDIBLE, 2),
-                STRATEGY_ENTRY(CALL_ASSISTANT, 7),
-                STRATEGY_ENTRY(TRANSMITTED_THROUGH_SPEAKER,8),
-                STRATEGY_ENTRY(ACCESSIBILITY, 3)};
+    return {STRATEGY_ENTRY(MEDIA, AudioProductStrategyType::MEDIA),
+            STRATEGY_ENTRY(PHONE, AudioProductStrategyType::PHONE),
+            STRATEGY_ENTRY(SONIFICATION, AudioProductStrategyType::SONIFICATION),
+            STRATEGY_ENTRY(SONIFICATION_RESPECTFUL,
+                           AudioProductStrategyType::SONIFICATION_RESPECTFUL),
+            STRATEGY_ENTRY(DTMF, AudioProductStrategyType::DTMF),
+            STRATEGY_ENTRY(ENFORCED_AUDIBLE, AudioProductStrategyType::ENFORCED_AUDIBLE),
+            STRATEGY_ENTRY(CALL_ASSISTANT, AudioProductStrategyType::CALL_ASSISTANT),
+            STRATEGY_ENTRY(TRANSMITTED_THROUGH_SPEAKER,
+                           AudioProductStrategyType::TRANSMITTED_THROUGH_SPEAKER),
+            STRATEGY_ENTRY(ACCESSIBILITY, AudioProductStrategyType::ACCESSIBILITY),
+            STRATEGY_ENTRY(ASSISTANT, AudioProductStrategyType::ASSISTANT)};
 #undef STRATEGY_ENTRY
 }
 

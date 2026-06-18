@@ -1,4 +1,5 @@
-// Signature format: 2.0
+// Signature format: 6.0
+// - style=java
 package android.audio.policy.capengine.configuration {
 
   public class BitParameterBlockType {

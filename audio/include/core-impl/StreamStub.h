@@ -39,7 +39,7 @@ class StreamInStub final : public StreamIn, public StreamStub {
     void onClose(StreamDescriptor::State) override { defaultOnClose(); }
 };
 
-class StreamOutStub final : public StreamOut, public StreamStub {
+class StreamOutStub : public StreamOut, public StreamStub {
   public:
     friend class ndk::SharedRefBase;
     StreamOutStub(StreamContext&& context,
@@ -49,6 +49,18 @@ class StreamOutStub final : public StreamOut, public StreamStub {
 
   private:
     void onClose(StreamDescriptor::State) override { defaultOnClose(); }
+};
+
+class StreamOutTelephonyStub final : public StreamOutStub, public StreamOutHwVolumeHelper {
+  public:
+    StreamOutTelephonyStub(
+            StreamContext&& context,
+            const ::aidl::android::hardware::audio::common::SourceMetadata& sourceMetadata,
+            const std::optional<::aidl::android::media::audio::common::AudioOffloadInfo>&
+                    offloadInfo);
+
+    ndk::ScopedAStatus getHwVolume(std::vector<float>* _aidl_return) override;
+    ndk::ScopedAStatus setHwVolume(const std::vector<float>& in_channelVolumes) override;
 };
 
 }  // namespace aidl::android::hardware::audio::core

@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHAL_UsbAlsaMixerControl"
-#include <android-base/logging.h>
+#include <Log.h>
 
 #include <android/binder_status.h>
 

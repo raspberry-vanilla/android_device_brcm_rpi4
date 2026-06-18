@@ -18,8 +18,8 @@
 
 #include "core-impl/SoundDose.h"
 
+#include <Log.h>
 #include <aidl/android/hardware/audio/core/sounddose/ISoundDose.h>
-#include <android-base/logging.h>
 #include <media/AidlConversionCppNdk.h>
 #include <utils/Timers.h>
 

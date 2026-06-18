@@ -473,9 +473,8 @@ RetCode DynamicsProcessingContext::setDpChannelBand_l(const std::any& anyConfig,
         case StageType::POSTEQ: {
             dp_fx::DPEq* dp;
             const auto& config = std::any_cast<DynamicsProcessing::EqBandConfig>(anyConfig);
-            RETURN_VALUE_IF(
-                    nullptr == (dp = getEqWithType_l(type, config.channel)) || !dp->isEnabled(),
-                    RetCode::ERROR_ILLEGAL_PARAMETER, "dpEqNotExist");
+            RETURN_VALUE_IF(nullptr == (dp = getEqWithType_l(type, config.channel)),
+                            RetCode::ERROR_ILLEGAL_PARAMETER, "dpEqNotExist");
             dp_fx::DPEqBand band;
             band.init(config.enable, config.cutoffFrequencyHz, config.gainDb);
             dp->setBand(config.band, band);
@@ -485,7 +484,7 @@ RetCode DynamicsProcessingContext::setDpChannelBand_l(const std::any& anyConfig,
         case StageType::MBC: {
             dp_fx::DPMbc* dp;
             const auto& config = std::any_cast<DynamicsProcessing::MbcBandConfig>(anyConfig);
-            RETURN_VALUE_IF(nullptr == (dp = getMbc_l(config.channel)) || !dp->isEnabled(),
+            RETURN_VALUE_IF(nullptr == (dp = getMbc_l(config.channel)),
                             RetCode::ERROR_ILLEGAL_PARAMETER, "dpMbcNotExist");
             dp_fx::DPMbcBand band;
             band.init(config.enable, config.cutoffFrequencyHz, config.attackTimeMs,

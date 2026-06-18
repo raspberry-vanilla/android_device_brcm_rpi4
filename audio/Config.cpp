@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHAL_Config"
-#include <android-base/logging.h>
+#include <Log.h>
 
 #include <system/audio_config.h>
 

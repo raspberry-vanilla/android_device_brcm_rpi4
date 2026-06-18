@@ -1,13 +1,44 @@
-// Signature format: 2.0
+// Signature format: 6.0
+// - style=java
 package android.audio.policy.configuration {
 
   public class AttachedDevices {
     ctor public AttachedDevices();
-    method @Nullable public java.util.List<java.lang.String> getItem();
+    method @Nullable public java.util.List<String> getItem();
   }
 
   public enum AudioChannelMask {
     method @NonNull public String getRawName();
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_0;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_0_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_1;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_10;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_10_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_11;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_11_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_12;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_12_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_13;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_13_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_14;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_14_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_1_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_2;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_2_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_3;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_3_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_4;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_4_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_5;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_5_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_6;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_6_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_7;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_7_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_8;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_8_HRZ;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_9;
+    enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_ACN_ORDER_9_HRZ;
     enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_INDEX_MASK_1;
     enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_INDEX_MASK_10;
     enum_constant public static final android.audio.policy.configuration.AudioChannelMask AUDIO_CHANNEL_INDEX_MASK_11;
@@ -91,6 +122,8 @@ package android.audio.policy.configuration {
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_ANLG_DOCK_HEADSET;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_AUX_DIGITAL;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BACK_MIC;
+    enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BLE_CENTRAL;
+    enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BLE_CENTRAL_BROADCAST;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BLE_HEADSET;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BLUETOOTH_A2DP;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_IN_BLUETOOTH_BLE;
@@ -124,7 +157,9 @@ package android.audio.policy.configuration {
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_AUX_DIGITAL;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_AUX_LINE;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLE_BROADCAST;
+    enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLE_CENTRAL;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLE_HEADSET;
+    enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLE_HEARING_AID;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLE_SPEAKER;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLUETOOTH_A2DP;
     enum_constant public static final android.audio.policy.configuration.AudioDevice AUDIO_DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES;
@@ -200,6 +235,7 @@ package android.audio.policy.configuration {
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APE;
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX;
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX_ADAPTIVE;
+    enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX_ADAPTIVE_PLUS;
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX_ADAPTIVE_QLEA;
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX_ADAPTIVE_R4;
     enum_constant public static final android.audio.policy.configuration.AudioFormat AUDIO_FORMAT_APTX_HD;
@@ -373,7 +409,7 @@ package android.audio.policy.configuration {
   public static class DevicePorts.DevicePort {
     ctor public DevicePorts.DevicePort();
     method @Nullable public String getAddress();
-    method @Nullable public java.util.List<java.lang.String> getEncodedFormats();
+    method @Nullable public java.util.List<String> getEncodedFormats();
     method @Nullable public android.audio.policy.configuration.Gains getGains();
     method @Nullable public java.util.List<android.audio.policy.configuration.Profile> getProfile();
     method @Nullable public android.audio.policy.configuration.Role getRole();
@@ -381,7 +417,7 @@ package android.audio.policy.configuration {
     method @Nullable public String getType();
     method @Nullable public boolean get_default();
     method public void setAddress(@Nullable String);
-    method public void setEncodedFormats(@Nullable java.util.List<java.lang.String>);
+    method public void setEncodedFormats(@Nullable java.util.List<String>);
     method public void setGains(@Nullable android.audio.policy.configuration.Gains);
     method public void setRole(@Nullable android.audio.policy.configuration.Role);
     method public void setTagName(@Nullable String);
@@ -504,7 +540,7 @@ package android.audio.policy.configuration {
   public class Reference {
     ctor public Reference();
     method @Nullable public String getName();
-    method @Nullable public java.util.List<java.lang.String> getPoint();
+    method @Nullable public java.util.List<String> getPoint();
     method public void setName(@Nullable String);
   }
 
@@ -537,9 +573,9 @@ package android.audio.policy.configuration {
   public static class SurroundFormats.Format {
     ctor public SurroundFormats.Format();
     method @Nullable public String getName();
-    method @Nullable public java.util.List<java.lang.String> getSubformats();
+    method @Nullable public java.util.List<String> getSubformats();
     method public void setName(@Nullable String);
-    method public void setSubformats(@Nullable java.util.List<java.lang.String>);
+    method public void setSubformats(@Nullable java.util.List<String>);
   }
 
   public class SurroundSound {
@@ -557,7 +593,7 @@ package android.audio.policy.configuration {
   public class Volume {
     ctor public Volume();
     method @Nullable public android.audio.policy.configuration.DeviceCategory getDeviceCategory();
-    method @Nullable public java.util.List<java.lang.String> getPoint();
+    method @Nullable public java.util.List<String> getPoint();
     method @Nullable public String getRef();
     method @Nullable public android.audio.policy.configuration.AudioStreamType getStream();
     method public void setDeviceCategory(@Nullable android.audio.policy.configuration.DeviceCategory);

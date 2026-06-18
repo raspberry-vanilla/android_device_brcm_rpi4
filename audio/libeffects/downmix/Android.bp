@@ -8,15 +8,15 @@ cc_library_shared {
     relative_install_path: "soundfx",
     vendor: true,
     srcs: [
-        ":effectCommonFileRpi",
         "aidl/DownmixContext.cpp",
         "aidl/EffectDownmix.cpp",
     ],
+    static_libs: [
+        "libaudioeffectaidlcommon-rpi",
+    ],
     shared_libs: [
-        "android.hardware.audio.effect-V3-ndk",
         "android.hardware.common-V2-ndk",
         "android.hardware.common.fmq-V1-ndk",
-        "android.media.audio.common.types-V4-ndk",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioaidlcommon",
         "libaudioutils",
@@ -40,5 +40,9 @@ cc_library_shared {
         "-Werror",
         "-Wextra",
         "-Wthread-safety",
+    ],
+    defaults: [
+        "latest_android_hardware_audio_effect_ndk_shared",
+        "latest_android_media_audio_common_types_ndk_shared",
     ],
 }

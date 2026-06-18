@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHAL_OffloadStream"
-#include <android-base/logging.h>
+#include <Log.h>
 
 #include "ApeHeader.h"
 

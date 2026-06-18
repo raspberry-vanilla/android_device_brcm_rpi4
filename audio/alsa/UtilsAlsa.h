@@ -65,10 +65,12 @@ void applyGain(void* buffer, float gain, size_t bytesToTransfer, enum pcm_format
         unsigned int channelCount, int isInput);
 ::aidl::android::media::audio::common::AudioChannelLayout getChannelIndexMaskFromChannelCount(
         unsigned int channelCount);
+::aidl::android::media::audio::common::AudioChannelLayout getChannelAcnMaskFromChannelCount(
+        unsigned int channelCount);
 unsigned int getChannelCountFromChannelMask(
         const ::aidl::android::media::audio::common::AudioChannelLayout& channelMask, bool isInput);
 std::vector<::aidl::android::media::audio::common::AudioChannelLayout> getChannelMasksFromProfile(
-        const alsa_device_profile* profile);
+        const alsa_device_profile* profile, bool addAcnMasks);
 std::optional<DeviceProfile> getDeviceProfile(
         const ::aidl::android::media::audio::common::AudioDevice& audioDevice, bool isInput);
 std::optional<DeviceProfile> getDeviceProfile(

@@ -25,6 +25,7 @@
 #include <variant>
 
 #include <StreamWorker.h>
+#include <SynchronousTaskQueue.h>
 #include <Utils.h>
 #include <aidl/android/hardware/audio/common/SinkMetadata.h>
 #include <aidl/android/hardware/audio/common/SourceMetadata.h>
@@ -37,6 +38,7 @@
 #include <aidl/android/media/audio/common/AudioDevice.h>
 #include <aidl/android/media/audio/common/AudioIoFlags.h>
 #include <aidl/android/media/audio/common/AudioOffloadInfo.h>
+#include <aidl/android/media/audio/common/FlushFromFrameAccuracy.h>
 #include <aidl/android/media/audio/common/MicrophoneInfo.h>
 #include <android-base/thread_annotations.h>
 #include <error/expected_utils.h>
@@ -158,6 +160,9 @@ class StreamContext {
         return mFlags.getTag() == ::aidl::android::media::audio::common::AudioIoFlags::input;
     }
     bool isMmap() const { return ::aidl::android::hardware::audio::common::hasMmapFlag(mFlags); }
+    bool isOffload() const {
+        return ::aidl::android::hardware::audio::common::hasNonblockingOffloadFlag(mFlags);
+    }
     bool isValid() const;
     // 'reset' is called on a Binder thread when closing the stream. Does not use
     // locking because it only cleans MQ pointers which were also set on the Binder thread.
@@ -226,6 +231,12 @@ struct DriverInterface {
                                                           int32_t* /*latency*/) {
         return ::android::OK;
     }
+    // Implement 'flushFromFrame' for offload stream if it is supported.
+    virtual ::android::status_t flushFromFrame(
+            ::aidl::android::media::audio::common::FlushFromFrameAccuracy /*accuracy*/,
+            int32_t /*position*/, int32_t* /*flushFromPosition*/) {
+        return ::android::INVALID_OPERATION;
+    }
     virtual void shutdown() = 0;  // This function is only called once.
 };
 
@@ -260,6 +271,9 @@ class StreamWorkerCommonLogic : public ::android::hardware::audio::common::Strea
     void populateReply(StreamDescriptor::Reply* reply, bool isConnected) const;
     void populateReplyWrongState(StreamDescriptor::Reply* reply,
                                  const StreamDescriptor::Command& command) const;
+    void populateReplyUnsupportedCommand(StreamDescriptor::Reply* reply,
+                                         const StreamDescriptor::Command& command) const;
+    void switchFromTransientState(StreamDescriptor::State state);
     void switchToTransientState(StreamDescriptor::State state) {
         mState = state;
         mTransientStateStart = std::chrono::steady_clock::now();
@@ -349,6 +363,8 @@ class StreamOutWorkerLogic : public StreamWorkerCommonLogic {
     void onClipStateChange(size_t clipFramesLeft, bool hasNextClip) override;
 
   private:
+    void onBufferStateChangeImpl(size_t bufferFramesLeft);
+    void onClipStateChangeImpl(size_t clipFramesLeft, bool hasNextClip);
     bool write(size_t clientSize, StreamDescriptor::Reply* reply);
     bool writeMmap(StreamDescriptor::Reply* reply);
 
@@ -356,6 +372,9 @@ class StreamOutWorkerLogic : public StreamWorkerCommonLogic {
 
     enum DrainState : int32_t { NONE, ALL, EN /*early notify*/, EN_SENT };
     std::atomic<DrainState> mDrainState = DrainState::NONE;
+    ::android::hardware::audio::common::SynchronousTaskQueue<
+            ::android::hardware::audio::common::PostponedMethodCall<StreamOutWorkerLogic>>
+            mCallTasks;
 };
 using StreamOutWorker = StreamWorkerImpl<StreamOutWorkerLogic>;
 
@@ -386,6 +405,7 @@ struct StreamCommonInterface {
     virtual ndk::ScopedAStatus removeEffect(
             const std::shared_ptr<::aidl::android::hardware::audio::effect::IEffect>&
                     in_effect) = 0;
+    virtual ndk::ScopedAStatus createMmapBuffer(MmapBufferDescriptor* _aidl_return) = 0;
     // Methods below are common for both 'IStreamIn' and 'IStreamOut'. Note that
     // 'updateMetadata' in them uses an individual structure which is wrapped here.
     // The 'Common' suffix is added to distinguish them from the methods from 'IStreamIn/Out'.
@@ -456,6 +476,11 @@ class StreamCommonDelegator : public BnStreamCommon {
         return delegate != nullptr ? delegate->removeEffect(in_effect)
                                    : ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_STATE);
     }
+    ndk::ScopedAStatus createMmapBuffer(MmapBufferDescriptor* _aidl_return) override {
+        auto delegate = mDelegate.lock();
+        return delegate != nullptr ? delegate->createMmapBuffer(_aidl_return)
+                                   : ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_STATE);
+    }
     // It is possible that on the client side the proxy for IStreamCommon will outlive
     // the IStream* instance, and the server side IStream* instance will get destroyed
     // while this IStreamCommon instance is still alive.
@@ -490,6 +515,7 @@ class StreamCommonImpl : virtual public StreamCommonInterface, virtual public Dr
     ndk::ScopedAStatus removeEffect(
             const std::shared_ptr<::aidl::android::hardware::audio::effect::IEffect>& in_effect)
             override;
+    ndk::ScopedAStatus createMmapBuffer(MmapBufferDescriptor* _aidl_return) override;
 
     ndk::ScopedAStatus getStreamCommonCommon(std::shared_ptr<IStreamCommon>* _aidl_return) override;
     ndk::ScopedAStatus updateMetadataCommon(const Metadata& metadata) override;
@@ -588,9 +614,7 @@ class StreamOut : virtual public StreamCommonInterface, public BnStreamOut {
     }
     ndk::ScopedAStatus updateMetadata(
             const ::aidl::android::hardware::audio::common::SourceMetadata& in_sourceMetadata)
-            override {
-        return updateMetadataCommon(in_sourceMetadata);
-    }
+            override;
     ndk::ScopedAStatus updateOffloadMetadata(
             const ::aidl::android::hardware::audio::common::AudioOffloadMetadata&
                     in_offloadMetadata) override;
@@ -619,6 +643,8 @@ class StreamOut : virtual public StreamCommonInterface, public BnStreamOut {
     StreamOut(StreamContext&& context,
               const std::optional<::aidl::android::media::audio::common::AudioOffloadInfo>&
                       offloadInfo);
+    ndk::ScopedAStatus validateMetadata(
+            const ::aidl::android::hardware::audio::common::SourceMetadata& sourceMetadata);
 
     StreamContext mContextInstance;
     const std::optional<::aidl::android::media::audio::common::AudioOffloadInfo> mOffloadInfo;

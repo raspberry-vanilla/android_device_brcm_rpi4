@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHAL_Bluetooth"
-#include <android-base/logging.h>
+#include <Log.h>
 
 #include "core-impl/Bluetooth.h"
 
@@ -31,30 +31,37 @@ Bluetooth::Bluetooth() {
     mScoConfig.isNrecEnabled = Boolean{false};
     mScoConfig.mode = ScoConfig::Mode::SCO;
     mHfpConfig.isEnabled = Boolean{false};
-    mHfpConfig.sampleRate = Int{8000};
+    mHfpConfig.sampleRate = Int{32000};
     mHfpConfig.volume = Float{HfpConfig::VOLUME_MAX};
 }
 
 ndk::ScopedAStatus Bluetooth::setScoConfig(const ScoConfig& in_config, ScoConfig* _aidl_return) {
+    bool updated = false;
     if (in_config.isEnabled.has_value()) {
         mScoConfig.isEnabled = in_config.isEnabled;
+        updated = true;
     }
     if (in_config.isNrecEnabled.has_value()) {
         mScoConfig.isNrecEnabled = in_config.isNrecEnabled;
+        updated = true;
     }
     if (in_config.mode != ScoConfig::Mode::UNSPECIFIED) {
         mScoConfig.mode = in_config.mode;
+        updated = true;
     }
     if (in_config.debugName.has_value()) {
         mScoConfig.debugName = in_config.debugName;
+        updated = true;
     }
     *_aidl_return = mScoConfig;
     LOG(DEBUG) << __func__ << ": received " << in_config.toString() << ", returning "
                << _aidl_return->toString();
+    if (updated && mHandler) return mHandler();
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Bluetooth::setHfpConfig(const HfpConfig& in_config, HfpConfig* _aidl_return) {
+    bool updated = false;
     if (in_config.sampleRate.has_value() && in_config.sampleRate.value().value <= 0) {
         LOG(ERROR) << __func__ << ": invalid sample rate: " << in_config.sampleRate.value().value;
         return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
@@ -67,16 +74,20 @@ ndk::ScopedAStatus Bluetooth::setHfpConfig(const HfpConfig& in_config, HfpConfig
 
     if (in_config.isEnabled.has_value()) {
         mHfpConfig.isEnabled = in_config.isEnabled;
+        updated = true;
     }
     if (in_config.sampleRate.has_value()) {
         mHfpConfig.sampleRate = in_config.sampleRate;
+        updated = true;
     }
     if (in_config.volume.has_value()) {
         mHfpConfig.volume = in_config.volume;
+        updated = true;
     }
     *_aidl_return = mHfpConfig;
     LOG(DEBUG) << __func__ << ": received " << in_config.toString() << ", returning "
                << _aidl_return->toString();
+    if (updated && mHandler) return mHandler();
     return ndk::ScopedAStatus::ok();
 }
 

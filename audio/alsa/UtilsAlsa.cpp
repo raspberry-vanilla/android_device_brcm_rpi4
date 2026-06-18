@@ -18,14 +18,14 @@
 #include <set>
 
 #define LOG_TAG "AHAL_AlsaUtils"
+#include <Log.h>
 #include <Utils.h>
 #include <aidl/android/media/audio/common/AudioFormatType.h>
 #include <aidl/android/media/audio/common/PcmType.h>
-#include <android-base/logging.h>
 #include <audio_utils/primitives.h>
 #include <cutils/compiler.h>
 
-#include "Utils.h"
+#include "UtilsAlsa.h"
 #include "core-impl/utils.h"
 
 using aidl::android::hardware::audio::common::getChannelCount;
@@ -127,6 +127,28 @@ const AudioChannelCountToMaskMap& getSupportedChannelIndexLayoutMap() {
 }
 
 #undef DEFINE_CHANNEL_INDEX_MASK
+#define DEFINE_CHANNEL_ACN_FS_MASK(n)                                  \
+    common::makeAcnAudioChannelLayout(                                 \
+            AudioChannelLayout::Ambisonics::SourceLayout::FULL_SPHERE, \
+            AudioChannelLayout::Ambisonics::FULL_SPHERE_CHANNEL_COUNT_ORDER_##n)
+#define DEFINE_CHANNEL_ACN_HZ_MASK(n)                                 \
+    common::makeAcnAudioChannelLayout(                                \
+            AudioChannelLayout::Ambisonics::SourceLayout::HORIZONTAL, \
+            AudioChannelLayout::Ambisonics::HORIZONTAL_CHANNEL_COUNT_ORDER_##n)
+
+const AudioChannelCountToMaskMap& getSupportedChannelAcnLayoutMap() {
+    static const std::set<AudioChannelLayout> supportedAcnChannelLayouts = {
+            DEFINE_CHANNEL_ACN_FS_MASK(0), DEFINE_CHANNEL_ACN_FS_MASK(1),
+            DEFINE_CHANNEL_ACN_HZ_MASK(1), DEFINE_CHANNEL_ACN_HZ_MASK(2),
+            DEFINE_CHANNEL_ACN_HZ_MASK(3),
+    };
+    static const AudioChannelCountToMaskMap acnLayouts =
+            make_ChannelCountToMaskMap(supportedAcnChannelLayouts);
+    return acnLayouts;
+}
+
+#undef DEFINE_CHANNEL_ACN_HZ_MASK
+#undef DEFINE_CHANNEL_ACN_FS_MASK
 
 AudioFormatDescription make_AudioFormatDescription(AudioFormatType type) {
     AudioFormatDescription result;
@@ -269,6 +291,11 @@ AudioChannelLayout getChannelIndexMaskFromChannelCount(unsigned int channelCount
                               getInvalidChannelLayout());
 }
 
+AudioChannelLayout getChannelAcnMaskFromChannelCount(unsigned int channelCount) {
+    return findValueOrDefault(getSupportedChannelAcnLayoutMap(), channelCount,
+                              getInvalidChannelLayout());
+}
+
 unsigned int getChannelCountFromChannelMask(const AudioChannelLayout& channelMask, bool isInput) {
     switch (channelMask.getTag()) {
         case AudioChannelLayout::Tag::layoutMask: {
@@ -281,6 +308,11 @@ unsigned int getChannelCountFromChannelMask(const AudioChannelLayout& channelMas
                                     static_cast<unsigned>(getChannelCount(channelMask)),
                                     0u /*defaultValue*/);
         }
+        case AudioChannelLayout::Tag::acnMask: {
+            return findKeyOrDefault(getSupportedChannelAcnLayoutMap(),
+                                    static_cast<unsigned>(getChannelCount(channelMask)),
+                                    0u /*defaultValue*/);
+        }
         case AudioChannelLayout::Tag::none:
         case AudioChannelLayout::Tag::invalid:
         case AudioChannelLayout::Tag::voiceMask:
@@ -289,7 +321,8 @@ unsigned int getChannelCountFromChannelMask(const AudioChannelLayout& channelMas
     }
 }
 
-std::vector<AudioChannelLayout> getChannelMasksFromProfile(const alsa_device_profile* profile) {
+std::vector<AudioChannelLayout> getChannelMasksFromProfile(const alsa_device_profile* profile,
+                                                           bool addAcnMasks) {
     const bool isInput = profile->direction == PCM_IN;
     std::vector<AudioChannelLayout> channels;
     for (size_t i = 0; i < AUDIO_PORT_MAX_CHANNEL_MASKS && profile->channel_counts[i] != 0; ++i) {
@@ -301,6 +334,12 @@ std::vector<AudioChannelLayout> getChannelMasksFromProfile(const alsa_device_pro
         auto indexMask = alsa::getChannelIndexMaskFromChannelCount(profile->channel_counts[i]);
         if (indexMask.getTag() == AudioChannelLayout::Tag::indexMask) {
             channels.push_back(indexMask);
+        }
+        if (addAcnMasks) {
+            auto acnMask = alsa::getChannelAcnMaskFromChannelCount(profile->channel_counts[i]);
+            if (acnMask.getTag() == AudioChannelLayout::Tag::acnMask) {
+                channels.push_back(acnMask);
+            }
         }
     }
     return channels;

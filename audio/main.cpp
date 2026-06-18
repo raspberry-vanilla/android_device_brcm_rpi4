@@ -20,7 +20,7 @@
 #include <vector>
 
 #define LOG_TAG "AHAL_Main"
-#include <android-base/logging.h>
+#include <Log.h>
 #include <android-base/properties.h>
 #include <android/binder_ibinder_platform.h>
 #include <android/binder_manager.h>

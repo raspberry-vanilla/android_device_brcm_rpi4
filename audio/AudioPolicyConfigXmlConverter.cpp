@@ -22,7 +22,7 @@
 #include <unordered_map>
 
 #define LOG_TAG "AHAL_ApmXmlConverter"
-#include <android-base/logging.h>
+#include <Log.h>
 
 #include <aidl/android/media/audio/common/AudioHalEngineConfig.h>
 #include <media/stagefright/foundation/MediaDefs.h>

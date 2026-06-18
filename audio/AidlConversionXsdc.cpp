@@ -15,7 +15,7 @@
  */
 
 #define LOG_TAG "AHAL_AidlXsdc"
-#include <android-base/logging.h>
+#include <Log.h>
 #include <error/expected_utils.h>
 #include <media/AidlConversionCppNdk.h>
 #include <media/TypeConverter.h>

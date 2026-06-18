@@ -31,7 +31,7 @@ class ParamChangeHandler {
     std::function<ndk::ScopedAStatus()> mHandler = nullptr;
 };
 
-class Bluetooth : public BnBluetooth {
+class Bluetooth : public BnBluetooth, public ParamChangeHandler {
   public:
     Bluetooth();
 

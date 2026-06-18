@@ -271,8 +271,10 @@
             <xs:enumeration value="AUDIO_DEVICE_OUT_BLE_HEADSET"/>
             <xs:enumeration value="AUDIO_DEVICE_OUT_BLE_SPEAKER"/>
             <xs:enumeration value="AUDIO_DEVICE_OUT_BLE_BROADCAST"/>
+            <xs:enumeration value="AUDIO_DEVICE_OUT_BLE_HEARING_AID"/>
             <xs:enumeration value="AUDIO_DEVICE_OUT_DEFAULT"/>
             <xs:enumeration value="AUDIO_DEVICE_OUT_STUB"/>
+            <xs:enumeration value="AUDIO_DEVICE_OUT_BLE_CENTRAL"/>
 
             <xs:enumeration value="AUDIO_DEVICE_IN_COMMUNICATION"/>
             <xs:enumeration value="AUDIO_DEVICE_IN_AMBIENT"/>
@@ -306,6 +308,8 @@
             <xs:enumeration value="AUDIO_DEVICE_IN_BLE_HEADSET"/>
             <xs:enumeration value="AUDIO_DEVICE_IN_DEFAULT"/>
             <xs:enumeration value="AUDIO_DEVICE_IN_STUB"/>
+            <xs:enumeration value="AUDIO_DEVICE_IN_BLE_CENTRAL"/>
+            <xs:enumeration value="AUDIO_DEVICE_IN_BLE_CENTRAL_BROADCAST"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="vendorExtension">
@@ -429,6 +433,7 @@
             <xs:enumeration value="AUDIO_FORMAT_IAMF_BASE_ENHANCED_AAC"/>
             <xs:enumeration value="AUDIO_FORMAT_IAMF_BASE_ENHANCED_PCM"/>
             <xs:enumeration value="AUDIO_FORMAT_IAMF_BASE_ENHANCED_FLAC"/>
+            <xs:enumeration value="AUDIO_FORMAT_APTX_ADAPTIVE_PLUS"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="extendableAudioFormat">
@@ -524,7 +529,37 @@
             <xs:enumeration value="AUDIO_CHANNEL_INDEX_MASK_22"/>
             <xs:enumeration value="AUDIO_CHANNEL_INDEX_MASK_23"/>
             <xs:enumeration value="AUDIO_CHANNEL_INDEX_MASK_24"/>
-        </xs:restriction>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_0"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_1"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_2"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_3"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_4"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_5"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_6"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_7"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_8"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_9"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_10"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_11"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_12"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_13"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_14"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_0_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_1_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_2_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_3_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_4_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_5_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_6_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_7_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_8_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_9_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_10_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_11_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_12_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_13_HRZ"/>
+            <xs:enumeration value="AUDIO_CHANNEL_ACN_ORDER_14_HRZ"/>
+          </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="channelMasks">
         <xs:list itemType="audioChannelMask" />

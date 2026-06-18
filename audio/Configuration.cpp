@@ -264,7 +264,7 @@ std::unique_ptr<Configuration> getPrimaryConfiguration() {
         c.ports.push_back(primaryInMix);
 
         AudioPort telephonyTxOutMix =
-                createPort(c.nextPortId++, "telephony_tx", 0, false, createPortMixExt(1, 1));
+                createPort(c.nextPortId++, kPortNameTelephonyTx, 0, false, createPortMixExt(1, 1));
         telephonyTxOutMix.profiles.insert(telephonyTxOutMix.profiles.begin(),
                                           standardPcmAudioProfiles.begin(),
                                           standardPcmAudioProfiles.end());
@@ -604,24 +604,36 @@ std::unique_ptr<Configuration> getStubConfiguration() {
 //    - profile PCM 16-bit; STEREO; 44100, 48000, 88200, 96000
 //  * "BT Hearing Aid Out", OUT_HEARING_AID, CONNECTION_WIRELESS
 //    - no profiles specified
+//  * "BLE Headset Out", OUT_HEADSET, CONNECTION_BT_LE
+//    - no profiles specified
+//  * "BLE Headset In", IN_HEADSET, CONNECTION_BT_LE
+//    - no profiles specified
 //
 // Mix ports:
 //  * "a2dp output", 1 max open, 1 max active stream
 //    - no profiles specified
 //  * "hearing aid output", 1 max open, 1 max active stream
 //    - profile PCM 16-bit; STEREO; 16000, 24000
+//  * "le audio output", 1 max open, 1 max active stream
+//    - profile PCM 16-bit; STEREO; 44100, 48000
+//  * "le audio input", 1 max open, 1 max active stream
+//    - profile PCM 16-bit; STEREO; 44100, 48000
 //
 // Routes:
 //  "a2dp output" -> "BT A2DP Out"
 //  "a2dp output" -> "BT A2DP Headphones"
 //  "a2dp output" -> "BT A2DP Speaker"
 //  "hearing aid output" -> "BT Hearing Aid Out"
+//  "le audio output" -> "BLE Headset Out"
+//  "BLE Headset In" -> "le audio input"
 //
 // Profiles for device port connected state (when simulating connections):
 //  * "BT A2DP Out", "BT A2DP Headphones", "BT A2DP Speaker":
 //    - profile PCM 16-bit; STEREO; 44100, 48000, 88200, 96000
 //  * "BT Hearing Aid Out":
 //    - profile PCM 16-bit; STEREO; 16000, 24000
+//  * "BLE Headset Out", "BLE Headset In"
+//    - profile PCM 16-bit; STEREO; 44100, 48000
 //
 std::unique_ptr<Configuration> getBluetoothConfiguration() {
     static const Configuration configuration = []() {
@@ -630,6 +642,8 @@ std::unique_ptr<Configuration> getBluetoothConfiguration() {
                               {44100, 48000, 88200, 96000})};
         const std::vector<AudioProfile> hearingAidAudioProfiles = {createProfile(
                 PcmType::INT_16_BIT, {AudioChannelLayout::LAYOUT_STEREO}, {16000, 24000})};
+        const std::vector<AudioProfile> leAudioProfiles = {createProfile(
+                PcmType::INT_16_BIT, {AudioChannelLayout::LAYOUT_STEREO}, {44100, 48000})};
         Configuration c;
 
         // Device ports
@@ -669,6 +683,20 @@ std::unique_ptr<Configuration> getBluetoothConfiguration() {
         c.ports.push_back(btOutHearingAid);
         c.connectedProfiles[btOutHearingAid.id] = hearingAidAudioProfiles;
 
+        AudioPort btLeOutHeadset =
+                createPort(c.nextPortId++, "BLE Headset Out", 0, false,
+                           createDeviceExt(AudioDeviceType::OUT_HEADSET, 0,
+                                           AudioDeviceDescription::CONNECTION_BT_LE));
+        c.ports.push_back(btLeOutHeadset);
+        c.connectedProfiles[btLeOutHeadset.id] = leAudioProfiles;
+
+        AudioPort btLeInHeadset =
+                createPort(c.nextPortId++, "BLE Headset In", 0, true,
+                           createDeviceExt(AudioDeviceType::IN_HEADSET, 0,
+                                           AudioDeviceDescription::CONNECTION_BT_LE));
+        c.ports.push_back(btLeInHeadset);
+        c.connectedProfiles[btLeInHeadset.id] = leAudioProfiles;
+
         // Mix ports
         AudioPort btOutMix =
                 createPort(c.nextPortId++, "a2dp output", 0, false, createPortMixExt(1, 1));
@@ -679,10 +707,20 @@ std::unique_ptr<Configuration> getBluetoothConfiguration() {
         btHearingOutMix.profiles = hearingAidAudioProfiles;
         c.ports.push_back(btHearingOutMix);
 
+        AudioPort btLeOutMix =
+                createPort(c.nextPortId++, "le audio output", 0, false, createPortMixExt(1, 1));
+        c.ports.push_back(btLeOutMix);
+
+        AudioPort btLeInMix =
+                createPort(c.nextPortId++, "le audio input", 0, true, createPortMixExt(1, 1));
+        c.ports.push_back(btLeInMix);
+
         c.routes.push_back(createRoute({btOutMix}, btOutDevice));
         c.routes.push_back(createRoute({btOutMix}, btOutHeadphone));
         c.routes.push_back(createRoute({btOutMix}, btOutSpeaker));
         c.routes.push_back(createRoute({btHearingOutMix}, btOutHearingAid));
+        c.routes.push_back(createRoute({btLeOutMix}, btLeOutHeadset));
+        c.routes.push_back(createRoute({btLeInHeadset}, btLeInMix));
 
         return c;
     }();

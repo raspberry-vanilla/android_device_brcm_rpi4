@@ -15,11 +15,12 @@
  */
 
 #include <pthread.h>
+#include <thread>
 
 #define ATRACE_TAG ATRACE_TAG_AUDIO
 #define LOG_TAG "AHAL_Stream"
+#include <Log.h>
 #include <Utils.h>
-#include <android-base/logging.h>
 #include <android/binder_ibinder_platform.h>
 #include <cutils/properties.h>
 #include <utils/SystemClock.h>
@@ -36,12 +37,14 @@ using aidl::android::hardware::audio::common::SinkMetadata;
 using aidl::android::hardware::audio::common::SourceMetadata;
 using aidl::android::media::audio::common::AudioDevice;
 using aidl::android::media::audio::common::AudioDualMonoMode;
+using aidl::android::media::audio::common::AudioFormatType;
 using aidl::android::media::audio::common::AudioInputFlags;
 using aidl::android::media::audio::common::AudioIoFlags;
 using aidl::android::media::audio::common::AudioLatencyMode;
 using aidl::android::media::audio::common::AudioOffloadInfo;
 using aidl::android::media::audio::common::AudioOutputFlags;
 using aidl::android::media::audio::common::AudioPlaybackRate;
+using aidl::android::media::audio::common::FlushFromFrameAccuracy;
 using aidl::android::media::audio::common::MicrophoneDynamicInfo;
 using aidl::android::media::audio::common::MicrophoneInfo;
 
@@ -196,6 +199,27 @@ void StreamWorkerCommonLogic::populateReplyWrongState(
     reply->status = STATUS_INVALID_OPERATION;
 }
 
+void StreamWorkerCommonLogic::populateReplyUnsupportedCommand(
+        StreamDescriptor::Reply* reply, const StreamDescriptor::Command& command) const {
+    LOG(WARNING) << "command '" << toString(command.getTag()) << "' is not supported by the stream";
+    reply->status = STATUS_INVALID_OPERATION;
+}
+
+void StreamWorkerCommonLogic::switchFromTransientState(StreamDescriptor::State state) {
+    if (mTransientStateDelayMs.count() != 0) {
+        if (auto stateDurationMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now() - mTransientStateStart);
+            stateDurationMs < mTransientStateDelayMs) {
+            const auto delayMs = mTransientStateDelayMs - stateDurationMs;
+            LOG(DEBUG) << __func__ << ": inducing transient state delay when switching from "
+                       << toString(mState) << " to " << toString(state) << " of " << delayMs
+                       << "ms";
+            std::this_thread::sleep_for(delayMs);
+        }
+    }
+    mState = state;
+}
+
 const std::string StreamInWorkerLogic::kThreadName = "reader";
 
 StreamInWorkerLogic::Status StreamInWorkerLogic::cycle() {
@@ -346,6 +370,10 @@ StreamInWorkerLogic::Status StreamInWorkerLogic::cycle() {
                 populateReplyWrongState(&reply, command);
             }
             break;
+        case Tag::flushFromFrame:
+            LOG(ERROR) << __func__ << ": flushFromFrame is not supported for input stream";
+            populateReplyUnsupportedCommand(&reply, command);
+            break;
     }
     reply.state = mState;
     LOG(severity) << __func__ << ": writing reply " << reply.toString();
@@ -416,14 +444,31 @@ bool StreamInWorkerLogic::readMmap(StreamDescriptor::Reply* reply) {
 
 const std::string StreamOutWorkerLogic::kThreadName = "writer";
 
+using StreamOutWorkerLogicCall =
+        ::android::hardware::audio::common::PostponedMethodCall<StreamOutWorkerLogic>;
+
 void StreamOutWorkerLogic::onBufferStateChange(size_t bufferFramesLeft) {
+    // It is assumed that all 'on...StateChange' callbacks originate from the same thread,
+    // thus it is impossible to get one callback while processing another.
+    if (!mCallTasks.tryObtainOrPush(StreamOutWorkerLogicCall::create(
+                this, &StreamOutWorkerLogic::onBufferStateChangeImpl, (size_t)bufferFramesLeft))) {
+        // Call queued, will be executed after 'cycle' ends processing command.
+        return;
+    }
+    onBufferStateChangeImpl(bufferFramesLeft);
+    if (!mCallTasks.release()) {
+        LOG(FATAL) << __func__ << ": call tasks queue release failed";
+    }
+}
+
+void StreamOutWorkerLogic::onBufferStateChangeImpl(size_t bufferFramesLeft) {
     const StreamDescriptor::State state = mState;
     const DrainState drainState = mDrainState;
     LOG(DEBUG) << __func__ << ": state: " << toString(state) << ", drainState: " << drainState
                << ", bufferFramesLeft: " << bufferFramesLeft;
     if (state == StreamDescriptor::State::TRANSFERRING || drainState == DrainState::EN_SENT) {
         if (state == StreamDescriptor::State::TRANSFERRING) {
-            mState = StreamDescriptor::State::ACTIVE;
+            switchFromTransientState(StreamDescriptor::State::ACTIVE);
         }
         std::shared_ptr<IStreamCallback> asyncCallback = mContext->getAsyncCallback();
         if (asyncCallback != nullptr) {
@@ -437,18 +482,34 @@ void StreamOutWorkerLogic::onBufferStateChange(size_t bufferFramesLeft) {
 }
 
 void StreamOutWorkerLogic::onClipStateChange(size_t clipFramesLeft, bool hasNextClip) {
+    if (!mCallTasks.tryObtainOrPush(
+                StreamOutWorkerLogicCall::create(this, &StreamOutWorkerLogic::onClipStateChangeImpl,
+                                                 (size_t)clipFramesLeft, (bool)hasNextClip))) {
+        // Call queued, will be executed after 'cycle' ends processing command.
+        return;
+    }
+    onClipStateChangeImpl(clipFramesLeft, hasNextClip);
+    if (!mCallTasks.release()) {
+        LOG(FATAL) << __func__ << ": call tasks queue release failed";
+    }
+}
+
+void StreamOutWorkerLogic::onClipStateChangeImpl(size_t clipFramesLeft, bool hasNextClip) {
     const DrainState drainState = mDrainState;
     std::shared_ptr<IStreamCallback> asyncCallback = mContext->getAsyncCallback();
     LOG(DEBUG) << __func__ << ": drainState: " << drainState << "; clipFramesLeft "
                << clipFramesLeft << "; hasNextClip? " << hasNextClip << "; asyncCallback? "
                << (asyncCallback != nullptr);
     if (drainState != DrainState::NONE && clipFramesLeft == 0) {
-        mState =
-                hasNextClip ? StreamDescriptor::State::TRANSFERRING : StreamDescriptor::State::IDLE;
+        if (hasNextClip) {
+            switchToTransientState(StreamDescriptor::State::TRANSFERRING);
+        } else {
+            switchFromTransientState(StreamDescriptor::State::IDLE);
+        }
         mDrainState = DrainState::NONE;
         if ((drainState == DrainState::ALL || drainState == DrainState::EN_SENT) &&
             asyncCallback != nullptr) {
-            LOG(DEBUG) << __func__ << ": sending onDrainReady";
+            LOG(DEBUG) << __func__ << ": sending onDrainReady (end of clip)";
             // For EN_SENT, this is the second onDrainReady which notifies about clip transition.
             ndk::ScopedAStatus status = asyncCallback->onDrainReady();
             if (!status.isOk()) {
@@ -459,7 +520,7 @@ void StreamOutWorkerLogic::onClipStateChange(size_t clipFramesLeft, bool hasNext
         // The stream state does not change, it is still draining.
         mDrainState = DrainState::EN_SENT;
         if (asyncCallback != nullptr) {
-            LOG(DEBUG) << __func__ << ": sending onDrainReady";
+            LOG(DEBUG) << __func__ << ": sending onDrainReady (ready for next clip data)";
             ndk::ScopedAStatus status = asyncCallback->onDrainReady();
             if (!status.isOk()) {
                 LOG(ERROR) << __func__ << ": error from onDrainReady: " << status;
@@ -469,7 +530,7 @@ void StreamOutWorkerLogic::onClipStateChange(size_t clipFramesLeft, bool hasNext
 }
 
 StreamOutWorkerLogic::Status StreamOutWorkerLogic::cycle() {
-    // Non-blocking mode is handled within 'onClipStateChange'
+    // Non-blocking mode is handled within 'on{Buffer|Clip}StateChange'
     if (std::shared_ptr<IStreamCallback> asyncCallback = mContext->getAsyncCallback();
         mState == StreamDescriptor::State::DRAINING && asyncCallback == nullptr) {
         if (auto stateDurationMs = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -499,7 +560,14 @@ StreamOutWorkerLogic::Status StreamOutWorkerLogic::cycle() {
                   << kThreadName;
     StreamDescriptor::Reply reply{};
     reply.status = STATUS_BAD_VALUE;
+    ::android::hardware::audio::common::PostponedMethodsCaller<StreamOutWorkerLogic> caller(
+            mCallTasks);
     using Tag = StreamDescriptor::Command::Tag;
+    // Do not need to obtain the call tasks queue for commands that do not change the state.
+    if (command.getTag() != Tag::halReservedExit && command.getTag() != Tag::getStatus) {
+        // Waits until any ongoing execution of 'on...StateChange' call finishes.
+        caller.obtainQueue();
+    }
     switch (command.getTag()) {
         case Tag::halReservedExit: {
             const int32_t cookie = command.get<Tag::halReservedExit>();
@@ -572,7 +640,7 @@ StreamOutWorkerLogic::Status StreamOutWorkerLogic::cycle() {
                         if (asyncCallback == nullptr ||
                             mState != StreamDescriptor::State::DRAIN_PAUSED) {
                             mState = StreamDescriptor::State::PAUSED;
-                        } else {
+                        } else if (mDrainState != DrainState::EN_SENT) {
                             mState = StreamDescriptor::State::TRANSFER_PAUSED;
                         }
                     } else if (mState == StreamDescriptor::State::IDLE ||
@@ -680,6 +748,56 @@ StreamOutWorkerLogic::Status StreamOutWorkerLogic::cycle() {
                 populateReplyWrongState(&reply, command);
             }
             break;
+        case Tag::flushFromFrame: {
+            if (mContext->isOffload() && mContext->getFormat().type == AudioFormatType::PCM) {
+                bool validState = false;
+                switch (mState) {
+                    case StreamDescriptor::State::ACTIVE:
+                    case StreamDescriptor::State::TRANSFERRING:
+                    case StreamDescriptor::State::DRAINING:
+                    case StreamDescriptor::State::TRANSFER_PAUSED:
+                    case StreamDescriptor::State::PAUSED:
+                    case StreamDescriptor::State::DRAIN_PAUSED:
+                        validState = true;
+                        break;
+                    default:
+                        LOG(ERROR)
+                                << __func__
+                                << ": flushFromFrame, invalid state: " << toString(mState.load());
+                        populateReplyWrongState(&reply, command);
+                }
+                if (validState) {
+                    const int32_t flushFromFrameRequest = command.get<Tag::flushFromFrame>();
+                    const FlushFromFrameAccuracy accuracy =
+                            (FlushFromFrameAccuracy)((flushFromFrameRequest >>
+                                                      StreamDescriptor::
+                                                              FLUSH_FROM_FRAME_POSITION_BITS) &
+                                                     0x0f);
+                    if (accuracy == FlushFromFrameAccuracy::BEST_EFFORT ||
+                        accuracy == FlushFromFrameAccuracy::EXACT) {
+                        static const int32_t kPositionMask =
+                                (1 << StreamDescriptor::FLUSH_FROM_FRAME_POSITION_BITS) - 1;
+                        int position = flushFromFrameRequest & kPositionMask;
+                        const ::android::status_t status = mDriver->flushFromFrame(
+                                accuracy, position, &reply.flushFromPosition);
+                        populateReply(&reply, mIsConnected);
+                        if (status == ::android::BAD_VALUE) {
+                            LOG(INFO) << __func__ << ": flushFromFrame(" << position
+                                      << "), flushFromPosition=" << reply.flushFromPosition;
+                            reply.status = STATUS_BAD_VALUE;
+                        } else if (status != ::android::OK) {
+                            LOG(ERROR) << __func__ << ": flushFromFrame failed: " << status;
+                            reply.status = STATUS_INVALID_OPERATION;
+                        }
+                    } else {
+                        LOG(ERROR) << __func__ << ": invalid accuracy: " << toString(accuracy);
+                        reply.status = STATUS_BAD_VALUE;
+                    }
+                }
+            } else {
+                populateReplyUnsupportedCommand(&reply, command);
+            }
+        } break;
     }
     reply.state = mState;
     LOG(severity) << __func__ << ": writing reply " << reply.toString();
@@ -705,8 +823,8 @@ bool StreamOutWorkerLogic::write(size_t clientSize, StreamDescriptor::Reply* rep
         // Amount of data that the HAL module is going to actually use.
         size_t byteCount = std::min({clientSize, readByteCount, mDataBufferSize});
         if (byteCount >= frameSize && mContext->getForceTransientBurst()) {
-            // In order to prevent the state machine from going to ACTIVE state,
-            // simulate partial write.
+            // In order to prevent the state machine from going to ACTIVE state for full write
+            // (sync) transfers, simulate a partial write.
             byteCount -= frameSize;
         }
         size_t actualFrameCount = 0;
@@ -839,6 +957,12 @@ ndk::ScopedAStatus StreamCommonImpl::removeEffect(
     return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
+ndk::ScopedAStatus StreamCommonImpl::createMmapBuffer(MmapBufferDescriptor* _aidl_return) {
+    LOG(DEBUG) << __func__;
+    (void)_aidl_return;
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+}
+
 ndk::ScopedAStatus StreamCommonImpl::close() {
     LOG(DEBUG) << __func__;
     if (!isClosed()) {
@@ -927,12 +1051,38 @@ void StreamCommonImpl::stopWorker() {
     mWorkerStopIssued = true;
 }
 
+ndk::ScopedAStatus validateMetadataAttributeTags(const std::vector<std::string>& tags) {
+    for (auto& tag : tags) {
+        if (!common::isVendorExtension(tag)) {
+            LOG(ERROR) << __func__ << ": metadata attribute tag " << tag << " is invalid.";
+            return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+        }
+    }
+    return ndk::ScopedAStatus::ok();
+}
+
 ndk::ScopedAStatus StreamCommonImpl::updateMetadataCommon(const Metadata& metadata) {
     LOG(DEBUG) << __func__;
     if (!isClosed()) {
         if (metadata.index() != mMetadata.index()) {
             LOG(FATAL) << __func__ << ": changing metadata variant is not allowed";
         }
+        ndk::ScopedAStatus status = std::visit(
+                [&](const auto& data) -> ndk::ScopedAStatus {
+                    for (const auto& track : data.tracks) {
+                        ndk::ScopedAStatus status = validateMetadataAttributeTags(track.tags);
+                        if (!status.isOk()) {
+                            return status;
+                        }
+                    }
+                    return ndk::ScopedAStatus::ok();
+                },
+                metadata);
+
+        if (!status.isOk()) {
+            return status;
+        }
+
         mMetadata = metadata;
         return ndk::ScopedAStatus::ok();
     }
@@ -1066,6 +1216,11 @@ void StreamOut::defaultOnClose() {
     mContextInstance.reset();
 }
 
+ndk::ScopedAStatus StreamOut::updateMetadata(const SourceMetadata& in_sourceMetadata) {
+    RETURN_STATUS_IF_ERROR(validateMetadata(in_sourceMetadata));
+    return updateMetadataCommon(in_sourceMetadata);
+}
+
 ndk::ScopedAStatus StreamOut::updateOffloadMetadata(
         const AudioOffloadMetadata& in_offloadMetadata) {
     LOG(DEBUG) << __func__;
@@ -1160,6 +1315,19 @@ ndk::ScopedAStatus StreamOut::selectPresentation(int32_t in_presentationId, int3
     LOG(DEBUG) << __func__ << ": presentationId " << in_presentationId << ", programId "
                << in_programId;
     return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+}
+
+ndk::ScopedAStatus StreamOut::validateMetadata(const SourceMetadata& sourceMetadata) {
+    for (const auto& track : sourceMetadata.tracks) {
+        if (const auto& codecMime = track.codecProvenance;
+            codecMime.has_value() && !codecMime->empty()) {
+            if (!aidl::android::hardware::audio::common::isAudioMimeType(*codecMime)) {
+                LOG(ERROR) << __func__ << ": invalid audio MIME type: \"" << *codecMime << "\"";
+                return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+            }
+        }
+    }
+    return ndk::ScopedAStatus::ok();
 }
 
 StreamOutHwVolumeHelper::StreamOutHwVolumeHelper(const StreamContext* context)

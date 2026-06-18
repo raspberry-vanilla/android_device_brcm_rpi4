@@ -18,9 +18,9 @@
 
 #include <vector>
 
-#include <android-base/logging.h>
+#include <Log.h>
 
-#include "Utils.h"
+#include "UtilsAlsa.h"
 #include "core-impl/ModuleAlsa.h"
 
 extern "C" {
@@ -45,7 +45,8 @@ ndk::ScopedAStatus ModuleAlsa::populateConnectedDevicePort(AudioPort* audioPort,
     }
 
     alsa_device_profile* profile = proxy.getProfile();
-    std::vector<AudioChannelLayout> channels = alsa::getChannelMasksFromProfile(profile);
+    std::vector<AudioChannelLayout> channels =
+            alsa::getChannelMasksFromProfile(profile, isDevicePortSupportAmbisonics(*audioPort));
     std::vector<int> sampleRates = alsa::getSampleRatesFromProfile(profile);
 
     for (size_t i = 0; i < std::min(MAX_PROFILE_FORMATS, AUDIO_PORT_MAX_AUDIO_PROFILES) &&
@@ -63,6 +64,13 @@ ndk::ScopedAStatus ModuleAlsa::populateConnectedDevicePort(AudioPort* audioPort,
         audioPort->profiles.push_back(std::move(audioProfile));
     }
     return ndk::ScopedAStatus::ok();
+}
+
+bool ModuleAlsa::isDevicePortSupportAmbisonics(const AudioPort&) {
+    // The default implementation always returns 'false'. Vendor implementations
+    // may supply logic which is based on the knowledge of SoC capabilities,
+    // or based on USB device ID.
+    return false;
 }
 
 }  // namespace aidl::android::hardware::audio::core

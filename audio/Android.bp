@@ -7,13 +7,9 @@ cc_defaults {
     name: "aidlaudioservice_rpi_defaults",
     vendor: true,
     shared_libs: [
-        "android.hardware.audio.core-V3-ndk",
-        "android.hardware.audio.core.sounddose-V3-ndk",
-        "android.hardware.bluetooth.audio-V5-ndk",
         "android.hardware.bluetooth.audio-impl",
         "android.hardware.common-V2-ndk",
         "android.hardware.common.fmq-V1-ndk",
-        "android.media.audio.common.types-V4-ndk",
         "libalsautilsv2-rpi",
         "libasound",
         "libaudio_aidl_conversion_common_ndk",
@@ -43,6 +39,15 @@ cc_defaults {
         "-Werror",
         "-Wextra",
         "-Wthread-safety",
+    ] + select(release_flag("RELEASE_HARDWARE_AUDIO_USE_CAP_AIDL"), {
+        true: [],
+        default: ["-DDISABLE_CAP_AIDL"],
+    }),
+    defaults: [
+        "latest_android_hardware_audio_core_ndk_shared",
+        "latest_android_hardware_audio_core_sounddose_ndk_shared",
+        "latest_android_hardware_bluetooth_audio_ndk_shared",
+        "latest_android_media_audio_common_types_ndk_shared",
     ],
 }
 
@@ -67,9 +72,12 @@ cc_library {
         "alsa/Mixer.cpp",
         "alsa/ModuleAlsa.cpp",
         "alsa/StreamAlsa.cpp",
-        "alsa/Utils.cpp",
+        "alsa/StreamAlsaBase.cpp",
+        "alsa/StreamAlsaMonoPipe.cpp",
+        "alsa/UtilsAlsa.cpp",
         "bluetooth/DevicePortProxy.cpp",
         "bluetooth/ModuleBluetooth.cpp",
+        "bluetooth/ModuleBluetoothBase.cpp",
         "bluetooth/StreamBluetooth.cpp",
         "deprecated/StreamSwitcher.cpp",
         "primary/PrimaryMixer.cpp",
@@ -80,6 +88,7 @@ cc_library {
         "stub/ApeHeader.cpp",
         "stub/DriverStubImpl.cpp",
         "stub/ModuleStub.cpp",
+        "stub/MpegAudioHeader.cpp",
         "stub/StreamMmapStub.cpp",
         "stub/StreamOffloadStub.cpp",
         "stub/StreamStub.cpp",
@@ -128,13 +137,38 @@ cc_library {
     ],
 }
 
-filegroup {
-    name: "effectCommonFileRpi",
+cc_library_static {
+    name: "libaudioeffectaidlcommon-rpi",
     srcs: [
         "EffectContext.cpp",
         "EffectImpl.cpp",
         "EffectThread.cpp",
     ],
+    defaults: [
+        "latest_android_media_audio_common_types_ndk_shared",
+        "latest_android_hardware_audio_effect_ndk_shared",
+    ],
+    shared_libs: [
+        "libaudioaidlcommon",
+        "libaudioutils",
+        "libfmq",
+    ],
+    static_libs: [
+        "libaudioaidlranges",
+    ],
+    header_libs: [
+        "libaudioaidl_headers",
+    ],
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wthread-safety",
+        "-DBACKEND_NDK",
+    ],
+    export_include_dirs: ["include"],
+    host_supported: true,
+    vendor: true,
 }
 
 cc_binary {
@@ -152,8 +186,6 @@ cc_defaults {
     name: "aidlaudioeffectservice_rpi_defaults",
     vendor: true,
     shared_libs: [
-        "android.hardware.audio.effect-V3-ndk",
-        "android.media.audio.common.types-V4-ndk",
         "libapexsupport",
         "libaudio_aidl_conversion_common_ndk",
         "libaudioutils",
@@ -172,6 +204,10 @@ cc_defaults {
         "-Werror",
         "-Wextra",
     ],
+    defaults: [
+        "latest_android_hardware_audio_effect_ndk_shared",
+        "latest_android_media_audio_common_types_ndk_shared",
+    ],
 }
 
 cc_binary {
@@ -185,6 +221,9 @@ cc_binary {
         "libcutils",
         "libeffectconfig-rpi",
         "libfmq",
+    ],
+    static_libs: [
+        "libaudioeffectaidlcommon-rpi",
     ],
     header_libs: [
         "libsystem_headers",

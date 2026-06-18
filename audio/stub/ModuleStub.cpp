@@ -17,8 +17,8 @@
 #include <vector>
 
 #define LOG_TAG "AHAL_ModuleStub"
+#include <Log.h>
 #include <Utils.h>
-#include <android-base/logging.h>
 
 #include "core-impl/Bluetooth.h"
 #include "core-impl/ModuleStub.h"

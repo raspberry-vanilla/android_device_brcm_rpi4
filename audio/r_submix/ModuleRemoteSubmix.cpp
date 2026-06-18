@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <vector>
 
-#include <android-base/logging.h>
+#include <Log.h>
 #include <error/expected_utils.h>
 
 #include "SubmixRoute.h"
@@ -28,6 +28,7 @@
 
 using aidl::android::hardware::audio::common::SinkMetadata;
 using aidl::android::hardware::audio::common::SourceMetadata;
+using aidl::android::media::audio::common::AudioChannelLayout;
 using aidl::android::media::audio::common::AudioDeviceAddress;
 using aidl::android::media::audio::common::AudioFormatType;
 using aidl::android::media::audio::common::AudioIoFlags;
@@ -170,7 +171,8 @@ ndk::ScopedAStatus ModuleRemoteSubmix::onMasterVolumeChanged(float __unused) {
 int32_t ModuleRemoteSubmix::getNominalLatencyMs(const AudioPortConfig&) {
     // See the note on kDefaultPipePeriodCount.
     static constexpr int32_t kMaxLatencyMs =
-            (r_submix::kDefaultPipeSizeInFrames * 1000) / r_submix::kDefaultSampleRateHz;
+            (r_submix::kDefaultPipeSizeInFrames * MILLIS_PER_SECOND) /
+            r_submix::kDefaultSampleRateHz;
     static constexpr int32_t kMinLatencyMs = kMaxLatencyMs / r_submix::kDefaultPipePeriodCount;
     return kMinLatencyMs;
 }

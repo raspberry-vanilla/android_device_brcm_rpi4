@@ -17,7 +17,7 @@
 #include <limits>
 
 #define LOG_TAG "AHAL_StreamUsb"
-#include <android-base/logging.h>
+#include <Log.h>
 #include <error/expected_utils.h>
 
 #include "UsbAlsaMixerControl.h"

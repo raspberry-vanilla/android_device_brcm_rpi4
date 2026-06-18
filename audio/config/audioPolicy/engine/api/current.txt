@@ -1,4 +1,5 @@
-// Signature format: 2.0
+// Signature format: 6.0
+// - style=java
 package android.audio.policy.engine.configuration {
 
   public class AttributesGroup {
@@ -203,8 +204,10 @@ package android.audio.policy.engine.configuration {
     method @Nullable public java.util.List<android.audio.policy.engine.configuration.AttributesGroup> getAttributesGroup();
     method @Nullable public int getId();
     method @Nullable public String getName();
+    method @Nullable public int getZoneId();
     method public void setId(@Nullable int);
     method public void setName(@Nullable String);
+    method public void setZoneId(@Nullable int);
   }
 
   public enum SourceEnumType {
@@ -265,6 +268,8 @@ package android.audio.policy.engine.configuration {
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_NOTIFICATION_COMMUNICATION_REQUEST;
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_NOTIFICATION_EVENT;
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_NOTIFICATION_TELEPHONY_RINGTONE;
+    enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_NOTIFICATION_VIBRATION;
+    enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_RINGTONE_VIBRATION;
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_SAFETY;
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_SPEAKER_CLEANUP;
     enum_constant public static final android.audio.policy.engine.configuration.UsageEnumType AUDIO_USAGE_UNKNOWN;
@@ -301,7 +306,7 @@ package android.audio.policy.engine.configuration {
   public class Volume {
     ctor public Volume();
     method @Nullable public android.audio.policy.engine.configuration.DeviceCategory getDeviceCategory();
-    method @Nullable public java.util.List<java.lang.String> getPoint();
+    method @Nullable public java.util.List<String> getPoint();
     method @Nullable public String getRef();
     method public void setDeviceCategory(@Nullable android.audio.policy.engine.configuration.DeviceCategory);
     method public void setRef(@Nullable String);
@@ -326,7 +331,7 @@ package android.audio.policy.engine.configuration {
   public class VolumeRef {
     ctor public VolumeRef();
     method @Nullable public String getName();
-    method @Nullable public java.util.List<java.lang.String> getPoint();
+    method @Nullable public java.util.List<String> getPoint();
     method public void setName(@Nullable String);
   }
 

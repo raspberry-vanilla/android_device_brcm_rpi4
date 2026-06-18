@@ -21,10 +21,10 @@
 #include <unordered_map>
 
 #define LOG_TAG "AHAL_Config"
+#include <Log.h>
 #include <aidl/android/media/audio/common/AudioFlag.h>
 #include <aidl/android/media/audio/common/AudioHalEngineConfig.h>
 #include <aidl/android/media/audio/common/AudioProductStrategyType.h>
-#include <android-base/logging.h>
 
 #include "core-impl/CapEngineConfigXmlConverter.h"
 #include "core-impl/EngineConfigXmlConverter.h"
@@ -127,9 +127,6 @@ ConversionResult<AudioAttributes> EngineConfigXmlConverter::convertAudioAttribut
 ConversionResult<AudioHalAttributesGroup> EngineConfigXmlConverter::convertAttributesGroupToAidl(
         const eng_xsd::AttributesGroup& xsdcAttributesGroup) {
     AudioHalAttributesGroup aidlAttributesGroup;
-    static const int kStreamTypeEnumOffset =
-            static_cast<int>(eng_xsd::Stream::AUDIO_STREAM_VOICE_CALL) -
-            static_cast<int>(AudioStreamType::VOICE_CALL);
     aidlAttributesGroup.streamType = xsdcAttributesGroup.hasStreamType()
                                              ? VALUE_OR_FATAL(convertAudioStreamTypeToAidl(
                                                        xsdcAttributesGroup.getStreamType()))
@@ -173,7 +170,9 @@ ConversionResult<AudioHalProductStrategy> EngineConfigXmlConverter::convertProdu
                 VALUE_OR_FATAL(convertProductStrategyNameToAidl(xsdcProductStrategy.getName()));
     }
     aidlProductStrategy.name = xsdcProductStrategy.getName();
-
+    if (xsdcProductStrategy.hasZoneId()) {
+        aidlProductStrategy.zoneId = xsdcProductStrategy.getZoneId();
+    }
     if (xsdcProductStrategy.hasAttributesGroup()) {
         aidlProductStrategy.attributesGroups = VALUE_OR_FATAL(
                 (convertCollectionToAidl<eng_xsd::AttributesGroup, AudioHalAttributesGroup>(
@@ -254,6 +253,9 @@ void EngineConfigXmlConverter::init() {
     }
     if (getXsdcConfig()->hasCriteria() && getXsdcConfig()->hasCriterion_types()) {
         AudioHalEngineConfig::CapSpecificConfig capSpecificConfig;
+        // In hybrid mode, we use legacy XML file, that would not be compatible with AIDL
+        // (e.g. some device like ambient or incommunication deprecated...)
+#ifndef DISABLE_CAP_AIDL
         capSpecificConfig.criteriaV2 =
                 std::make_optional<>(VALUE_OR_FATAL((convertCapCriteriaCollectionToAidl(
                         getXsdcConfig()->getCriteria(), getXsdcConfig()->getCriterion_types()))));
@@ -262,6 +264,7 @@ void EngineConfigXmlConverter::init() {
         if (capEngConfigConverter.getStatus() == ::android::OK) {
             capSpecificConfig.domains = std::move(capEngConfigConverter.getAidlCapEngineConfig());
         }
+#endif
         mAidlEngineConfig.capSpecificConfig = capSpecificConfig;
     }
 }

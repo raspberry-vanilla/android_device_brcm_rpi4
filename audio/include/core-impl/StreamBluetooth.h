@@ -29,18 +29,30 @@
 
 namespace aidl::android::hardware::audio::core {
 
+class PortCallbacksHandler : public ::android::bluetooth::audio::aidl::BluetoothAudioPortCallbacks {
+  public:
+    explicit PortCallbacksHandler(std::shared_ptr<IStreamOutEventCallback> streamCallback)
+        : mStreamCallback(streamCallback) {}
+    bool hasCallback() const { return mStreamCallback != nullptr; }
+    void onRecommendedLatencyModeChanged(
+            const std::vector<::aidl::android::hardware::bluetooth::audio::LatencyMode>& modes)
+            override;
+
+  private:
+    std::shared_ptr<IStreamOutEventCallback> mStreamCallback;
+};
+
 class StreamBluetooth : public StreamCommonImpl {
   public:
     static bool checkConfigParams(
             const ::aidl::android::hardware::bluetooth::audio::PcmConfiguration& pcmConfig,
             const ::aidl::android::media::audio::common::AudioConfigBase& config);
 
-    StreamBluetooth(
-            StreamContext* context, const Metadata& metadata,
-            ModuleBluetooth::BtProfileHandles&& btHandles,
-            const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPortAidl>&
-                    btDeviceProxy,
-            const ::aidl::android::hardware::bluetooth::audio::PcmConfiguration& pcmConfig);
+    StreamBluetooth(StreamContext* context, const Metadata& metadata,
+                    ModuleBluetooth::BtProfileHandles&& btHandles,
+                    const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPort>&
+                            btDeviceProxy,
+                    const ::aidl::android::hardware::bluetooth::audio::PcmConfiguration& pcmConfig);
     ~StreamBluetooth();
 
     // Methods of 'DriverInterface'.
@@ -55,20 +67,37 @@ class StreamBluetooth : public StreamCommonImpl {
     void shutdown() override;
 
     // Overridden methods of 'StreamCommonImpl', called on a Binder thread.
-    ndk::ScopedAStatus updateMetadataCommon(const Metadata& metadata) override;
-    ndk::ScopedAStatus prepareToClose() override;
     ndk::ScopedAStatus bluetoothParametersUpdated() override;
+    ndk::ScopedAStatus prepareToClose() override;
+    ndk::ScopedAStatus setConnectedDevices(
+            const std::vector<::aidl::android::media::audio::common::AudioDevice>& devices)
+            override;
+    ndk::ScopedAStatus updateMetadataCommon(const Metadata& metadata) override;
+
+  protected:
+    ndk::ScopedAStatus getRecommendedLatencyModes(
+            std::vector<::aidl::android::media::audio::common::AudioLatencyMode>* _aidl_return);
+    ndk::ScopedAStatus setLatencyMode(
+            ::aidl::android::media::audio::common::AudioLatencyMode in_mode);
+
+    void dump(int fd, const char** args, uint32_t numArgs);
 
   private:
     const size_t mFrameSizeBytes;
     const bool mIsInput;
     const std::weak_ptr<IBluetoothA2dp> mBluetoothA2dp;
     const std::weak_ptr<IBluetoothLe> mBluetoothLe;
+    const std::weak_ptr<IBluetooth> mBluetoothHfp;
     const size_t mPreferredDataIntervalUs;
+    std::shared_ptr<PortCallbacksHandler> mCallbacksHandler;
+    std::string mSessionTypeName;
     mutable std::mutex mLock;
     // The lock is also used to serialize calls to the proxy.
-    std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPortAidl> mBtDeviceProxy
+    std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPort> mBtDeviceProxy
             GUARDED_BY(mLock);  // proxy may be null if the stream is not connected to a device
+    bool mEnabled GUARDED_BY(mLock) = true;
+    int64_t mDecimPresentationPosition;
+    ::aidl::android::hardware::bluetooth::audio::PresentationPosition mActualPresentationPosition;
 };
 
 class StreamInBluetooth final : public StreamIn, public StreamBluetooth {
@@ -82,7 +111,7 @@ class StreamInBluetooth final : public StreamIn, public StreamBluetooth {
             const ::aidl::android::hardware::audio::common::SinkMetadata& sinkMetadata,
             const std::vector<::aidl::android::media::audio::common::MicrophoneInfo>& microphones,
             ModuleBluetooth::BtProfileHandles&& btHandles,
-            const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPortAidl>&
+            const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPort>&
                     btDeviceProxy,
             const ::aidl::android::hardware::bluetooth::audio::PcmConfiguration& pcmConfig);
 
@@ -91,6 +120,8 @@ class StreamInBluetooth final : public StreamIn, public StreamBluetooth {
     ndk::ScopedAStatus getActiveMicrophones(
             std::vector<::aidl::android::media::audio::common::MicrophoneDynamicInfo>* _aidl_return)
             override;
+
+    binder_status_t dump(int fd, const char** args, uint32_t numArgs) override;
 };
 
 class StreamOutBluetooth final : public StreamOut, public StreamBluetooth {
@@ -105,12 +136,20 @@ class StreamOutBluetooth final : public StreamOut, public StreamBluetooth {
             const std::optional<::aidl::android::media::audio::common::AudioOffloadInfo>&
                     offloadInfo,
             ModuleBluetooth::BtProfileHandles&& btHandles,
-            const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPortAidl>&
+            const std::shared_ptr<::android::bluetooth::audio::aidl::BluetoothAudioPort>&
                     btDeviceProxy,
             const ::aidl::android::hardware::bluetooth::audio::PcmConfiguration& pcmConfig);
 
   private:
     void onClose(StreamDescriptor::State) override { defaultOnClose(); }
+
+    ndk::ScopedAStatus getRecommendedLatencyModes(
+            std::vector<::aidl::android::media::audio::common::AudioLatencyMode>* _aidl_return)
+            override;
+    ndk::ScopedAStatus setLatencyMode(
+            ::aidl::android::media::audio::common::AudioLatencyMode in_mode) override;
+
+    binder_status_t dump(int fd, const char** args, uint32_t numArgs) override;
 };
 
 }  // namespace aidl::android::hardware::audio::core
