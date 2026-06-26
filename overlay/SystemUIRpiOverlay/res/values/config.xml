@@ -18,9 +18,16 @@
 
 <resources>
 
-    <!-- The default tiles to display in QuickSettings with the new UI -->
-    <string name="quick_settings_tiles_new_default" translatable="false">
-        internet,bt,dnd,location,airplane,hotspot,dark,dream,screenrecord
+    <!-- The default tiles to display in QuickSettings after the internet tile split-->
+    <string name="quick_settings_tiles_default_split" translatable="false">
+        wifi,bt,dnd,location,airplane,hotspot,dark,dream,screenrecord
     </string>
+
+    <!-- The default large tiles in Quick Settings after the internet tile split -->
+    <string-array name="quick_settings_large_tiles_default_split" translatable="false">
+        <item>wifi</item>
+        <item>bt</item>
+        <item>dnd</item>
+    </string-array>
 
 </resources>
