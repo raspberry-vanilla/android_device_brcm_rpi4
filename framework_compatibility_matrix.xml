@@ -1,4 +1,4 @@
-<compatibility-matrix version="1.0" type="framework" level="202504">
+<compatibility-matrix version="1.0" type="framework" level="202604">
     <hal format="aidl">
         <name>android.hardware.media.c2</name>
         <version>1</version>
