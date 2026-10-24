@@ -38,7 +38,6 @@
            <Limit name="bitrate" range="1-62500000" />
            <Limit name="concurrent-instances" max="8" />
            <Limit name="performance-point-3840x2160" range="30-30" />
-           <Feature name="adaptive-playback" />
        </MediaCodec>
    </Decoders>
 </Included>
