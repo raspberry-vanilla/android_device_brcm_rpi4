@@ -58,9 +58,6 @@ ro.lockscreen.disable.default=true
 debug.stagefright.c2inputsurface=-1
 media.c2.hal.selection=aidl
 
-# MGLRU
-persist.device_config.mglru_native.lru_gen_config=core
-
 # V4L2
 debug.stagefright.c2-poolmask=0xfc0000
 persist.vendor.v4l2_codec2.rank.decoder=128
